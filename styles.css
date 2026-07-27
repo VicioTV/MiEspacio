@@ -4657,14 +4657,18 @@ body[data-view]:not([data-view="inicio"]) .view.is-active::before {
 }
 
 body[data-view="canciones"] .cover-button {
-  aspect-ratio: 1;
+  aspect-ratio: 2 / 3;
   background: #030405;
 }
 
 body[data-view="canciones"] .cover-button .cover-art,
 body[data-view="canciones"] .song-card:hover .cover-art,
 body[data-view="canciones"] .song-card.is-active .cover-art {
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
   transform: none;
+}
+
+body[data-view="canciones"] .song-card[data-song-id="2"] .cover-art {
+  object-fit: contain;
 }
