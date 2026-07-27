@@ -4149,8 +4149,7 @@ body[data-view="canciones"] .song-info::after,
 .navigation-heading i,
 .entry-copy::before,
 .music-chapters a.is-current::before,
-.project-scroll-thumb,
-.project-creador .project-media-type span:nth-child(1) {
+.project-scroll-thumb {
   background: var(--holo-spectrum);
   background-size: 260% 260%;
   box-shadow:
@@ -4330,7 +4329,6 @@ body[data-view="canciones"] .song-info::after {
   .entry-copy::before,
   .music-chapters a.is-current::before,
   .project-scroll-thumb,
-  .project-creador .project-media-type span:nth-child(1),
   body[data-view="canciones"] .play-pill,
   .filter-button.is-active,
   .site-header::after,
@@ -4621,5 +4619,51 @@ body[data-view="inicio"] .disciplines article:nth-child(3) > * { animation-delay
   .archive-shell-sidebar::before,
   .archive-shell-sidebar::after {
     animation: cool-chrome-traverse 6.6s linear infinite alternate !important;
+  }
+}
+
+/* The CREADOR100K process keeps four deliberate, solid identity colors. */
+.project-creador .project-media-type span:nth-child(1) {
+  background: #ff5a2f;
+  color: #0b0d0c;
+  box-shadow: none;
+  animation: none;
+}
+
+/* A single holographic light field travels across the complete interface. */
+body::after {
+  position: fixed;
+  z-index: 98;
+  inset: -38% -52%;
+  background:
+    linear-gradient(
+      108deg,
+      transparent 34%,
+      rgba(139, 246, 238, 0.035) 40%,
+      rgba(136, 164, 255, 0.07) 45%,
+      rgba(215, 167, 255, 0.11) 48%,
+      rgba(255, 255, 255, 0.13) 50%,
+      rgba(255, 175, 216, 0.085) 53%,
+      rgba(157, 255, 208, 0.05) 58%,
+      transparent 66%
+    );
+  content: "";
+  filter: blur(18px) saturate(1.16);
+  mix-blend-mode: screen;
+  opacity: 0.82;
+  pointer-events: none;
+  transform: translate3d(-30%, -3%, 0) rotate(-4deg);
+  will-change: transform;
+  animation: global-holographic-traverse 7.2s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
+}
+
+@keyframes global-holographic-traverse {
+  from { transform: translate3d(-30%, -3%, 0) rotate(-4deg); }
+  to { transform: translate3d(30%, 3%, 0) rotate(-4deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::after {
+    animation: global-holographic-traverse 14s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate !important;
   }
 }
