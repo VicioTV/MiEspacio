@@ -1,0 +1,9 @@
+# Audio and cover sources are hosted on Cloudflare R2.
+cancionesYportadas/
+
+# Local Codex workspace metadata.
+.agents/
+
+# Operating system files.
+.DS_Store
+Thumbs.db

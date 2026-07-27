@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0c0c0d">
+    <meta name="description" content="Archivo personal de CREADOR100K: ingeniería de producto, programación, música, imágenes y video.">
+    <title>CREADOR100K — Archivo personal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,300..800&family=Bodoni+Moda:opsz,wght@6..96,400;6..96,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css?v=holo-20260726c">
+  </head>
+  <body>
+    <div class="noise" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <a class="brand" href="#inicio" data-route="inicio" aria-label="Volver al inicio">
+        <span class="brand-name" data-text="CREADOR100K">CREADOR100K</span>
+      </a>
+      <p class="header-note">Programador, ingeniero de producto y productor musical</p>
+    </header>
+
+        <aside class="music-archive archive-shell-sidebar" id="archiveSidebar" data-section-label="N.º 26 · MÚSICA" aria-label="Índice del archivo personal">
+          <button class="music-back" type="button" data-route="inicio">← <span>Volver al archivo</span></button>
+          <nav class="music-chapters" aria-label="Capítulos">
+            <a class="is-current" href="#canciones" data-route="canciones"><span>01</span><strong>Mi música</strong><small>Producción, canciones y sonidos</small></a>
+            <a href="#proyectos" data-route="proyectos"><span>02</span><strong>Mis proyectos</strong><small>Productos y sistemas digitales</small></a>
+            <a href="#futuros" data-route="futuros"><span>03</span><strong>Mis futuros proyectos</strong><small>Lo que estoy imaginando</small></a>
+            <a href="#imagenes" data-route="imagenes"><span>04</span><strong>Imágenes</strong><small>Portadas, procesos y memoria</small></a>
+            <a href="#videos" data-route="videos"><span>05</span><strong>Videos</strong><small>Historias en movimiento</small></a>
+          </nav>
+          <blockquote class="music-manifesto"><span class="waveform-mark" aria-hidden="true">∿∿</span><p>Disciplina. Curiosidad.<br>Creatividad. Impacto.</p><strong>Archivo personal.</strong></blockquote>
+        </aside>
+
+    <div class="project-scroll-control" id="projectScrollControl" role="scrollbar" aria-label="Recorrer sección" aria-orientation="vertical" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0" title="Arrastrá para recorrer esta sección">
+      <span class="project-scroll-thumb" id="projectScrollThumb"></span>
+    </div>
+
+    <main>
+      <section class="view landing-view is-active" id="inicio" aria-labelledby="heroTitle">
+        <div class="archive-rail" aria-hidden="true"><span>Archivo personal</span><i></i><b>R26 / 001</b></div>
+
+        <div class="editorial-intro">
+          <p class="signal-line"><span class="signal-dot"></span>Córdoba, Argentina</p>
+          <p class="coordinates">31.4135° S, 64.1811° W</p>
+          <h1 id="heroTitle">Construyo<br><em>productos,</em><br>produzco<br>música<span>.</span></h1>
+          <p class="editorial-deck">Programador, ingeniero de producto y productor musical. Este archivo reúne sistemas, sonidos y todo lo que estoy construyendo.</p>
+          <div class="disciplines" aria-label="Disciplinas">
+            <article><span class="discipline-icon" aria-hidden="true">&lt;/&gt;</span><strong>Desarrollo</strong><p>Código que resuelve problemas reales.</p></article>
+            <article><span class="discipline-icon product-icon" aria-hidden="true">⬡</span><strong>Producto</strong><p>Sistemas escalables centrados en personas.</p></article>
+            <article><span class="discipline-icon music-icon" aria-hidden="true">∿</span><strong>Música</strong><p>Sonido que conecta y transforma.</p></article>
+          </div>
+          <div class="operation-status"><span><i></i>Enfocado</span><p>Construyendo el futuro, hoy.</p></div>
+        </div>
+
+
+        <nav class="life-index" aria-label="Expedientes del archivo">
+          <div class="navigation-heading"><span>Navegación</span><i></i><b>///</b></div>
+          <a class="life-entry" href="#canciones" data-route="canciones"><span class="entry-number">01</span><span class="entry-copy"><span class="entry-title">Mi música</span><span class="entry-note">Producción, canciones y sonidos</span></span><span class="entry-arrow" aria-hidden="true">↗</span></a>
+          <a class="life-entry" href="#proyectos" data-route="proyectos"><span class="entry-number">02</span><span class="entry-copy"><span class="entry-title">Mis proyectos</span><span class="entry-note">Productos y sistemas digitales</span></span><span class="entry-arrow" aria-hidden="true">↗</span></a>
+          <a class="life-entry" href="#futuros" data-route="futuros"><span class="entry-number">03</span><span class="entry-copy"><span class="entry-title">Futuros proyectos</span><span class="entry-note">Lo que estoy imaginando</span></span><span class="entry-arrow" aria-hidden="true">↗</span></a>
+          <a class="life-entry" href="#imagenes" data-route="imagenes"><span class="entry-number">04</span><span class="entry-copy"><span class="entry-title">Imágenes</span><span class="entry-note">Portadas, procesos y memoria</span></span><span class="entry-arrow" aria-hidden="true">↗</span></a>
+          <a class="life-entry" href="#videos" data-route="videos"><span class="entry-number">05</span><span class="entry-copy"><span class="entry-title">Videos</span><span class="entry-note">Historias en movimiento</span></span><span class="entry-arrow" aria-hidden="true">↗</span></a>
+          <div class="mindset-card"><span>Mentalidad</span><p>Disciplina. Curiosidad.<br>Creatividad. Impacto.</p><div class="mindset-globe" aria-hidden="true">◎</div></div>
+        </nav>
+      </section>
+
+      <section class="view songs-view" id="canciones" aria-labelledby="songsTitle">
+
+
+        <div class="songs-main">
+          <header class="songs-heading">
+            <div>
+              <p class="eyebrow">Archivo sonoro / 01</p>
+              <h2 id="songsTitle">Mi música <span class="title-wave" aria-hidden="true">∿∿</span></h2>
+              <p class="songs-intro">Cada canción es un universo.<br>Produzco, compongo y doy vida a historias sonoras que conectan emoción, tecnología y narrativa.</p>
+            </div>
+          </header>
+          <div class="song-toolbar">
+            <p class="songs-count"><span id="songCount">20</span> lanzamientos</p>
+            <div class="filter-group" aria-label="Ordenar canciones">
+              <button class="filter-button is-active" type="button" data-sort="original">Orden original</button>
+              <button class="filter-button" type="button" data-sort="title">A–Z</button>
+            </div>
+          </div>
+          <div class="song-grid" id="songGrid"></div>
+        </div>
+      </section>
+
+      <section class="view projects-view" id="proyectos" aria-labelledby="projectsTitle">
+        <header class="projects-heading">
+          <button class="back-button" type="button" data-route="inicio" aria-label="Volver al inicio">←</button>
+          <div>
+            <p class="eyebrow">Trabajo / 02</p>
+            <h2 id="projectsTitle">Productos que construí.</h2>
+          </div>
+          <p>De la necesidad al sistema: estrategia, diseño, código y evolución.</p>
+        </header>
+
+        <div class="project-list">
+          <article class="project-case project-case-visual project-iphone">
+            <div class="project-media" aria-hidden="true">
+              <img src="assets/projects/iphone-store.png" alt="" loading="lazy">
+              <span class="project-media-word"><span>iPhone Store</span><span>Río Ceballos</span></span>
+            </div>
+            <span class="project-number">01</span>
+            <div class="project-content-panel">
+              <div class="project-copy">
+                <p class="project-type">Comercio digital · Producto full-stack</p>
+                <h3>iPhone Store<br>Río Ceballos</h3>
+                <p>Catálogo comercial con disponibilidad, filtros, cotización y consultas conectadas a la operación diaria.</p>
+              </div>
+              <div class="project-meta">
+                <p class="project-stack">Next.js · React · TypeScript · API propia</p>
+                <a class="project-link" href="https://www.iphonerc.com/" target="_blank" rel="noopener noreferrer" aria-label="Abrir iPhone Store Río Ceballos en una pestaña nueva">Ver proyecto ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-case project-case-visual project-orange">
+            <div class="project-media" aria-hidden="true">
+              <img src="assets/projects/orangepepper.webp" alt="" loading="lazy">
+              <span class="project-media-word">OrangePepper</span>
+            </div>
+            <span class="project-number">02</span>
+            <div class="project-content-panel">
+              <div class="project-copy">
+                <p class="project-type">Identidad digital · Experiencia comercial</p>
+                <h3>Orange Pepper</h3>
+                <p>Una experiencia para explicar una propuesta compleja sin perder precisión, movimiento ni carácter.</p>
+              </div>
+              <div class="project-meta">
+                <p class="project-stack">HTML · CSS · JavaScript · GSAP</p>
+                <a class="project-link" href="https://viciotv.github.io/OrangePepper/" target="_blank" rel="noopener noreferrer" aria-label="Abrir Orange Pepper en una pestaña nueva">Ver proyecto ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-case project-case-visual project-vicio">
+            <div class="project-media" aria-hidden="true">
+              <img src="assets/projects/viciotv-screen.png" alt="" loading="lazy">
+            </div>
+            <span class="project-number">03</span>
+            <div class="project-content-panel">
+              <div class="project-copy">
+                <p class="project-type">Aplicación audiovisual</p>
+                <h3>VicioTV</h3>
+                <p>Aplicación con perfiles, descubrimiento, favoritos, persistencia y reproducción integrada.</p>
+              </div>
+              <div class="project-meta">
+                <p class="project-stack">Next.js · React · TypeScript · Tailwind</p>
+                <a class="project-link" href="https://viciotv.github.io/viciotv/" target="_blank" rel="noopener noreferrer" aria-label="Abrir VicioTV en una pestaña nueva">Ver proyecto ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-case project-case-visual project-continuum">
+            <div class="project-media" aria-hidden="true">
+              <img src="assets/projects/continuum-screen.png" alt="" loading="lazy">
+            </div>
+            <span class="project-number">04</span>
+            <div class="project-content-panel">
+              <div class="project-copy">
+                <p class="project-type">Televisión en vivo · Experiencia global</p>
+                <h3>VicioTV CONTINUUM</h3>
+                <p>Exploración de canales de televisión en vivo de todo el mundo, sin suscripción y sin necesidad de iniciar sesión.</p>
+              </div>
+              <div class="project-meta">
+                <p class="project-stack">HTML · CSS · JavaScript · HLS.js</p>
+                <a class="project-link" href="https://creador100k.github.io/ViceandoTV/" target="_blank" rel="noopener noreferrer" aria-label="Abrir VicioTV Continuum en una pestaña nueva">Ver proyecto ↗</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-case project-case-visual project-case-featured project-creador">
+            <div class="project-media project-media-type" aria-hidden="true">
+              <span>Problema</span>
+              <span>Sistema</span>
+              <span>Producto</span>
+              <span>Evolución</span>
+            </div>
+            <span class="project-number">05</span>
+            <div class="project-content-panel">
+              <div class="project-copy">
+                <p class="project-type">Ingeniería de producto digital</p>
+                <h3>Creador100K</h3>
+                <p>Mi enfoque para transformar problemas complejos de negocio en software claro, confiable y mantenible.</p>
+              </div>
+              <div class="project-meta">
+                <p class="project-stack">Estrategia · Arquitectura · Producto · Evolución</p>
+                <a class="project-link" href="https://creador100k.vercel.app/" target="_blank" rel="noopener noreferrer" aria-label="Abrir Creador100K en una pestaña nueva">Ver enfoque ↗</a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="view future-view" id="futuros" aria-labelledby="futureTitle">
+        <header class="future-heading">
+          <button class="back-button" type="button" data-route="inicio" aria-label="Volver al inicio">←</button>
+          <div>
+            <p class="eyebrow">En construcción / 03</p>
+            <h2 id="futureTitle">Lo próximo ya empezó.</h2>
+          </div>
+          <p>Proyectos de largo alcance que todavía están creciendo, con su arquitectura, alcance y estado real.</p>
+        </header>
+
+        <article class="future-project">
+          <div class="future-hero">
+            <img src="assets/projects/kick57.png" alt="Identidad visual de KICK57">
+            <div class="future-hero-copy">
+              <p class="project-type">Plataforma deportiva · Producto en desarrollo</p>
+              <h3>KICK57</h3>
+              <p>Un sistema integral para administrar la vida de un club de fútbol 5 y 7, desde la reserva hasta el partido, el pago y la comunidad.</p>
+            </div>
+          </div>
+
+          <div class="future-overview">
+            <div>
+              <p class="eyebrow">Visión del producto</p>
+              <h3>Una operación.<br>Cuatro superficies.</h3>
+            </div>
+            <p>La experiencia reúne una app móvil para jugadores, una web complementaria, un panel de administración de escritorio y una API central. Todas comparten las mismas reglas de negocio y una única base de datos.</p>
+          </div>
+
+          <div class="future-capabilities" aria-label="Alcance de KICK57">
+            <article>
+              <span>01</span>
+              <h4>Partidos y canchas</h4>
+              <p>Reservas por hora, formatos F5 y F7, cupos, equipos, profesores, torneos y control de solapamientos.</p>
+            </article>
+            <article>
+              <span>02</span>
+              <h4>Pagos y operación</h4>
+              <p>Señas, pagos totales, Mercado Pago, cancelaciones, reembolsos con trazabilidad, caja y arqueo.</p>
+            </article>
+            <article>
+              <span>03</span>
+              <h4>Cantina</h4>
+              <p>Productos, stock, pedidos en tiempo real, promociones y reglas comerciales configurables.</p>
+            </article>
+            <article>
+              <span>04</span>
+              <h4>Comunidad</h4>
+              <p>Perfiles, actividad, chats, invitaciones, historial de partidos y sistema de valoración.</p>
+            </article>
+          </div>
+
+          <div class="future-progress">
+            <div>
+              <p class="eyebrow">Estado actual</p>
+              <h3>Fundaciones e identidad.</h3>
+              <p>El monorepo, la arquitectura de aplicaciones, las reglas centrales del dominio y la primera fase de identidad ya están definidos e implementados.</p>
+            </div>
+            <ol>
+              <li class="is-done"><span>01</span>Arquitectura y dominio</li>
+              <li class="is-active"><span>02</span>Identidad y roles</li>
+              <li><span>03</span>Canchas y calendario</li>
+              <li><span>04</span>Partidos y reservas</li>
+              <li><span>05</span>Pagos, cantina y comunidad</li>
+            </ol>
+          </div>
+
+          <footer class="future-stack">
+            <span>Next.js</span>
+            <span>React Native</span>
+            <span>Expo</span>
+            <span>Fastify</span>
+            <span>PostgreSQL</span>
+            <span>Prisma</span>
+            <span>WebSocket</span>
+            <span>Mercado Pago</span>
+          </footer>
+        </article>
+      </section>
+
+      <section class="view placeholder-view" id="imagenes" aria-labelledby="imagesTitle">
+        <p class="eyebrow">Archivo / 04</p>
+        <h2 id="imagesTitle">Imágenes</h2>
+        <p>Portadas, sesiones, procesos y fragmentos visuales del archivo.</p>
+        <button class="text-link" type="button" data-route="inicio">Volver al inicio ↗</button>
+      </section>
+
+      <section class="view placeholder-view" id="videos" aria-labelledby="videosTitle">
+        <p class="eyebrow">Archivo / 05</p>
+        <h2 id="videosTitle">Videos</h2>
+        <p>Visualizers, videoclips y registros en movimiento.</p>
+        <button class="text-link" type="button" data-route="inicio">Volver al inicio ↗</button>
+      </section>
+    </main>
+
+    <aside class="player" id="player" aria-label="Reproductor de música" aria-hidden="true">
+      <div class="player-window-actions" aria-label="Controles del reproductor">
+        <button type="button" id="minimizePlayerButton" aria-label="Minimizar reproductor" title="Minimizar reproductor"><svg class="player-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12h12"></path></svg></button>
+        <button type="button" id="closePlayerButton" aria-label="Cerrar reproductor" title="Cerrar reproductor"><svg class="player-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"></path></svg></button>
+      </div>
+      <div class="player-track">
+        <div class="mini-cover" id="miniCover"></div>
+        <div class="player-meta"><strong id="playerTitle">Luz de madrugada</strong><span>Rodriguez26Lucas</span></div>
+      </div>
+      <div class="player-main">
+        <div class="player-buttons">
+          <button type="button" id="shuffleButton" aria-label="Reproducción aleatoria" title="Aleatorio"><svg class="player-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h2.5c4.5 0 6.5 10 11 10H20"></path><path d="m17 14 3 3-3 3"></path><path d="M4 17h2.5c1.5 0 2.7-1.1 3.8-2.6"></path><path d="M13.6 9.6C14.7 8.1 16 7 17.5 7H20"></path><path d="m17 4 3 3-3 3"></path></svg></button>
+          <button type="button" id="prevButton" aria-label="Canción anterior" title="Anterior"><svg class="player-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6v12"></path><path d="m18 6-9 6 9 6Z"></path></svg></button>
+          <button class="main-play" type="button" id="mainPlayButton" aria-label="Reproducir"><svg class="player-icon play-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 9 6-9 6Z"></path></svg><svg class="player-icon pause-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7v10M15 7v10"></path></svg></button>
+          <button type="button" id="nextButton" aria-label="Canción siguiente" title="Siguiente"><svg class="player-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 9 6-9 6Z"></path><path d="M18 6v12"></path></svg></button>
+          <button type="button" id="repeatButton" aria-label="Repetir canción" title="Repetir"><svg class="player-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17 3l3 3-3 3"></path><path d="M4 11V9a3 3 0 0 1 3-3h13"></path><path d="m7 21-3-3 3-3"></path><path d="M20 13v2a3 3 0 0 1-3 3H4"></path></svg></button>
+        </div>
+        <div class="timeline"><span id="currentTime">0:00</span><input id="progressRange" type="range" min="0" max="180" value="0" step="1" aria-label="Progreso de la canción"><span id="durationTime">3:00</span></div>
+      </div>
+      <div class="player-actions">
+        <button type="button" id="equalizerButton" aria-label="Abrir ecualizador" aria-controls="equalizerPanel" aria-expanded="false" title="Ecualizador"><svg class="player-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4v16M12 4v16M19 4v16"></path><path d="M2.5 9h5M9.5 15h5M16.5 8h5"></path></svg></button>
+        <button type="button" id="shareButton" aria-label="Compartir" title="Compartir"><svg class="player-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 5h5v5"></path><path d="m19 5-9 9"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg></button>
+        <label class="volume-control"><svg class="player-icon volume-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h4l4 3.5v-11L8 10H4Z"></path><path d="M15 9.5c.8.6 1.2 1.5 1.2 2.5s-.4 1.9-1.2 2.5"></path><path d="M17.5 7c1.5 1.3 2.3 3 2.3 5s-.8 3.7-2.3 5"></path></svg><span class="sr-only">Volumen</span><input id="volumeRange" type="range" min="0" max="1" value="0.35" step="0.01"></label>
+        <div class="equalizer-panel" id="equalizerPanel" aria-hidden="true">
+          <div class="equalizer-heading"><strong>Ecualizador</strong><span>−12 / +12 dB</span></div>
+          <label><span>Graves</span><output id="bassValue">0 dB</output><input type="range" id="bassRange" min="-12" max="12" value="0" step="1"></label>
+          <label><span>Medios</span><output id="midValue">0 dB</output><input type="range" id="midRange" min="-12" max="12" value="0" step="1"></label>
+          <label><span>Agudos</span><output id="trebleValue">0 dB</output><input type="range" id="trebleRange" min="-12" max="12" value="0" step="1"></label>
+          <button class="equalizer-reset" type="button" id="equalizerReset">Restablecer</button>
+        </div>
+      </div>
+    </aside>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="app.js?v=r2-20260726b"></script>
+  </body>
+</html>
