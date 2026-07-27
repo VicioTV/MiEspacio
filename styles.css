@@ -4431,3 +4431,103 @@ body[data-view="canciones"] .play-pill {
 }
 
 .filter-button.is-active { background-color: transparent !important; }
+
+/* Silver interaction identity: navigation and playback states stay monochrome. */
+:root {
+  --r26-orange: #e8edf2;
+  --r26-orange-hot: #ffffff;
+  --player-orange: #b9c1ca;
+  --player-orange-bright: #f7f9fb;
+  --silver-metal: linear-gradient(112deg, #ffffff 0%, #aeb7c2 20%, #f9fbfd 40%, #7f8996 58%, #edf2f6 76%, #ffffff 100%);
+}
+.music-back:hover,
+.music-back:focus-visible,
+.music-chapters a.is-current,
+.music-chapters a.is-current strong,
+.music-chapters a.is-current span,
+.archive-shell-sidebar .music-chapters a.is-current,
+.archive-shell-sidebar .music-chapters a.is-current strong,
+.archive-shell-sidebar .music-chapters a.is-current span,
+.archive-shell-sidebar::after,
+.archive-rail b,
+.waveform-mark,
+.music-manifesto strong,
+#songsTitle .title-wave {
+  background: var(--silver-metal) !important;
+  background-position: 0% 50% !important;
+  background-size: 220% 100% !important;
+  background-clip: text !important;
+  color: transparent !important;
+  text-shadow: 0 0 14px rgba(235, 242, 248, 0.18) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  animation: silver-sheen 2.8s linear infinite !important;
+}
+.music-chapters a::before,
+.music-chapters a.is-current::before,
+.archive-rail i {
+  background: var(--silver-metal) !important;
+  background-size: 220% 100% !important;
+  box-shadow: 0 0 10px rgba(235, 242, 248, 0.2) !important;
+  animation: silver-sheen 2.8s linear infinite !important;
+}
+.music-chapters a:hover,
+.music-chapters a:focus-visible {
+  color: #fff !important;
+  background: linear-gradient(90deg, rgba(236, 242, 248, 0.1), transparent 72%) !important;
+}
+.archive-shell-sidebar::after { border-top-color: rgba(235, 242, 248, 0.46) !important; }
+.music-manifesto {
+  border-color: rgba(235, 242, 248, 0.54) !important;
+  border-image: none !important;
+  animation: none !important;
+}
+.music-manifesto::before,
+.music-manifesto::after {
+  border-color: #f5f8fa !important;
+  border-image: none !important;
+  filter: none !important;
+  animation: none !important;
+}
+body[data-view="canciones"] .song-card:hover,
+body[data-view="canciones"] .song-card.is-active {
+  border-color: rgba(238, 243, 248, 0.72) !important;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.36), 0 0 24px rgba(220, 229, 238, 0.1) !important;
+}
+body[data-view="canciones"] .play-pill,
+body[data-view="canciones"] .song-number,
+body[data-view="canciones"] .song-info::after,
+.filter-button.is-active {
+  border-color: transparent !important;
+  background: linear-gradient(#07090a, #07090a) padding-box, var(--silver-metal) border-box !important;
+  background-size: auto, 220% 100% !important;
+  color: #f5f8fa !important;
+  -webkit-text-fill-color: #f5f8fa !important;
+  animation: silver-border-sheen 2.8s linear infinite !important;
+}
+body[data-view="canciones"] .equalizer {
+  border-color: #eef3f7 !important;
+  box-shadow: 0 0 22px rgba(226, 234, 241, 0.2) !important;
+}
+body[data-view="canciones"] .filter-button:focus-visible { outline-color: #f5f8fa !important; }
+@keyframes silver-sheen {
+  from { background-position: 0% 50%; }
+  to { background-position: 220% 50%; }
+}
+@keyframes silver-border-sheen {
+  from { background-position: 0 0, 0% 50%; }
+  to { background-position: 0 0, 220% 50%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .music-chapters a.is-current,
+  .music-chapters a.is-current strong,
+  .music-chapters a.is-current span,
+  .archive-shell-sidebar::after,
+  .archive-rail b,
+  .waveform-mark,
+  .music-manifesto strong,
+  #songsTitle .title-wave {
+    animation: none !important;
+    background-position: 42% 50% !important;
+  }
+}

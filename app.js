@@ -63,7 +63,8 @@ volumeRange.value = String(state.volume);
 volumeRange.style.backgroundSize = `${state.volume * 100}% 100%`;
 audio.volume = state.volume;
 
-const equalizerState = { bass: 0, mid: 0, treble: 0 };
+const DEFAULT_EQUALIZER = Object.freeze({ bass: 5, mid: 3, treble: 1 });
+const equalizerState = { ...DEFAULT_EQUALIZER };
 let audioContext;
 let audioSource;
 let equalizerFilters;
@@ -185,7 +186,7 @@ async function restoreNativeAudio() {
 
 function resetEqualizerControls() {
   [[bassRange, document.querySelector("#bassValue"), "bass"], [midRange, document.querySelector("#midValue"), "mid"], [trebleRange, document.querySelector("#trebleValue"), "treble"]].forEach(([range, output, key]) => {
-    range.value = "0";
+    range.value = String(DEFAULT_EQUALIZER[key]);
     updateEqualizerControl(range, output, key);
   });
 }
@@ -553,7 +554,7 @@ equalizerButton.addEventListener("click", () => {
     if (!equalizerFilters) {
       const isReady = await ensureAudioGraph();
       if (!isReady) {
-        range.value = "0";
+        range.value = String(DEFAULT_EQUALIZER[key]);
         showToast(equalizerUnavailableMessage());
       }
     }
