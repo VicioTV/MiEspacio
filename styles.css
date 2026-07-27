@@ -4531,3 +4531,95 @@ body[data-view="canciones"] .filter-button:focus-visible { outline-color: #f5f8f
     background-position: 42% 50% !important;
   }
 }
+
+/* Green-violet chrome flow for the landing narrative and archive sidebar. */
+:root {
+  --chrome-cool-flow: linear-gradient(108deg, #f9fcff 0%, #8ff7e3 16%, #c6b4ff 32%, #ffffff 48%, #72e7cf 64%, #a78fff 82%, #f9fcff 100%);
+}
+body[data-view="inicio"] .signal-line,
+body[data-view="inicio"] .coordinates,
+body[data-view="inicio"] #heroTitle,
+body[data-view="inicio"] #heroTitle em,
+body[data-view="inicio"] #heroTitle > span,
+body[data-view="inicio"] .editorial-deck,
+body[data-view="inicio"] .disciplines .discipline-icon,
+body[data-view="inicio"] .disciplines strong,
+body[data-view="inicio"] .disciplines p,
+body[data-view="inicio"] .operation-status span,
+body[data-view="inicio"] .operation-status p,
+body[data-view="inicio"] .archive-rail span,
+body[data-view="inicio"] .archive-rail b,
+.archive-shell-sidebar .music-back,
+.archive-shell-sidebar .music-back span,
+.archive-shell-sidebar .music-chapters span,
+.archive-shell-sidebar .music-chapters strong,
+.archive-shell-sidebar .music-chapters small,
+.archive-shell-sidebar .music-manifesto p,
+.archive-shell-sidebar .music-manifesto strong,
+.archive-shell-sidebar .waveform-mark,
+.archive-shell-sidebar::before,
+.archive-shell-sidebar::after {
+  background-image: var(--chrome-cool-flow) !important;
+  background-position: 0% 50%;
+  background-size: 300% 100% !important;
+  background-clip: text !important;
+  color: transparent !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  animation: cool-chrome-traverse 4.4s linear infinite alternate !important;
+}
+.archive-shell-sidebar .music-chapters a::before,
+.archive-shell-sidebar .music-manifesto::before,
+.archive-shell-sidebar .music-manifesto::after {
+  background: var(--chrome-cool-flow) !important;
+  background-size: 300% 100% !important;
+  border-color: transparent !important;
+  border-image: var(--chrome-cool-flow) 1 !important;
+  box-shadow: 0 0 12px rgba(131, 238, 221, 0.18), 0 0 18px rgba(170, 143, 255, 0.12) !important;
+  animation: cool-chrome-traverse 4.4s linear infinite alternate !important;
+}
+.archive-shell-sidebar .music-manifesto {
+  border-color: transparent !important;
+  border-image: var(--chrome-cool-flow) 1 !important;
+}
+.archive-shell-sidebar .music-chapters a:hover,
+.archive-shell-sidebar .music-chapters a:focus-visible {
+  background: linear-gradient(90deg, rgba(114, 231, 207, 0.09), rgba(167, 143, 255, 0.08), transparent 76%) !important;
+}
+.archive-shell-sidebar .music-chapters a:nth-child(2) > * { animation-delay: -0.35s !important; }
+.archive-shell-sidebar .music-chapters a:nth-child(3) > * { animation-delay: -0.7s !important; }
+.archive-shell-sidebar .music-chapters a:nth-child(4) > * { animation-delay: -1.05s !important; }
+.archive-shell-sidebar .music-chapters a:nth-child(5) > * { animation-delay: -1.4s !important; }
+body[data-view="inicio"] .disciplines article:nth-child(2) > * { animation-delay: -0.45s !important; }
+body[data-view="inicio"] .disciplines article:nth-child(3) > * { animation-delay: -0.9s !important; }
+@keyframes cool-chrome-traverse {
+  from { background-position: 0% 50%; }
+  to { background-position: 300% 50%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  body[data-view="inicio"] .signal-line,
+  body[data-view="inicio"] .coordinates,
+  body[data-view="inicio"] #heroTitle,
+  body[data-view="inicio"] #heroTitle em,
+  body[data-view="inicio"] #heroTitle > span,
+  body[data-view="inicio"] .editorial-deck,
+  body[data-view="inicio"] .disciplines .discipline-icon,
+  body[data-view="inicio"] .disciplines strong,
+  body[data-view="inicio"] .disciplines p,
+  body[data-view="inicio"] .operation-status span,
+  body[data-view="inicio"] .operation-status p,
+  body[data-view="inicio"] .archive-rail span,
+  body[data-view="inicio"] .archive-rail b,
+  .archive-shell-sidebar .music-back,
+  .archive-shell-sidebar .music-back span,
+  .archive-shell-sidebar .music-chapters span,
+  .archive-shell-sidebar .music-chapters strong,
+  .archive-shell-sidebar .music-chapters small,
+  .archive-shell-sidebar .music-manifesto p,
+  .archive-shell-sidebar .music-manifesto strong,
+  .archive-shell-sidebar .waveform-mark,
+  .archive-shell-sidebar::before,
+  .archive-shell-sidebar::after {
+    animation: cool-chrome-traverse 6.6s linear infinite alternate !important;
+  }
+}
