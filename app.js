@@ -1,6 +1,7 @@
 const MEDIA_BASE_URL = "https://pub-08916786b0ea4c109047b2d37424d0ea.r2.dev";
-const MEDIA_CORS_ENABLED = false;
-const mediaUrl = (folder, filename) => `${MEDIA_BASE_URL}/${folder}/${filename}`;
+const MEDIA_CORS_ENABLED = true;
+const MEDIA_VERSION = "20260802-cors";
+const mediaUrl = (folder, filename) => `${MEDIA_BASE_URL}/${folder}/${filename}?v=${MEDIA_VERSION}`;
 
 const songs = [
   { id: 1, title: "Let’s Do It", file: "LetsDoIt" },
