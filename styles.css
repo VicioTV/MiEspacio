@@ -4845,20 +4845,6 @@ body[data-view="inicio"] .editorial-deck {
   width: 100%;
 }
 
-.song-load-sentinel {
-  display: grid;
-  min-height: 96px;
-  place-items: center;
-  color: #9aa3a1;
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.song-load-sentinel[hidden] {
-  display: none;
-}
-
 .cover-fallback {
   position: absolute;
   inset: 0;

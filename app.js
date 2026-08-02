@@ -1,4 +1,5 @@
 const MEDIA_BASE_URL = "https://pub-08916786b0ea4c109047b2d37424d0ea.r2.dev";
+const MEDIA_CORS_ENABLED = false;
 const mediaUrl = (folder, filename) => `${MEDIA_BASE_URL}/${folder}/${filename}`;
 
 const songs = [
@@ -26,9 +27,14 @@ const songs = [
   audio: mediaUrl("songs", `${song.file}.mp3`)
 }));
 
-let audio = new Audio();
-audio.crossOrigin = "anonymous";
-audio.preload = "metadata";
+function createAudioElement({ withCors = MEDIA_CORS_ENABLED } = {}) {
+  const element = new Audio();
+  if (withCors) element.crossOrigin = "anonymous";
+  element.preload = "metadata";
+  return element;
+}
+
+let audio = createAudioElement();
 
 const state = {
   currentSong: null,
@@ -60,10 +66,8 @@ const midRange = document.querySelector("#midRange");
 const trebleRange = document.querySelector("#trebleRange");
 const projectScrollControl = document.querySelector("#projectScrollControl");
 const projectScrollThumb = document.querySelector("#projectScrollThumb");
-const songLoadSentinel = document.querySelector("#songLoadSentinel");
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-let renderedSongCount = window.innerWidth <= 620 ? 4 : 8;
 let projectScrollFrame = 0;
 
 document.querySelector("#songCount").textContent = songs.length;
@@ -79,7 +83,7 @@ let equalizerFilters;
 let equalizerAnalyser;
 let equalizerInitialization;
 let equalizerSignalCheck;
-let equalizerUnavailable = location.protocol === "file:";
+let equalizerUnavailable = location.protocol === "file:" || !MEDIA_CORS_ENABLED;
 let projectScrollDragOffset = null;
 
 async function ensureAudioGraph() {
@@ -171,9 +175,7 @@ async function restoreNativeAudio() {
   equalizerFilters = undefined;
   equalizerAnalyser = undefined;
 
-  audio = new Audio();
-  audio.crossOrigin = "anonymous";
-  audio.preload = "metadata";
+  audio = createAudioElement({ withCors: false });
   audio.volume = state.volume;
   bindAudioEvents(audio);
 
@@ -202,7 +204,7 @@ function resetEqualizerControls() {
 function equalizerUnavailableMessage() {
   return location.protocol === "file:"
     ? "El ecualizador necesita que abras el portfolio desde localhost"
-    : "El ecualizador no está disponible en este navegador";
+    : "El audio funciona; el ecualizador requiere habilitar CORS en R2";
 }
 
 function applyEqualizer() {
@@ -281,7 +283,7 @@ function renderSongs() {
     ? [...songs].sort((a, b) => a.title.localeCompare(b.title, "es"))
     : [...songs];
 
-  songGrid.innerHTML = orderedSongs.slice(0, renderedSongCount).map((song, index) => {
+  songGrid.innerHTML = orderedSongs.map((song, index) => {
     const isActive = state.currentSong?.id === song.id;
     const isPlaying = isActive && state.isPlaying;
     return `
@@ -301,11 +303,6 @@ function renderSongs() {
     `;
   }).join("");
 
-  if (songLoadSentinel) {
-    const hasMoreSongs = renderedSongCount < orderedSongs.length;
-    songLoadSentinel.hidden = !hasMoreSongs;
-    songLoadSentinel.setAttribute("aria-hidden", String(!hasMoreSongs));
-  }
 }
 
 songGrid.addEventListener("error", (event) => {
@@ -517,6 +514,13 @@ function bindAudioEvents(element) {
       playAdjacent(1);
     }
   });
+  element.addEventListener("error", () => {
+    if (element !== audio || !state.currentSong) return;
+    state.isPlaying = false;
+    updatePlayer();
+    renderSongs();
+    showToast("No se pudo cargar esta canción");
+  });
 }
 
 bindAudioEvents(audio);
@@ -540,7 +544,6 @@ document.addEventListener("click", (event) => {
 document.querySelectorAll("[data-sort]").forEach((button) => {
   button.addEventListener("click", () => {
     state.sort = button.dataset.sort;
-    renderedSongCount = window.innerWidth <= 620 ? 4 : 8;
     document.querySelectorAll("[data-sort]").forEach((item) => {
       const isActive = item === button;
       item.classList.toggle("is-active", isActive);
@@ -583,6 +586,11 @@ volumeRange.addEventListener("input", () => {
 });
 
 equalizerButton.addEventListener("click", () => {
+  if (equalizerUnavailable) {
+    setEqualizerOpen(false);
+    showToast(equalizerUnavailableMessage());
+    return;
+  }
   const willOpen = !equalizerPanel.classList.contains("is-open");
   setEqualizerOpen(willOpen);
 });
@@ -679,14 +687,5 @@ window.addEventListener("keydown", (event) => {
     setEqualizerOpen(false);
   }
 });
-
-if (songLoadSentinel && "IntersectionObserver" in window) {
-  const songLoadObserver = new IntersectionObserver((entries) => {
-    if (!entries.some((entry) => entry.isIntersecting) || document.body.dataset.view !== "canciones") return;
-    renderedSongCount = Math.min(renderedSongCount + 4, songs.length);
-    renderSongs();
-  }, { rootMargin: "0px" });
-  songLoadObserver.observe(songLoadSentinel);
-}
 
 navigate(location.hash.slice(1) || "inicio", { historyMode: "replace" });
