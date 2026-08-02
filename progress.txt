@@ -1,0 +1,23 @@
+2026-08-02 — Auditoría integral e implementación
+
+- Corregidos foco, historial y navegación entre vistas.
+- Reproductor y ecualizador cerrados ahora quedan fuera del orden de tabulación mediante `inert`.
+- Corregido el atajo global de Espacio para no interferir con controles nativos.
+- Estados de orden, aleatorio y repetición expuestos con `aria-pressed`.
+- Corregido `prefers-reduced-motion` y reducida la aplicación de texto cromado.
+- Reparado el recorte completo de proyectos en móvil.
+- Aumentados tamaños de texto funcional y targets táctiles.
+- Implementada carga progresiva de portadas musicales.
+- Imágenes de proyectos usadas por la web convertidas a WebP: ~5,9 MB a ~245 KB.
+- Añadidas dimensiones de imagen, lazy loading, decoding asíncrono y metadata social básica.
+- Verificado en navegador a 375 px y 1265 px, con navegación, historial y reproductor.
+- Lighthouse móvil posterior: Inicio 98/100 performance y Música 81/100; Accesibilidad 100 y SEO 100 en ambas.
+- Las 17 portadas musicales se convirtieron a WebP responsive (360/720 px) y ahora se sirven localmente con `srcset`.
+- La vista Música bajó de 8,91 MiB a 388 KiB; Lighthouse final: Performance 93, Accesibilidad 100, Buenas prácticas 100 y SEO 100.
+- Corregido el CLS de acceso directo por hash: 0,147 a 0 mediante inicialización temprana de `data-view`.
+- Archivo y Bodoni Moda ahora se sirven localmente; FCP de Música medido en 1,8 s.
+
+Pendiente externo:
+- Configurar CORS y `Cache-Control` en Cloudflare R2 para habilitar el ecualizador y cachear audio.
+- Configurar `Cache-Control` para los audios alojados en R2.
+- Consolidar la hoja de estilos heredada en archivos por componente/vista.

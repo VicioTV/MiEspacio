@@ -2,26 +2,27 @@ const MEDIA_BASE_URL = "https://pub-08916786b0ea4c109047b2d37424d0ea.r2.dev";
 const mediaUrl = (folder, filename) => `${MEDIA_BASE_URL}/${folder}/${filename}`;
 
 const songs = [
-  { id: 1, title: "Let’s Do It", file: "LetsDoIt", image: "png" },
-  { id: 2, title: "Drop Your Top", file: "DoprYourTop", image: "png" },
-  { id: 3, title: "Hold Me, Kiss Me", file: "HoldMeKissMe", image: "png" },
-  { id: 4, title: "Funk U Up", file: "FunkUUp", image: "png" },
-  { id: 5, title: "Your Enemy", file: "YourEnemy", image: "png" },
-  { id: 6, title: "I Have to Go", file: "IHaveToGo", image: "png" },
-  { id: 7, title: "The Best Thing in My Life", file: "TheBestThingInMyLife", image: "png" },
-  { id: 8, title: "My Life Is a Movie", file: "MyLifeIsAMovie", image: "png" },
-  { id: 9, title: "Perfect", file: "Perfect", image: "png" },
-  { id: 10, title: "Perfume and Wine", file: "PerfumeAndWine", image: "png" },
-  { id: 11, title: "Places I Can’t Go", file: "PlacesICantGo", image: "png" },
-  { id: 12, title: "Cold Night", file: "ColdNight", image: "png" },
-  { id: 13, title: "Roses on My Grave", file: "RosesOnMyGrave", image: "png" },
-  { id: 14, title: "All These Dreams", file: "AllTheseDreams", image: "png" },
-  { id: 15, title: "Chase the Sun", file: "ChaseTheSun", image: "png" },
-  { id: 16, title: "You a Loser", file: "YouALoser", image: "png" },
-  { id: 17, title: "Devil on My Shoulder", file: "DevilOnMyShoulder", image: "jpg" }
+  { id: 1, title: "Let’s Do It", file: "LetsDoIt" },
+  { id: 2, title: "Drop Your Top", file: "DoprYourTop" },
+  { id: 3, title: "Hold Me, Kiss Me", file: "HoldMeKissMe" },
+  { id: 4, title: "Funk U Up", file: "FunkUUp" },
+  { id: 5, title: "Your Enemy", file: "YourEnemy" },
+  { id: 6, title: "I Have to Go", file: "IHaveToGo" },
+  { id: 7, title: "The Best Thing in My Life", file: "TheBestThingInMyLife" },
+  { id: 8, title: "My Life Is a Movie", file: "MyLifeIsAMovie" },
+  { id: 9, title: "Perfect", file: "Perfect" },
+  { id: 10, title: "Perfume and Wine", file: "PerfumeAndWine" },
+  { id: 11, title: "Places I Can’t Go", file: "PlacesICantGo" },
+  { id: 12, title: "Cold Night", file: "ColdNight" },
+  { id: 13, title: "Roses on My Grave", file: "RosesOnMyGrave" },
+  { id: 14, title: "All These Dreams", file: "AllTheseDreams" },
+  { id: 15, title: "Chase the Sun", file: "ChaseTheSun" },
+  { id: 16, title: "You a Loser", file: "YouALoser" },
+  { id: 17, title: "Devil on My Shoulder", file: "DevilOnMyShoulder" }
 ].map((song) => ({
   ...song,
-  cover: mediaUrl("images", `${song.file}.${song.image}`),
+  cover: `assets/covers/${song.file}-360.webp`,
+  coverLarge: `assets/covers/${song.file}-720.webp`,
   audio: mediaUrl("songs", `${song.file}.mp3`)
 }));
 
@@ -38,6 +39,8 @@ const state = {
   shuffle: false,
   sort: "original"
 };
+
+if ("scrollRestoration" in history) history.scrollRestoration = "manual";
 
 const songGrid = document.querySelector("#songGrid");
 const player = document.querySelector("#player");
@@ -57,6 +60,11 @@ const midRange = document.querySelector("#midRange");
 const trebleRange = document.querySelector("#trebleRange");
 const projectScrollControl = document.querySelector("#projectScrollControl");
 const projectScrollThumb = document.querySelector("#projectScrollThumb");
+const songLoadSentinel = document.querySelector("#songLoadSentinel");
+const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+let renderedSongCount = window.innerWidth <= 620 ? 4 : 8;
+let projectScrollFrame = 0;
 
 document.querySelector("#songCount").textContent = songs.length;
 volumeRange.value = String(state.volume);
@@ -215,8 +223,19 @@ function updateEqualizerControl(range, output, key) {
 function setEqualizerOpen(isOpen) {
   equalizerPanel.classList.toggle("is-open", isOpen);
   equalizerPanel.setAttribute("aria-hidden", String(!isOpen));
+  equalizerPanel.inert = !isOpen;
   equalizerButton.setAttribute("aria-expanded", String(isOpen));
   equalizerButton.setAttribute("aria-label", isOpen ? "Cerrar ecualizador" : "Abrir ecualizador");
+}
+
+function setPlayerVisible(isVisible) {
+  player.classList.toggle("is-visible", isVisible);
+  player.setAttribute("aria-hidden", String(!isVisible));
+  player.inert = !isVisible;
+}
+
+function scrollBehavior() {
+  return reducedMotion.matches ? "auto" : "smooth";
 }
 
 function updateProjectScrollControl() {
@@ -233,6 +252,14 @@ function updateProjectScrollControl() {
   projectScrollThumb.style.height = `${thumbHeight}px`;
   projectScrollThumb.style.transform = `translateY(${available * progress}px)`;
   projectScrollControl.setAttribute("aria-valuenow", String(Math.round(progress * 100)));
+}
+
+function requestProjectScrollUpdate() {
+  if (projectScrollFrame) return;
+  projectScrollFrame = window.requestAnimationFrame(() => {
+    projectScrollFrame = 0;
+    updateProjectScrollControl();
+  });
 }
 
 function scrollProjectsFromPointer(clientY) {
@@ -254,13 +281,14 @@ function renderSongs() {
     ? [...songs].sort((a, b) => a.title.localeCompare(b.title, "es"))
     : [...songs];
 
-  songGrid.innerHTML = orderedSongs.map((song, index) => {
+  songGrid.innerHTML = orderedSongs.slice(0, renderedSongCount).map((song, index) => {
     const isActive = state.currentSong?.id === song.id;
     const isPlaying = isActive && state.isPlaying;
     return `
       <article class="song-card${isActive ? " is-active" : ""}${isPlaying ? " is-playing" : ""}" data-song-id="${song.id}">
         <button class="cover-button" type="button" data-play="${song.id}" aria-label="${isPlaying ? "Pausar" : "Reproducir"} ${song.title}">
-          <img class="cover-art" src="${encodeURI(song.cover)}" alt="Portada de ${song.title}" loading="lazy">
+          <img class="cover-art" src="${encodeURI(song.cover)}" srcset="${encodeURI(song.cover)} 360w, ${encodeURI(song.coverLarge)} 720w" sizes="(max-width: 620px) calc((100vw - 42px) / 2), (max-width: 940px) calc((100vw - 68px) / 3), (max-width: 1280px) 18vw, 14vw" alt="Portada de ${song.title}" width="360" height="540" loading="lazy" decoding="async" fetchpriority="low">
+          <span class="cover-fallback" aria-hidden="true">Portada no disponible</span>
           <span class="equalizer" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
           <span class="play-pill" aria-hidden="true">${isPlaying ? "Ⅱ" : "▶"}</span>
         </button>
@@ -272,9 +300,21 @@ function renderSongs() {
       </article>
     `;
   }).join("");
+
+  if (songLoadSentinel) {
+    const hasMoreSongs = renderedSongCount < orderedSongs.length;
+    songLoadSentinel.hidden = !hasMoreSongs;
+    songLoadSentinel.setAttribute("aria-hidden", String(!hasMoreSongs));
+  }
 }
 
-function navigate(route) {
+songGrid.addEventListener("error", (event) => {
+  if (!(event.target instanceof HTMLImageElement) || !event.target.classList.contains("cover-art")) return;
+  event.target.closest(".cover-button")?.classList.add("has-image-error");
+  event.target.hidden = true;
+}, true);
+
+function navigate(route, { historyMode = "replace", moveFocus = false } = {}) {
   const target = document.getElementById(route) || document.getElementById("inicio");
   document.querySelectorAll(".view").forEach((view) => view.classList.toggle("is-active", view === target));
   document.body.dataset.view = target.id;
@@ -292,28 +332,26 @@ function navigate(route) {
     if (item.dataset.route === target.id) item.setAttribute("aria-current", "page");
     else item.removeAttribute("aria-current");
   });
-  window.scrollTo({ top: 0, behavior: "smooth" });
-  history.replaceState(null, "", `#${route}`);
-  window.requestAnimationFrame(() => window.requestAnimationFrame(updateProjectScrollControl));
-}
+  if (target.id === "canciones" && !songGrid.childElementCount) renderSongs();
 
-function closeMenu() {
-  const menu = document.querySelector("#mobileMenu");
-  const button = document.querySelector("#menuButton");
-  if (!menu || !button) return;
-  menu.classList.remove("is-open");
-  menu.setAttribute("aria-hidden", "true");
-  button.setAttribute("aria-expanded", "false");
-  document.body.style.overflow = "";
-}
+  const nextHash = `#${target.id}`;
+  if (historyMode === "push" && location.hash !== nextHash) history.pushState(null, "", nextHash);
+  if (historyMode === "replace" && location.hash !== nextHash) history.replaceState(null, "", nextHash);
 
-function toggleMenu() {
-  const menu = document.querySelector("#mobileMenu");
-  const button = document.querySelector("#menuButton");
-  const isOpen = menu.classList.toggle("is-open");
-  menu.setAttribute("aria-hidden", String(!isOpen));
-  button.setAttribute("aria-expanded", String(isOpen));
-  document.body.style.overflow = isOpen ? "hidden" : "";
+  window.scrollTo({ top: 0, behavior: historyMode === "push" ? scrollBehavior() : "auto" });
+  document.title = target.id === "inicio"
+    ? "CREADOR100K — Archivo personal"
+    : `${target.querySelector("h2")?.textContent?.trim() || "Archivo"} — CREADOR100K`;
+
+  if (moveFocus) {
+    const heading = target.querySelector("h1, h2");
+    if (heading) {
+      heading.setAttribute("tabindex", "-1");
+      window.requestAnimationFrame(() => heading.focus({ preventScroll: true }));
+    }
+  }
+
+  window.requestAnimationFrame(() => window.requestAnimationFrame(requestProjectScrollUpdate));
 }
 
 async function selectSong(songId, shouldPlay = true) {
@@ -327,8 +365,7 @@ async function selectSong(songId, shouldPlay = true) {
     audio.load();
   }
 
-  player.classList.add("is-visible");
-  player.setAttribute("aria-hidden", "false");
+  setPlayerVisible(true);
   if (shouldPlay) await playAudio();
   else pauseAudio();
   updatePlayer();
@@ -337,6 +374,7 @@ async function selectSong(songId, shouldPlay = true) {
 
 async function playAudio() {
   if (!state.currentSong) return;
+  setPlayerVisible(true);
   try {
     if (audioContext?.state === "suspended") await audioContext.resume();
     await audio.play();
@@ -388,8 +426,9 @@ function togglePlayerMinimized() {
 }
 function closePlayer() {
   pauseAudio();
-  player.classList.remove("is-visible", "is-minimized");
-  player.setAttribute("aria-hidden", "true");
+  player.classList.remove("is-minimized");
+  setEqualizerOpen(false);
+  setPlayerVisible(false);
   minimizePlayerButton.setAttribute("aria-label", "Minimizar reproductor");
   minimizePlayerButton.title = "Minimizar reproductor";
   renderSongs();
@@ -429,6 +468,8 @@ function updatePlayer() {
   mainPlayButton.setAttribute("aria-label", state.isPlaying ? "Pausar" : "Reproducir");
   document.querySelector("#repeatButton").classList.toggle("is-active", state.repeat);
   document.querySelector("#shuffleButton").classList.toggle("is-active", state.shuffle);
+  document.querySelector("#repeatButton").setAttribute("aria-pressed", String(state.repeat));
+  document.querySelector("#shuffleButton").setAttribute("aria-pressed", String(state.shuffle));
   const duration = Number.isFinite(audio.duration) ? audio.duration : 0;
   progressRange.max = duration || 1;
   durationTimeLabel.textContent = duration ? formatTime(duration) : "0:00";
@@ -484,7 +525,7 @@ document.addEventListener("click", (event) => {
   const routeTarget = event.target.closest("[data-route]");
   if (routeTarget) {
     event.preventDefault();
-    navigate(routeTarget.dataset.route);
+    navigate(routeTarget.dataset.route, { historyMode: "push", moveFocus: true });
     return;
   }
 
@@ -496,12 +537,15 @@ document.addEventListener("click", (event) => {
   }
 });
 
-document.querySelector("#menuButton")?.addEventListener("click", toggleMenu);
-
 document.querySelectorAll("[data-sort]").forEach((button) => {
   button.addEventListener("click", () => {
     state.sort = button.dataset.sort;
-    document.querySelectorAll("[data-sort]").forEach((item) => item.classList.toggle("is-active", item === button));
+    renderedSongCount = window.innerWidth <= 620 ? 4 : 8;
+    document.querySelectorAll("[data-sort]").forEach((item) => {
+      const isActive = item === button;
+      item.classList.toggle("is-active", isActive);
+      item.setAttribute("aria-pressed", String(isActive));
+    });
     renderSongs();
   });
 });
@@ -589,21 +633,21 @@ projectScrollControl.addEventListener("pointerup", (event) => {
 
 projectScrollControl.addEventListener("keydown", (event) => {
   const actions = {
-    ArrowDown: () => window.scrollBy({ top: 140, behavior: "smooth" }),
-    ArrowUp: () => window.scrollBy({ top: -140, behavior: "smooth" }),
-    PageDown: () => window.scrollBy({ top: window.innerHeight * 0.8, behavior: "smooth" }),
-    PageUp: () => window.scrollBy({ top: -window.innerHeight * 0.8, behavior: "smooth" }),
-    Home: () => window.scrollTo({ top: 0, behavior: "smooth" }),
-    End: () => window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "smooth" })
+    ArrowDown: () => window.scrollBy({ top: 140, behavior: scrollBehavior() }),
+    ArrowUp: () => window.scrollBy({ top: -140, behavior: scrollBehavior() }),
+    PageDown: () => window.scrollBy({ top: window.innerHeight * 0.8, behavior: scrollBehavior() }),
+    PageUp: () => window.scrollBy({ top: -window.innerHeight * 0.8, behavior: scrollBehavior() }),
+    Home: () => window.scrollTo({ top: 0, behavior: scrollBehavior() }),
+    End: () => window.scrollTo({ top: document.documentElement.scrollHeight, behavior: scrollBehavior() })
   };
   if (!actions[event.key]) return;
   event.preventDefault();
   actions[event.key]();
 });
 
-window.addEventListener("scroll", updateProjectScrollControl, { passive: true });
-window.addEventListener("resize", updateProjectScrollControl);
-window.addEventListener("load", updateProjectScrollControl);
+window.addEventListener("scroll", requestProjectScrollUpdate, { passive: true });
+window.addEventListener("resize", requestProjectScrollUpdate);
+window.addEventListener("load", requestProjectScrollUpdate);
 
 document.querySelector("#shareButton").addEventListener("click", async () => {
   if (!state.currentSong) return;
@@ -623,17 +667,26 @@ document.querySelector("#shareButton").addEventListener("click", async () => {
   }
 });
 
-window.addEventListener("hashchange", () => navigate(location.hash.slice(1) || "inicio"));
+window.addEventListener("popstate", () => navigate(location.hash.slice(1) || "inicio", { historyMode: "none", moveFocus: false }));
 window.addEventListener("keydown", (event) => {
-  if (event.code === "Space" && !["INPUT", "TEXTAREA"].includes(document.activeElement.tagName)) {
+  const activeElement = document.activeElement;
+  const isInteractive = activeElement?.closest?.("button, a, input, textarea, select, [contenteditable='true']");
+  if (event.code === "Space" && state.currentSong && !isInteractive) {
     event.preventDefault();
     togglePlayback();
   }
   if (event.key === "Escape") {
-    closeMenu();
     setEqualizerOpen(false);
   }
 });
 
-renderSongs();
-navigate(location.hash.slice(1) || "inicio");
+if (songLoadSentinel && "IntersectionObserver" in window) {
+  const songLoadObserver = new IntersectionObserver((entries) => {
+    if (!entries.some((entry) => entry.isIntersecting) || document.body.dataset.view !== "canciones") return;
+    renderedSongCount = Math.min(renderedSongCount + 4, songs.length);
+    renderSongs();
+  }, { rootMargin: "0px" });
+  songLoadObserver.observe(songLoadSentinel);
+}
+
+navigate(location.hash.slice(1) || "inicio", { historyMode: "replace" });

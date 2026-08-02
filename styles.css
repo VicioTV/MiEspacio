@@ -1,3 +1,22 @@
+@font-face {
+  font-family: "Archivo";
+  font-style: normal;
+  font-weight: 300 800;
+  font-stretch: 75% 125%;
+  font-display: swap;
+  src: url("assets/fonts/archivo-latin-variable.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Bodoni Moda";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("assets/fonts/bodoni-moda-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 :root {
   --ink: #f3f0e9;
   --muted: #9d9a94;
@@ -555,22 +574,6 @@ a {
   opacity: 1;
 }
 
-.sprite-art {
-  background-image: url("assets/album-grid.png");
-  background-repeat: no-repeat;
-  background-size: 400% 200%;
-  background-position: var(--cover-x, 0%) var(--cover-y, 0%);
-}
-
-.cover-0 { --cover-x: 0%; --cover-y: 0%; }
-.cover-1 { --cover-x: 33.333%; --cover-y: 0%; }
-.cover-2 { --cover-x: 66.666%; --cover-y: 0%; }
-.cover-3 { --cover-x: 100%; --cover-y: 0%; }
-.cover-4 { --cover-x: 0%; --cover-y: 100%; }
-.cover-5 { --cover-x: 33.333%; --cover-y: 100%; }
-.cover-6 { --cover-x: 66.666%; --cover-y: 100%; }
-.cover-7 { --cover-x: 100%; --cover-y: 100%; }
-
 .play-pill {
   position: absolute;
   z-index: 3;
@@ -1038,9 +1041,9 @@ textarea:focus-visible {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  html body *:not(#reduced-motion-override),
+  html body *:not(#reduced-motion-override)::before,
+  html body *:not(#reduced-motion-override)::after {
     scroll-behavior: auto !important;
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
@@ -4671,4 +4674,442 @@ body[data-view="canciones"] .song-card.is-active .cover-art {
 
 body[data-view="canciones"] .song-card[data-song-id="2"] .cover-art {
   object-fit: contain;
+}
+
+/* 2026 audit pass: accessibility, legibility and responsive stabilization. */
+.skip-link {
+  position: fixed;
+  z-index: 200;
+  top: 12px;
+  left: 12px;
+  padding: 12px 16px;
+  border: 1px solid #dfe5ea;
+  background: #050708;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 650;
+  transform: translateY(-160%);
+  transition: transform 160ms ease;
+}
+
+.skip-link:focus {
+  outline: 2px solid #9df2df;
+  outline-offset: 3px;
+  transform: translateY(0);
+}
+
+.noscript-message {
+  position: relative;
+  z-index: 70;
+  margin: 76px 0 0;
+  padding: 16px clamp(20px, 4vw, 64px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+  background: #17191b;
+  color: #f3f0e9;
+  font-size: 16px;
+}
+
+.disciplines,
+.future-capabilities {
+  padding-left: 0;
+  list-style: none;
+}
+
+.disciplines > li,
+.future-capabilities > li {
+  display: contents;
+}
+
+.view h1[tabindex="-1"]:focus,
+.view h2[tabindex="-1"]:focus {
+  outline: none;
+}
+
+/* Chrome is a signature, not a body-text treatment. */
+body[data-view="inicio"] .signal-line,
+body[data-view="inicio"] .coordinates,
+body[data-view="inicio"] .editorial-deck,
+body[data-view="inicio"] .disciplines .discipline-icon,
+body[data-view="inicio"] .disciplines strong,
+body[data-view="inicio"] .disciplines p,
+body[data-view="inicio"] .operation-status span,
+body[data-view="inicio"] .operation-status p,
+body[data-view="inicio"] .archive-rail span,
+body[data-view="inicio"] .archive-rail b,
+.archive-shell-sidebar .music-back,
+.archive-shell-sidebar .music-back span,
+.archive-shell-sidebar .music-chapters span,
+.archive-shell-sidebar .music-chapters strong,
+.archive-shell-sidebar .music-chapters small,
+.archive-shell-sidebar .music-manifesto p,
+.archive-shell-sidebar .music-manifesto strong,
+.archive-shell-sidebar .waveform-mark,
+.archive-shell-sidebar::before,
+.archive-shell-sidebar::after {
+  background: none !important;
+  background-image: none !important;
+  color: #c9cfce !important;
+  -webkit-text-fill-color: currentColor !important;
+  animation: none !important;
+}
+
+body[data-view="inicio"] .signal-line,
+body[data-view="inicio"] .disciplines .discipline-icon,
+body[data-view="inicio"] .archive-rail b,
+.archive-shell-sidebar .music-chapters a.is-current strong,
+.archive-shell-sidebar .music-chapters a.is-current span,
+.archive-shell-sidebar::after {
+  color: #9df2df !important;
+}
+
+body[data-view="inicio"] .coordinates,
+body[data-view="inicio"] .disciplines p,
+body[data-view="inicio"] .operation-status p,
+.archive-shell-sidebar .music-chapters small,
+.archive-shell-sidebar .music-manifesto p {
+  color: #929b99 !important;
+}
+
+body[data-view="inicio"] .editorial-deck {
+  max-width: 46ch;
+  color: #c2c8c6 !important;
+  font-size: clamp(15px, 1vw, 17px);
+  line-height: 1.5;
+}
+
+.signal-line,
+.coordinates,
+.disciplines strong,
+.operation-status span,
+.operation-status p,
+.navigation-heading,
+.music-chapters span,
+.music-chapters small,
+.music-manifesto p,
+.music-manifesto strong,
+.songs-count,
+.project-type,
+.project-stack {
+  font-size: max(11px, 0.72rem);
+}
+
+.disciplines p,
+.songs-intro,
+.project-copy > p:last-child,
+.future-project p,
+.placeholder-view > p:last-of-type {
+  font-size: clamp(14px, 0.95vw, 16px);
+  line-height: 1.5;
+}
+
+.music-chapters strong {
+  font-size: clamp(16px, 1.15vw, 20px);
+}
+
+.music-chapters small {
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.player button,
+.player .player-window-actions button,
+.player .main-play {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.player input[type="range"] {
+  min-height: 32px;
+}
+
+.equalizer-control {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 8px 16px;
+}
+
+.equalizer-control label,
+.equalizer-control output {
+  color: var(--player-muted);
+  font-size: 12px;
+}
+
+.equalizer-control output {
+  color: var(--player-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.equalizer-control input {
+  grid-column: 1 / -1;
+  width: 100%;
+}
+
+.song-load-sentinel {
+  display: grid;
+  min-height: 96px;
+  place-items: center;
+  color: #9aa3a1;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.song-load-sentinel[hidden] {
+  display: none;
+}
+
+.cover-fallback {
+  position: absolute;
+  inset: 0;
+  display: none;
+  place-items: center;
+  padding: 24px;
+  background:
+    linear-gradient(135deg, rgba(157, 242, 223, 0.08), transparent 54%),
+    #0d1112;
+  color: #aab3b1;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.cover-button.has-image-error .cover-fallback {
+  display: grid;
+}
+
+.cover-art,
+.project-media img,
+.future-hero img {
+  background: #0d1112;
+}
+
+.placeholder-view.is-active {
+  align-content: center;
+  min-height: 100svh;
+}
+
+.placeholder-view .text-link {
+  display: inline-flex !important;
+  min-height: 44px;
+  align-items: center;
+  margin-top: 28px;
+}
+
+@media (max-width: 940px) {
+  .archive-shell-sidebar .music-chapters {
+    position: relative;
+    grid-template-columns: repeat(5, minmax(132px, 42vw));
+    gap: 0;
+    padding-right: 48px;
+    scroll-padding-inline: 0 48px;
+    scroll-snap-type: x proximity;
+    overscroll-behavior-inline: contain;
+  }
+
+  .archive-shell-sidebar .music-chapters a {
+    scroll-snap-align: start;
+  }
+
+  body[data-view]:not([data-view="inicio"]) .archive-shell-sidebar {
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.34);
+  }
+}
+
+@media (max-width: 680px) {
+  body[data-view="inicio"] .editorial-intro {
+    padding-top: 56px;
+  }
+
+  body[data-view="inicio"] .editorial-intro h1 {
+    font-size: clamp(46px, 14.3vw, 62px);
+    line-height: 0.9;
+  }
+
+  body[data-view="inicio"] .editorial-deck {
+    font-size: 16px;
+  }
+
+  .disciplines {
+    gap: 14px;
+  }
+
+  .disciplines strong,
+  .disciplines p {
+    font-size: 11px;
+  }
+
+  body[data-view="inicio"] .life-entry {
+    min-height: 82px;
+  }
+
+  body[data-view="inicio"] .entry-title {
+    color: #eef2ef;
+    font-size: 20px;
+    -webkit-text-fill-color: currentColor;
+  }
+
+  body[data-view="inicio"] .entry-note {
+    color: #a1aaa8;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 620px) {
+  body[data-view="proyectos"] .projects-view.is-active {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  body[data-view="proyectos"] .projects-heading {
+    gap: 20px;
+    padding: 24px 0 30px;
+  }
+
+  body[data-view="proyectos"] .projects-heading h2 {
+    max-width: 9ch;
+    font-size: clamp(42px, 13vw, 56px);
+    line-height: 0.92;
+  }
+
+  body[data-view="proyectos"] .projects-heading > p {
+    max-width: 30ch;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .project-list {
+    display: grid;
+    gap: 18px;
+  }
+
+  .project-case-visual {
+    display: grid !important;
+    width: 100% !important;
+    min-height: 0 !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+  }
+
+  .project-case-visual .project-media {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    aspect-ratio: 16 / 10;
+    grid-area: auto !important;
+    grid-column: 1 / -1 !important;
+    transform: none !important;
+  }
+
+  .project-case-visual .project-media img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+
+  .project-case-visual .project-media-word {
+    max-width: calc(100% - 32px);
+    font-size: clamp(30px, 10vw, 44px);
+  }
+
+  .project-case-visual .project-content-panel {
+    position: relative !important;
+    inset: auto !important;
+    display: grid !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-column: 1 / -1 !important;
+    grid-row: auto !important;
+    gap: 24px !important;
+    padding: 24px 20px 20px !important;
+    transform: none !important;
+  }
+
+  .project-case-visual .project-copy,
+  .project-case-visual .project-meta {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    grid-column: 1 / -1 !important;
+    grid-row: auto !important;
+    transform: none !important;
+  }
+
+  .project-case-visual .project-copy h3 {
+    max-width: 100%;
+    margin-top: 10px;
+    font-size: clamp(34px, 10.5vw, 46px) !important;
+    line-height: 0.95;
+    overflow-wrap: anywhere;
+  }
+
+  .project-case-visual .project-copy > p:last-child,
+  .project-case-visual .project-stack {
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+  }
+
+  .project-case-visual .project-number {
+    top: 14px !important;
+    left: 14px !important;
+    z-index: 8;
+    transform: none !important;
+  }
+
+  .project-case-visual .project-link {
+    width: max-content;
+    min-height: 44px;
+    align-items: center;
+    font-size: 13px !important;
+  }
+
+  .songs-intro {
+    max-width: 48ch;
+    font-size: 14px;
+  }
+
+  body[data-view="canciones"] .song-title,
+  body[data-view="canciones"] .filter-button {
+    font-size: 12px;
+  }
+}
+
+@media (forced-colors: active) {
+  .brand-name,
+  #heroTitle,
+  #heroTitle em,
+  #heroTitle > span,
+  #songsTitle,
+  #projectsTitle,
+  #futureTitle,
+  #imagesTitle,
+  #videosTitle,
+  .future-hero-copy h3 {
+    background: none !important;
+    color: CanvasText !important;
+    -webkit-text-fill-color: currentColor !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
 }

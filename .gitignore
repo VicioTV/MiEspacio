@@ -1,4 +1,4 @@
-# Audio and cover sources are hosted on Cloudflare R2.
+# Source audio and cover masters; optimized covers live in assets/covers.
 cancionesYportadas/
 
 # Local Codex workspace metadata.

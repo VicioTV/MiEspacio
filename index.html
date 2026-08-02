@@ -1,18 +1,36 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#0c0c0d">
+    <meta name="color-scheme" content="dark">
     <meta name="description" content="Archivo personal de CREADOR100K: ingeniería de producto, programación, música, imágenes y video.">
+    <meta name="author" content="CREADOR100K">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="es_AR">
+    <meta property="og:title" content="CREADOR100K — Archivo personal">
+    <meta property="og:description" content="Productos digitales, sistemas y música creados en Córdoba, Argentina.">
+    <meta name="twitter:card" content="summary">
     <title>CREADOR100K — Archivo personal</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,300..800&family=Bodoni+Moda:opsz,wght@6..96,400;6..96,600&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23020304'/%3E%3Cpath d='M17 21h30M17 32h22M17 43h30' stroke='%239df2df' stroke-width='5' stroke-linecap='square'/%3E%3C/svg%3E">
+    <link rel="preload" href="assets/fonts/archivo-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="assets/fonts/bodoni-moda-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="styles.css?v=portrait-covers-20260727">
   </head>
-  <body>
+  <body data-view="inicio">
+    <script>
+      (() => {
+        const route = location.hash.slice(1);
+        const views = ["inicio", "canciones", "proyectos", "futuros", "imagenes", "videos"];
+        document.body.dataset.view = views.includes(route) ? route : "inicio";
+      })();
+    </script>
+    <a class="skip-link" href="#mainContent">Saltar al contenido</a>
     <div class="noise" aria-hidden="true"></div>
+
+    <noscript><p class="noscript-message">Este archivo necesita JavaScript para navegar entre secciones y reproducir música.</p></noscript>
 
     <header class="site-header">
       <a class="brand" href="#inicio" data-route="inicio" aria-label="Volver al inicio">
@@ -37,7 +55,7 @@
       <span class="project-scroll-thumb" id="projectScrollThumb"></span>
     </div>
 
-    <main>
+    <main id="mainContent">
       <section class="view landing-view is-active" id="inicio" aria-labelledby="heroTitle">
         <div class="archive-rail" aria-hidden="true"><span>Archivo personal</span><i></i><b>R26 / 001</b></div>
 
@@ -46,11 +64,11 @@
           <p class="coordinates">31.4135° S, 64.1811° W</p>
           <h1 id="heroTitle">Construyo<br><em>productos,</em><br>produzco<br>música<span>.</span></h1>
           <p class="editorial-deck">Programador, ingeniero de producto y productor musical. Este archivo reúne sistemas, sonidos y todo lo que estoy construyendo.</p>
-          <div class="disciplines" aria-label="Disciplinas">
-            <article><span class="discipline-icon" aria-hidden="true">&lt;/&gt;</span><strong>Desarrollo</strong><p>Código que resuelve problemas reales.</p></article>
-            <article><span class="discipline-icon product-icon" aria-hidden="true">⬡</span><strong>Producto</strong><p>Sistemas escalables centrados en personas.</p></article>
-            <article><span class="discipline-icon music-icon" aria-hidden="true">∿</span><strong>Música</strong><p>Sonido que conecta y transforma.</p></article>
-          </div>
+          <ul class="disciplines" aria-label="Disciplinas">
+            <li><article><span class="discipline-icon" aria-hidden="true">&lt;/&gt;</span><strong>Desarrollo</strong><p>Código que resuelve problemas reales.</p></article></li>
+            <li><article><span class="discipline-icon product-icon" aria-hidden="true">⬡</span><strong>Producto</strong><p>Sistemas escalables centrados en personas.</p></article></li>
+            <li><article><span class="discipline-icon music-icon" aria-hidden="true">∿</span><strong>Música</strong><p>Sonido que conecta y transforma.</p></article></li>
+          </ul>
           <div class="operation-status"><span><i></i>Enfocado</span><p>Construyendo el futuro, hoy.</p></div>
         </div>
 
@@ -78,13 +96,16 @@
             </div>
           </header>
           <div class="song-toolbar">
-            <p class="songs-count"><span id="songCount">20</span> lanzamientos</p>
-            <div class="filter-group" aria-label="Ordenar canciones">
-              <button class="filter-button is-active" type="button" data-sort="original">Orden original</button>
-              <button class="filter-button" type="button" data-sort="title">A–Z</button>
+            <p class="songs-count"><span id="songCount">17</span> lanzamientos</p>
+            <div class="filter-group" role="group" aria-label="Ordenar canciones">
+              <button class="filter-button is-active" type="button" data-sort="original" aria-pressed="true">Orden original</button>
+              <button class="filter-button" type="button" data-sort="title" aria-pressed="false">A–Z</button>
             </div>
           </div>
           <div class="song-grid" id="songGrid"></div>
+          <div class="song-load-sentinel" id="songLoadSentinel" aria-hidden="false">
+            <span>Cargando más portadas…</span>
+          </div>
         </div>
       </section>
 
@@ -101,7 +122,7 @@
         <div class="project-list">
           <article class="project-case project-case-visual project-iphone">
             <div class="project-media" aria-hidden="true">
-              <img src="assets/projects/iphone-store.png" alt="" loading="lazy">
+              <img src="assets/projects/iphone-store.webp" alt="" width="950" height="700" loading="lazy" decoding="async">
               <span class="project-media-word"><span>iPhone Store</span><span>Río Ceballos</span></span>
             </div>
             <span class="project-number">01</span>
@@ -120,7 +141,7 @@
 
           <article class="project-case project-case-visual project-orange">
             <div class="project-media" aria-hidden="true">
-              <img src="assets/projects/orangepepper.webp" alt="" loading="lazy">
+              <img src="assets/projects/orangepepper-optimized.webp" alt="" width="1200" height="751" loading="lazy" decoding="async">
               <span class="project-media-word">OrangePepper</span>
             </div>
             <span class="project-number">02</span>
@@ -139,7 +160,7 @@
 
           <article class="project-case project-case-visual project-vicio">
             <div class="project-media" aria-hidden="true">
-              <img src="assets/projects/viciotv-screen.png" alt="" loading="lazy">
+              <img src="assets/projects/viciotv-screen.webp" alt="" width="1200" height="805" loading="lazy" decoding="async">
             </div>
             <span class="project-number">03</span>
             <div class="project-content-panel">
@@ -157,7 +178,7 @@
 
           <article class="project-case project-case-visual project-continuum">
             <div class="project-media" aria-hidden="true">
-              <img src="assets/projects/continuum-screen.png" alt="" loading="lazy">
+              <img src="assets/projects/continuum-screen.webp" alt="" width="1200" height="765" loading="lazy" decoding="async">
             </div>
             <span class="project-number">04</span>
             <div class="project-content-panel">
@@ -208,7 +229,7 @@
 
         <article class="future-project">
           <div class="future-hero">
-            <img src="assets/projects/kick57.png" alt="Identidad visual de KICK57">
+            <img src="assets/projects/kick57.webp" alt="Identidad visual de KICK57" width="1200" height="900" loading="lazy" decoding="async">
             <div class="future-hero-copy">
               <p class="project-type">Plataforma deportiva · Producto en desarrollo</p>
               <h3>KICK57</h3>
@@ -224,28 +245,28 @@
             <p>La experiencia reúne una app móvil para jugadores, una web complementaria, un panel de administración de escritorio y una API central. Todas comparten las mismas reglas de negocio y una única base de datos.</p>
           </div>
 
-          <div class="future-capabilities" aria-label="Alcance de KICK57">
-            <article>
+          <ul class="future-capabilities" aria-label="Alcance de KICK57">
+            <li><article>
               <span>01</span>
               <h4>Partidos y canchas</h4>
               <p>Reservas por hora, formatos F5 y F7, cupos, equipos, profesores, torneos y control de solapamientos.</p>
-            </article>
-            <article>
+            </article></li>
+            <li><article>
               <span>02</span>
               <h4>Pagos y operación</h4>
               <p>Señas, pagos totales, Mercado Pago, cancelaciones, reembolsos con trazabilidad, caja y arqueo.</p>
-            </article>
-            <article>
+            </article></li>
+            <li><article>
               <span>03</span>
               <h4>Cantina</h4>
               <p>Productos, stock, pedidos en tiempo real, promociones y reglas comerciales configurables.</p>
-            </article>
-            <article>
+            </article></li>
+            <li><article>
               <span>04</span>
               <h4>Comunidad</h4>
               <p>Perfiles, actividad, chats, invitaciones, historial de partidos y sistema de valoración.</p>
-            </article>
-          </div>
+            </article></li>
+          </ul>
 
           <div class="future-progress">
             <div>
@@ -290,8 +311,8 @@
       </section>
     </main>
 
-    <aside class="player" id="player" aria-label="Reproductor de música" aria-hidden="true">
-      <div class="player-window-actions" aria-label="Controles del reproductor">
+    <aside class="player" id="player" aria-label="Reproductor de música" aria-hidden="true" inert>
+      <div class="player-window-actions" role="group" aria-label="Controles del reproductor">
         <button type="button" id="minimizePlayerButton" aria-label="Minimizar reproductor" title="Minimizar reproductor"><svg class="player-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12h12"></path></svg></button>
         <button type="button" id="closePlayerButton" aria-label="Cerrar reproductor" title="Cerrar reproductor"><svg class="player-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"></path></svg></button>
       </div>
@@ -301,11 +322,11 @@
       </div>
       <div class="player-main">
         <div class="player-buttons">
-          <button type="button" id="shuffleButton" aria-label="Reproducción aleatoria" title="Aleatorio"><svg class="player-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h2.5c4.5 0 6.5 10 11 10H20"></path><path d="m17 14 3 3-3 3"></path><path d="M4 17h2.5c1.5 0 2.7-1.1 3.8-2.6"></path><path d="M13.6 9.6C14.7 8.1 16 7 17.5 7H20"></path><path d="m17 4 3 3-3 3"></path></svg></button>
+          <button type="button" id="shuffleButton" aria-label="Reproducción aleatoria" aria-pressed="false" title="Aleatorio"><svg class="player-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h2.5c4.5 0 6.5 10 11 10H20"></path><path d="m17 14 3 3-3 3"></path><path d="M4 17h2.5c1.5 0 2.7-1.1 3.8-2.6"></path><path d="M13.6 9.6C14.7 8.1 16 7 17.5 7H20"></path><path d="m17 4 3 3-3 3"></path></svg></button>
           <button type="button" id="prevButton" aria-label="Canción anterior" title="Anterior"><svg class="player-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6v12"></path><path d="m18 6-9 6 9 6Z"></path></svg></button>
           <button class="main-play" type="button" id="mainPlayButton" aria-label="Reproducir"><svg class="player-icon play-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 9 6-9 6Z"></path></svg><svg class="player-icon pause-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7v10M15 7v10"></path></svg></button>
           <button type="button" id="nextButton" aria-label="Canción siguiente" title="Siguiente"><svg class="player-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 9 6-9 6Z"></path><path d="M18 6v12"></path></svg></button>
-          <button type="button" id="repeatButton" aria-label="Repetir canción" title="Repetir"><svg class="player-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17 3l3 3-3 3"></path><path d="M4 11V9a3 3 0 0 1 3-3h13"></path><path d="m7 21-3-3 3-3"></path><path d="M20 13v2a3 3 0 0 1-3 3H4"></path></svg></button>
+          <button type="button" id="repeatButton" aria-label="Repetir canción" aria-pressed="false" title="Repetir"><svg class="player-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17 3l3 3-3 3"></path><path d="M4 11V9a3 3 0 0 1 3-3h13"></path><path d="m7 21-3-3 3-3"></path><path d="M20 13v2a3 3 0 0 1-3 3H4"></path></svg></button>
         </div>
         <div class="timeline"><span id="currentTime">0:00</span><input id="progressRange" type="range" min="0" max="180" value="0" step="1" aria-label="Progreso de la canción"><span id="durationTime">3:00</span></div>
       </div>
@@ -313,11 +334,11 @@
         <button type="button" id="equalizerButton" aria-label="Abrir ecualizador" aria-controls="equalizerPanel" aria-expanded="false" title="Ecualizador"><svg class="player-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4v16M12 4v16M19 4v16"></path><path d="M2.5 9h5M9.5 15h5M16.5 8h5"></path></svg></button>
         <button type="button" id="shareButton" aria-label="Compartir" title="Compartir"><svg class="player-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 5h5v5"></path><path d="m19 5-9 9"></path><path d="M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg></button>
         <label class="volume-control"><svg class="player-icon volume-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h4l4 3.5v-11L8 10H4Z"></path><path d="M15 9.5c.8.6 1.2 1.5 1.2 2.5s-.4 1.9-1.2 2.5"></path><path d="M17.5 7c1.5 1.3 2.3 3 2.3 5s-.8 3.7-2.3 5"></path></svg><span class="sr-only">Volumen</span><input id="volumeRange" type="range" min="0" max="1" value="0.35" step="0.01"></label>
-        <div class="equalizer-panel" id="equalizerPanel" aria-hidden="true">
+        <div class="equalizer-panel" id="equalizerPanel" aria-hidden="true" inert>
           <div class="equalizer-heading"><strong>Ecualizador</strong><span>−12 / +12 dB</span></div>
-          <label><span>Graves</span><output id="bassValue">+5 dB</output><input type="range" id="bassRange" min="-12" max="12" value="5" step="1"></label>
-          <label><span>Medios</span><output id="midValue">+3 dB</output><input type="range" id="midRange" min="-12" max="12" value="3" step="1"></label>
-          <label><span>Agudos</span><output id="trebleValue">+1 dB</output><input type="range" id="trebleRange" min="-12" max="12" value="1" step="1"></label>
+          <div class="equalizer-control"><label for="bassRange">Graves</label><output id="bassValue" for="bassRange">+5 dB</output><input type="range" id="bassRange" min="-12" max="12" value="5" step="1"></div>
+          <div class="equalizer-control"><label for="midRange">Medios</label><output id="midValue" for="midRange">+3 dB</output><input type="range" id="midRange" min="-12" max="12" value="3" step="1"></div>
+          <div class="equalizer-control"><label for="trebleRange">Agudos</label><output id="trebleValue" for="trebleRange">+1 dB</output><input type="range" id="trebleRange" min="-12" max="12" value="1" step="1"></div>
           <button class="equalizer-reset" type="button" id="equalizerReset">Restablecer</button>
         </div>
       </div>
