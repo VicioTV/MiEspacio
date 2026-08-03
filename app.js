@@ -52,6 +52,8 @@ if ("scrollRestoration" in history) history.scrollRestoration = "manual";
 const songGrid = document.querySelector("#songGrid");
 const player = document.querySelector("#player");
 const mainPlayButton = document.querySelector("#mainPlayButton");
+const prevButton = document.querySelector("#prevButton");
+const nextButton = document.querySelector("#nextButton");
 const progressRange = document.querySelector("#progressRange");
 const volumeRange = document.querySelector("#volumeRange");
 const currentTimeLabel = document.querySelector("#currentTime");
@@ -76,8 +78,30 @@ let tvPointerY = null;
 let tvPointerDeltaX = 0;
 let tvPointerDeltaY = 0;
 let tvPointerStepAt = 0;
-let tvPointedControl = null;
 let tvWheelStepAt = 0;
+let tvPointerPressHandled = false;
+let tvPointerActivationAt = 0;
+let tvSongButtons = [];
+let tvSongCards = [];
+let tvCoverImages = [];
+let tvPlayPills = [];
+let tvSongGridRefreshFrame = 0;
+let tvFocusedSongIndex = 0;
+let tvFocusedCard = null;
+let tvSelectedControl = null;
+
+function pruneTvOnlyDocument() {
+  if (!isTvMode) return;
+  const songsView = document.querySelector("#canciones");
+  document.querySelectorAll(".view").forEach((view) => {
+    if (view !== songsView) view.remove();
+  });
+  [".site-header", ".archive-shell-sidebar", ".project-scroll-control", ".skip-link", ".noise"].forEach((selector) => {
+    document.querySelector(selector)?.remove();
+  });
+}
+
+pruneTvOnlyDocument();
 
 document.querySelector("#songCount").textContent = songs.length;
 volumeRange.value = String(state.volume);
@@ -249,27 +273,44 @@ function scrollBehavior() {
   return reducedMotion.matches ? "auto" : "smooth";
 }
 
-function getTvFocusableElements() {
-  if (!isTvMode) return [];
-  const containers = [document.querySelector(".view.is-active")];
-  if (player.classList.contains("is-visible")) containers.push(player);
-
-  return containers
-    .filter(Boolean)
-    .flatMap((container) => [...container.querySelectorAll("button, a[href], input:not([disabled]), [tabindex]:not([tabindex='-1'])")])
-    .filter((element) => {
-      if (element.inert || element.closest("[inert]")) return false;
-      const styles = window.getComputedStyle(element);
-      const rect = element.getBoundingClientRect();
-      return styles.display !== "none" && styles.visibility !== "hidden" && rect.width > 0 && rect.height > 0;
-    });
+function getTvGridColumnCount() {
+  if (window.innerWidth <= 1100 || window.innerHeight <= 720) return 4;
+  if (window.innerWidth <= 1600) return 5;
+  return 6;
 }
 
-function focusTvElement(element) {
+function clearTvLogicalFocus() {
+  tvSelectedControl?.classList.remove("tv-focused-control");
+  tvFocusedCard?.classList.remove("tv-focused");
+  tvSelectedControl = null;
+  tvFocusedCard = null;
+}
+
+function focusTvElement(element, { ensureVisible = false } = {}) {
   if (!element) return;
-  element.focus({ preventScroll: true });
+  if (tvSelectedControl !== element) tvSelectedControl?.classList.remove("tv-focused-control");
+  tvSelectedControl = element;
+  element.classList.add("tv-focused-control");
+  try {
+    element.focus({ preventScroll: true });
+  } catch {
+    element.focus();
+  }
+  const focusedCard = element.closest?.(".song-card") || null;
+  if (focusedCard !== tvFocusedCard) {
+    tvFocusedCard?.classList.remove("tv-focused");
+    focusedCard?.classList.add("tv-focused");
+    tvFocusedCard = focusedCard;
+  }
+  const songIndex = Number(element.dataset.tvIndex);
+  if (Number.isInteger(songIndex) && songIndex >= 0) {
+    tvFocusedSongIndex = songIndex;
+    hydrateTvCovers(songIndex);
+  }
+  if (isTvMode && !ensureVisible) return;
+
   element.scrollIntoView({
-    behavior: scrollBehavior(),
+    behavior: isTvMode ? "auto" : scrollBehavior(),
     block: "center",
     inline: "nearest"
   });
@@ -277,58 +318,56 @@ function focusTvElement(element) {
 
 function focusInitialTvControl({ force = false } = {}) {
   if (!isTvMode) return;
-  const focusableElements = getTvFocusableElements();
-  if (!focusableElements.length) return;
-  if (!force && focusableElements.includes(document.activeElement)) return;
+  if (!force && tvSelectedControl && document.documentElement.contains(tvSelectedControl)) return;
 
-  const selectedSongButton = state.currentSong
-    ? songGrid.querySelector(`[data-play="${state.currentSong.id}"]`)
+  const isSongsView = document.body.dataset.view === "canciones";
+  const selectedSongButton = isSongsView && state.currentSong
+    ? tvSongButtons.find((button) => Number(button.dataset.play) === state.currentSong.id)
     : null;
-  const firstSongButton = songGrid.querySelector("[data-play]");
-  focusTvElement(selectedSongButton || firstSongButton || focusableElements[0]);
+  const firstLifeEntry = document.querySelector(".view.is-active .life-entry");
+  focusTvElement(isSongsView ? selectedSongButton || tvSongButtons[0] : firstLifeEntry);
 }
 
 function moveTvFocus(key) {
-  const focusableElements = getTvFocusableElements();
-  if (!focusableElements.length) return;
-
-  const activeElement = focusableElements.includes(document.activeElement)
-    ? document.activeElement
-    : null;
-  if (!activeElement) {
-    focusInitialTvControl({ force: true });
+  const activeElement = getTvSelectedControl() || document.activeElement;
+  const songIndex = Number(activeElement?.dataset?.tvIndex);
+  if (songIndex >= 0) {
+    const columnCount = getTvGridColumnCount();
+    const columnIndex = songIndex % columnCount;
+    let targetIndex = songIndex;
+    if (key === "ArrowLeft" && columnIndex > 0) targetIndex = songIndex - 1;
+    if (key === "ArrowRight" && columnIndex < columnCount - 1) targetIndex = songIndex + 1;
+    if (key === "ArrowUp") targetIndex = songIndex - columnCount;
+    if (key === "ArrowDown") targetIndex = songIndex + columnCount;
+    if (targetIndex !== songIndex && targetIndex >= 0 && targetIndex < tvSongButtons.length) {
+      focusTvElement(tvSongButtons[targetIndex], { ensureVisible: key === "ArrowUp" || key === "ArrowDown" });
+    } else if (key === "ArrowDown" && player.classList.contains("is-visible")) {
+      focusTvElement(mainPlayButton, { ensureVisible: true });
+    }
     return;
   }
 
-  const vectors = {
-    ArrowLeft: [-1, 0],
-    ArrowRight: [1, 0],
-    ArrowUp: [0, -1],
-    ArrowDown: [0, 1]
-  };
-  const [directionX, directionY] = vectors[key];
-  const sourceRect = activeElement.getBoundingClientRect();
-  const sourceX = sourceRect.left + sourceRect.width / 2;
-  const sourceY = sourceRect.top + sourceRect.height / 2;
+  const playerControls = [prevButton, mainPlayButton, nextButton];
+  const playerIndex = playerControls.indexOf(activeElement);
+  if (playerIndex >= 0) {
+    if (key === "ArrowLeft" && playerIndex > 0) focusTvElement(playerControls[playerIndex - 1]);
+    else if (key === "ArrowRight" && playerIndex < playerControls.length - 1) focusTvElement(playerControls[playerIndex + 1]);
+    else if (key === "ArrowUp") focusTvElement(tvSongButtons[tvFocusedSongIndex] || tvSongButtons[0], { ensureVisible: true });
+    return;
+  }
 
-  const candidates = focusableElements
-    .filter((element) => element !== activeElement)
-    .map((element) => {
-      const rect = element.getBoundingClientRect();
-      const deltaX = rect.left + rect.width / 2 - sourceX;
-      const deltaY = rect.top + rect.height / 2 - sourceY;
-      const primaryDistance = directionX ? deltaX * directionX : deltaY * directionY;
-      const crossDistance = Math.abs(directionX ? deltaY : deltaX);
-      return { element, primaryDistance, crossDistance };
-    })
-    .filter(({ primaryDistance }) => primaryDistance > 8)
-    .sort((a, b) => {
-      const aScore = a.primaryDistance + a.crossDistance * 2.4;
-      const bScore = b.primaryDistance + b.crossDistance * 2.4;
-      return aScore - bScore;
-    });
+  const lifeEntries = [...document.querySelectorAll(".view.is-active .life-entry")];
+  const lifeIndex = lifeEntries.indexOf(activeElement);
+  if (lifeIndex >= 0) {
+    const step = key === "ArrowDown" || key === "ArrowRight" ? 1 : -1;
+    const nextLifeEntry = lifeEntries[lifeIndex + step];
+    if (nextLifeEntry) focusTvElement(nextLifeEntry);
+    return;
+  }
 
-  focusTvElement(candidates[0]?.element);
+  if (!activeElement?.matches?.(".cover-button, .player button, .life-entry")) {
+    focusInitialTvControl({ force: true });
+  }
 }
 
 function getTvDirection(event) {
@@ -354,13 +393,6 @@ function getTvDirection(event) {
 function handleTvPointerMove(event) {
   if (!isTvMode) return;
 
-  document.documentElement.classList.add("tv-pointer-navigation");
-  const pointedControl = event.target.closest?.(".cover-button, .player button, .player input[type='range'], .life-entry");
-  if (pointedControl && pointedControl !== tvPointedControl && pointedControl !== document.activeElement) {
-    pointedControl.focus({ preventScroll: true });
-  }
-  tvPointedControl = pointedControl || null;
-
   if (tvPointerX === null || tvPointerY === null) {
     tvPointerX = event.clientX;
     tvPointerY = event.clientY;
@@ -375,34 +407,104 @@ function handleTvPointerMove(event) {
   tvPointerDeltaY += movementY;
 
   const now = Date.now();
-  if (now - tvPointerStepAt < 170) return;
+  if (now - tvPointerStepAt < 85) return;
 
   const horizontalMovement = Math.abs(tvPointerDeltaX);
   const verticalMovement = Math.abs(tvPointerDeltaY);
-  let direction = null;
-  if (horizontalMovement >= 12 && horizontalMovement > verticalMovement * 1.2) {
-    direction = tvPointerDeltaX > 0 ? "ArrowRight" : "ArrowLeft";
-  } else if (verticalMovement >= 12 && verticalMovement > horizontalMovement * 1.2) {
-    direction = tvPointerDeltaY > 0 ? "ArrowDown" : "ArrowUp";
-  }
-
-  if (!direction) return;
+  if (Math.max(horizontalMovement, verticalMovement) < 5) return;
+  const direction = horizontalMovement >= verticalMovement
+    ? (tvPointerDeltaX > 0 ? "ArrowRight" : "ArrowLeft")
+    : (tvPointerDeltaY > 0 ? "ArrowDown" : "ArrowUp");
   tvPointerDeltaX = 0;
   tvPointerDeltaY = 0;
   tvPointerStepAt = now;
   moveTvFocus(direction);
 }
 
-function handleTvPointerClick(event) {
-  if (!isTvMode || !document.documentElement.classList.contains("tv-pointer-navigation") || event.detail === 0) return;
-  const focusedControl = document.activeElement;
-  if (!focusedControl?.matches?.(".cover-button, .player button, .life-entry")) return;
+function getTvSelectedControl() {
+  if (tvSelectedControl && document.documentElement.contains(tvSelectedControl)) return tvSelectedControl;
+  if (document.body.dataset.view === "canciones") {
+    const songButton = tvSongButtons[tvFocusedSongIndex] || tvSongButtons[0];
+    return songButton && document.documentElement.contains(songButton) ? songButton : null;
+  }
+  return document.querySelector(".view.is-active .life-entry");
+}
 
+function claimTvActivation() {
+  const now = Date.now();
+  if (now - tvPointerActivationAt < 180) return false;
+  tvPointerActivationAt = now;
+  return true;
+}
+
+function activateTvSelectedControl() {
+  const selectedControl = getTvSelectedControl();
+  if (!selectedControl) return;
+  focusTvElement(selectedControl);
+
+  if (selectedControl.dataset.play) {
+    const songId = Number(selectedControl.dataset.play);
+    if (state.currentSong?.id === songId) togglePlayback();
+    else selectSong(songId, true);
+    return;
+  }
+  if (selectedControl === mainPlayButton) togglePlayback();
+  else if (selectedControl.id === "prevButton") playAdjacent(-1);
+  else if (selectedControl.id === "nextButton") playAdjacent(1);
+  else if (selectedControl.dataset.route) navigate(selectedControl.dataset.route, { historyMode: "push", moveFocus: true });
+}
+
+function playTvSelectedSong() {
+  const selectedControl = getTvSelectedControl();
+  const songId = Number(selectedControl?.dataset?.play);
+  if (!songId) {
+    if (state.currentSong) playAudio();
+    else selectSong(songs[0].id, true);
+    return;
+  }
+  if (state.currentSong?.id === songId) playAudio();
+  else selectSong(songId, true);
+}
+
+function toggleTvPlayback() {
+  const selectedSongId = Number(getTvSelectedControl()?.dataset?.play);
+  if (selectedSongId && state.currentSong?.id !== selectedSongId) {
+    selectSong(selectedSongId, true);
+    return;
+  }
+  if (state.currentSong) togglePlayback();
+  else playTvSelectedSong();
+}
+
+function handleTvPointerClick(event) {
+  if (!isTvMode) return;
+  if (tvPointerPressHandled || Date.now() - tvPointerActivationAt < 800) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    tvPointerPressHandled = false;
+    return;
+  }
+
+  const focusedControl = getTvSelectedControl();
   const pointedControl = event.target.closest?.(".cover-button, .player button, .life-entry");
   if (pointedControl === focusedControl) return;
   event.preventDefault();
   event.stopImmediatePropagation();
-  focusedControl.click();
+  if (!claimTvActivation()) return;
+  activateTvSelectedControl();
+}
+
+function handleTvPointerDown(event) {
+  if (!isTvMode) return;
+  event.preventDefault();
+  event.stopImmediatePropagation();
+  if (tvPointerPressHandled || !claimTvActivation()) return;
+  tvPointerPressHandled = true;
+  activateTvSelectedControl();
+  clearTimeout(handleTvPointerDown.resetTimeout);
+  handleTvPointerDown.resetTimeout = window.setTimeout(() => {
+    tvPointerPressHandled = false;
+  }, 180);
 }
 
 function handleTvWheel(event) {
@@ -426,6 +528,7 @@ function handleTvWheel(event) {
 }
 
 function updateProjectScrollControl() {
+  if (isTvMode) return;
   const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
   const isVisible = document.body.dataset.view !== "inicio" && window.innerWidth > 940 && maxScroll > 2;
   projectScrollControl.classList.toggle("is-visible", isVisible);
@@ -463,8 +566,22 @@ function formatTime(seconds) {
   return `${Math.floor(safeSeconds / 60)}:${String(safeSeconds % 60).padStart(2, "0")}`;
 }
 
+function hydrateTvCovers(centerIndex = 0) {
+  if (!isTvMode || !tvCoverImages.length) return;
+  const startIndex = Math.max(0, centerIndex - 2);
+  const endIndex = Math.min(tvCoverImages.length, centerIndex + 8);
+  for (let index = startIndex; index < endIndex; index += 1) {
+    const image = tvCoverImages[index];
+    if (!image?.dataset?.src) continue;
+    image.src = image.dataset.src;
+    if (image.dataset.srcset) image.srcset = image.dataset.srcset;
+    image.removeAttribute("data-src");
+    image.removeAttribute("data-srcset");
+  }
+}
+
 function renderSongs() {
-  const focusedSongId = isTvMode ? Number(document.activeElement?.dataset?.play) : NaN;
+  const focusedSongId = isTvMode ? Number(getTvSelectedControl()?.dataset?.play) : NaN;
   const orderedSongs = state.sort === "title"
     ? [...songs].sort((a, b) => a.title.localeCompare(b.title, "es"))
     : [...songs];
@@ -472,12 +589,17 @@ function renderSongs() {
   songGrid.innerHTML = orderedSongs.map((song, index) => {
     const isActive = state.currentSong?.id === song.id;
     const isPlaying = isActive && state.isPlaying;
+    const encodedCover = encodeURI(song.cover);
+    const encodedLargeCover = encodeURI(song.coverLarge);
+    const coverSourceAttributes = !isTvMode || index < 6
+      ? `src="${encodedCover}" srcset="${encodedCover} 360w, ${encodedLargeCover} 720w"`
+      : `data-src="${encodedCover}" data-srcset="${encodedCover} 360w, ${encodedLargeCover} 720w"`;
     return `
       <article class="song-card${isActive ? " is-active" : ""}${isPlaying ? " is-playing" : ""}" data-song-id="${song.id}">
-        <button class="cover-button" type="button" data-play="${song.id}" aria-label="${isPlaying ? "Pausar" : "Reproducir"} ${song.title}">
-          <img class="cover-art" src="${encodeURI(song.cover)}" srcset="${encodeURI(song.cover)} 360w, ${encodeURI(song.coverLarge)} 720w" sizes="(max-width: 620px) calc((100vw - 42px) / 2), (max-width: 940px) calc((100vw - 68px) / 3), (max-width: 1280px) 18vw, 14vw" alt="Portada de ${song.title}" width="360" height="540" loading="${isTvMode && index < 12 ? "eager" : "lazy"}" decoding="async" fetchpriority="${isTvMode && index < 6 ? "high" : "low"}">
+        <button class="cover-button" type="button" data-play="${song.id}" data-tv-index="${index}" aria-label="${isPlaying ? "Pausar" : "Reproducir"} ${song.title}">
+          <img class="cover-art" ${coverSourceAttributes} sizes="(max-width: 620px) calc((100vw - 42px) / 2), (max-width: 940px) calc((100vw - 68px) / 3), (max-width: 1280px) 18vw, 14vw" alt="Portada de ${song.title}" width="360" height="540" loading="${isTvMode && index < 6 ? "eager" : "lazy"}" decoding="async" fetchpriority="${isTvMode && index < 6 ? "high" : "low"}">
           <span class="cover-fallback" aria-hidden="true">Portada no disponible</span>
-          <span class="equalizer" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          ${isTvMode ? "" : '<span class="equalizer" aria-hidden="true"><i></i><i></i><i></i><i></i></span>'}
           <span class="play-pill" aria-hidden="true">${isPlaying ? "Ⅱ" : "▶"}</span>
         </button>
         <div class="song-info">
@@ -489,9 +611,39 @@ function renderSongs() {
     `;
   }).join("");
 
+  if (isTvMode) {
+    tvSongButtons = [...songGrid.querySelectorAll("[data-play]")];
+    tvSongCards = [...songGrid.querySelectorAll(".song-card")];
+    tvCoverImages = [...songGrid.querySelectorAll(".cover-art")];
+    tvPlayPills = [...songGrid.querySelectorAll(".play-pill")];
+    hydrateTvCovers(0);
+  }
   if (Number.isFinite(focusedSongId)) {
     window.requestAnimationFrame(() => focusTvElement(songGrid.querySelector(`[data-play="${focusedSongId}"]`)));
   }
+}
+
+function refreshSongGridState() {
+  if (!isTvMode) {
+    renderSongs();
+    return;
+  }
+
+  if (tvSongGridRefreshFrame) return;
+  tvSongGridRefreshFrame = window.requestAnimationFrame(() => {
+    tvSongGridRefreshFrame = 0;
+    tvSongButtons.forEach((button, index) => {
+      const songId = Number(button.dataset.play);
+      const isActive = state.currentSong?.id === songId;
+      const isPlaying = isActive && state.isPlaying;
+      const card = tvSongCards[index];
+      card?.classList.toggle("is-active", isActive);
+      card?.classList.toggle("is-playing", isPlaying);
+      button.setAttribute("aria-label", `${isPlaying ? "Pausar" : "Reproducir"} ${songs[songId - 1]?.title || "canción"}`);
+      const playPill = tvPlayPills[index];
+      if (playPill) playPill.textContent = isPlaying ? "Ⅱ" : "▶";
+    });
+  });
 }
 
 songGrid.addEventListener("error", (event) => {
@@ -501,7 +653,10 @@ songGrid.addEventListener("error", (event) => {
 }, true);
 
 function navigate(route, { historyMode = "replace", moveFocus = false } = {}) {
-  const target = document.getElementById(route) || document.getElementById("inicio");
+  const fallbackRoute = isTvMode ? "canciones" : "inicio";
+  const target = document.getElementById(route) || document.getElementById(fallbackRoute);
+  if (!target) return;
+  if (isTvMode) clearTvLogicalFocus();
   document.querySelectorAll(".view").forEach((view) => view.classList.toggle("is-active", view === target));
   document.body.dataset.view = target.id;
   const archiveSidebar = document.querySelector("#archiveSidebar");
@@ -559,7 +714,7 @@ async function selectSong(songId, shouldPlay = true) {
   if (shouldPlay) await playAudio();
   else pauseAudio();
   updatePlayer();
-  renderSongs();
+  refreshSongGridState();
 }
 
 async function playAudio() {
@@ -621,7 +776,7 @@ function closePlayer() {
   setPlayerVisible(false);
   minimizePlayerButton.setAttribute("aria-label", "Minimizar reproductor");
   minimizePlayerButton.title = "Minimizar reproductor";
-  renderSongs();
+  refreshSongGridState();
 }
 
 async function togglePlayback() {
@@ -632,7 +787,7 @@ async function togglePlayback() {
   if (state.isPlaying) pauseAudio();
   else await playAudio();
   updatePlayer();
-  renderSongs();
+  refreshSongGridState();
 }
 
 function playAdjacent(direction) {
@@ -690,13 +845,13 @@ function bindAudioEvents(element) {
     state.isPlaying = true;
     scheduleEqualizerSignalCheck();
     updatePlayer();
-    renderSongs();
+    refreshSongGridState();
   });
   element.addEventListener("pause", () => {
     if (element !== audio) return;
     state.isPlaying = false;
     updatePlayer();
-    renderSongs();
+    refreshSongGridState();
   });
   element.addEventListener("ended", () => {
     if (element !== audio) return;
@@ -711,17 +866,19 @@ function bindAudioEvents(element) {
     if (element !== audio || !state.currentSong) return;
     state.isPlaying = false;
     updatePlayer();
-    renderSongs();
+    refreshSongGridState();
     showToast("No se pudo cargar esta canción");
   });
 }
 
 bindAudioEvents(audio);
 
-document.addEventListener("pointermove", handleTvPointerMove, { passive: true });
-document.addEventListener("mousemove", handleTvPointerMove, { passive: true });
-document.addEventListener("wheel", handleTvWheel, { passive: false });
-document.addEventListener("click", handleTvPointerClick, true);
+if (isTvMode) {
+  document.addEventListener("mousemove", handleTvPointerMove, { passive: true });
+  document.addEventListener("wheel", handleTvWheel, { passive: false });
+  document.addEventListener("mousedown", handleTvPointerDown, true);
+  document.addEventListener("click", handleTvPointerClick, true);
+}
 
 document.addEventListener("click", (event) => {
   const routeTarget = event.target.closest("[data-route]");
@@ -851,9 +1008,11 @@ projectScrollControl.addEventListener("keydown", (event) => {
   actions[event.key]();
 });
 
-window.addEventListener("scroll", requestProjectScrollUpdate, { passive: true });
-window.addEventListener("resize", requestProjectScrollUpdate);
-window.addEventListener("load", requestProjectScrollUpdate);
+if (!isTvMode) {
+  window.addEventListener("scroll", requestProjectScrollUpdate, { passive: true });
+  window.addEventListener("resize", requestProjectScrollUpdate);
+  window.addEventListener("load", requestProjectScrollUpdate);
+}
 
 document.querySelector("#shareButton").addEventListener("click", async () => {
   if (!state.currentSong) return;
@@ -879,8 +1038,8 @@ window.addEventListener("keydown", (event) => {
     const keyCode = event.keyCode || event.which;
     const isBackKey = event.key === "Escape" || event.key === "BrowserBack" || event.key === "GoBack" || keyCode === 10009;
     const mediaActions = {
-      MediaPlayPause: () => togglePlayback(),
-      MediaPlay: () => state.currentSong ? playAudio() : selectSong(songs[0].id, true),
+      MediaPlayPause: () => toggleTvPlayback(),
+      MediaPlay: () => playTvSelectedSong(),
       MediaPause: () => pauseAudio(),
       MediaTrackPrevious: () => playAdjacent(-1),
       MediaTrackNext: () => playAdjacent(1)
@@ -889,25 +1048,34 @@ window.addEventListener("keydown", (event) => {
       19: () => pauseAudio(),
       176: () => playAdjacent(1),
       177: () => playAdjacent(-1),
-      415: () => state.currentSong ? playAudio() : selectSong(songs[0].id, true),
-      10252: () => togglePlayback()
+      10232: () => playAdjacent(-1),
+      10233: () => playAdjacent(1),
+      415: () => playTvSelectedSong(),
+      10252: () => toggleTvPlayback()
     };
     const mediaAction = mediaActions[event.key] || mediaCodeActions[keyCode];
 
     if (mediaAction) {
       event.preventDefault();
-      mediaAction();
+      if (!event.repeat && claimTvActivation()) mediaAction();
       updatePlayer();
       return;
     }
 
     if (isBackKey) {
-      event.preventDefault();
       if (equalizerPanel.classList.contains("is-open")) {
+        event.preventDefault();
         setEqualizerOpen(false);
-      } else if (document.body.dataset.view !== "inicio") {
-        navigate("inicio", { historyMode: "push", moveFocus: true });
+      } else if (document.body.dataset.view !== "canciones") {
+        event.preventDefault();
+        navigate("canciones", { historyMode: "push", moveFocus: true });
       }
+      return;
+    }
+
+    if (event.key === "Enter" || event.key === "Select" || keyCode === 13 || keyCode === 65376) {
+      event.preventDefault();
+      if (!event.repeat && claimTvActivation()) activateTvSelectedControl();
       return;
     }
 
