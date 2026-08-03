@@ -6754,3 +6754,170 @@ html.tv-mode body[data-view="inicio"] .life-entry:focus-visible {
     min-height: 70px;
   }
 }
+
+/* Legacy Samsung TV browsers: prioritize remote response over decoration. */
+html.tv-mode,
+html.tv-mode body {
+  scroll-behavior: auto !important;
+}
+
+html.tv-mode *,
+html.tv-mode *::before,
+html.tv-mode *::after {
+  animation: none !important;
+  backdrop-filter: none !important;
+  text-shadow: none !important;
+  transition: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html.tv-mode .noise,
+html.tv-mode body::before,
+html.tv-mode body::after,
+html.tv-mode body[data-view="canciones"] .songs-view::before,
+html.tv-mode body[data-view="canciones"] .songs-view::after,
+html.tv-mode body[data-view="canciones"] .cover-button::before,
+html.tv-mode body[data-view="canciones"] .cover-button::after,
+html.tv-mode body[data-view="canciones"] .equalizer,
+html.tv-mode .player::before {
+  display: none !important;
+  content: none !important;
+}
+
+html.tv-mode body,
+html.tv-mode body[data-view="canciones"],
+html.tv-mode body[data-view="canciones"] .songs-view.is-active {
+  background: #020304 !important;
+  background-image: none !important;
+}
+
+html.tv-mode body[data-view="canciones"] .song-card,
+html.tv-mode body[data-view="canciones"] .song-card:hover,
+html.tv-mode body[data-view="canciones"] .song-card:focus-within,
+html.tv-mode body[data-view="canciones"] .song-card.tv-focused {
+  border-color: rgba(241, 241, 237, 0.18);
+  box-shadow: none !important;
+  transform: none !important;
+  will-change: auto;
+}
+
+html.tv-mode body[data-view="canciones"] .song-card:focus-within,
+html.tv-mode body[data-view="canciones"] .song-card.tv-focused {
+  border-color: #9df2df;
+  outline: 5px solid #9df2df;
+  outline-offset: 4px;
+}
+
+html.tv-mode body[data-view="canciones"] .cover-art,
+html.tv-mode body[data-view="canciones"] .song-card:hover .cover-art,
+html.tv-mode body[data-view="canciones"] .song-card.is-active .cover-art,
+html.tv-mode body[data-view="canciones"] .song-card:focus-within .cover-art,
+html.tv-mode body[data-view="canciones"] .song-card.tv-focused .cover-art {
+  filter: none !important;
+  transform: none !important;
+}
+
+html.tv-mode body[data-view="canciones"] .cover-button {
+  background: #030405 !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+html.tv-mode body[data-view="canciones"] .cover-art:not([src]) {
+  visibility: hidden;
+}
+
+html.tv-mode .player {
+  background: #05090b !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+html.tv-mode body[data-view="canciones"] .cover-button {
+  height: 0;
+  padding-top: 150% !important;
+  aspect-ratio: auto !important;
+}
+
+html.tv-mode body[data-view="canciones"] .play-pill,
+html.tv-mode body[data-view="canciones"] .song-number {
+  animation: none !important;
+  background: #07090a !important;
+  background-image: none !important;
+}
+
+html.tv-mode #songsTitle,
+html.tv-mode #songsTitle .title-wave {
+  animation: none !important;
+  background: none !important;
+  color: #f1f1ed !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+
+html.tv-mode .player button:focus,
+html.tv-mode .player button.tv-focused-control,
+html.tv-mode .life-entry:focus,
+html.tv-mode .life-entry.tv-focused-control {
+  outline: 5px solid #9df2df !important;
+  outline-offset: 4px;
+  transform: none !important;
+}
+
+html.tv-mode body[data-view="canciones"] .songs-main {
+  padding: 42px 64px 224px;
+}
+
+html.tv-mode .tv-remote-guide {
+  gap: 28px;
+  font-size: 17px;
+}
+
+html.tv-mode body[data-view="canciones"] .songs-heading h2 {
+  gap: 28px;
+  font-size: 72px;
+}
+
+html.tv-mode .songs-intro {
+  font-size: 19px;
+}
+
+html.tv-mode body[data-view="canciones"] .song-grid {
+  gap: 24px;
+}
+
+html.tv-mode body[data-view="canciones"] .song-title {
+  font-size: 18px;
+}
+
+html.tv-mode .player {
+  gap: 56px;
+  padding: 18px 72px;
+}
+
+@media (max-width: 1100px), (max-height: 720px) {
+  html.tv-mode body[data-view="canciones"] .songs-main {
+    padding: 28px 34px 180px;
+  }
+
+  html.tv-mode .tv-remote-guide {
+    gap: 14px;
+    font-size: 13px;
+  }
+
+  html.tv-mode body[data-view="canciones"] .songs-heading h2 {
+    font-size: 52px;
+  }
+
+  html.tv-mode .songs-intro {
+    font-size: 15px;
+  }
+
+  html.tv-mode body[data-view="canciones"] .song-grid {
+    gap: 18px;
+  }
+
+  html.tv-mode .player {
+    gap: 28px;
+    padding: 12px 36px;
+  }
+}
