@@ -6371,3 +6371,380 @@ body[data-view="inicio"] .editorial-deck {
     transition-delay: 0ms !important;
   }
 }
+
+/* Samsung Smart TV / Tizen: ten-foot music interface, opt-in via ?tv=1. */
+.tv-masthead {
+  display: none;
+}
+
+html.tv-mode {
+  scroll-padding-block: 36vh 220px;
+}
+
+html.tv-mode body {
+  --player-height: 176px;
+  min-width: 0;
+  overflow-x: hidden;
+  background: #020304;
+}
+
+html.tv-mode .site-header,
+html.tv-mode .archive-shell-sidebar,
+html.tv-mode .project-scroll-control,
+html.tv-mode body[data-view="canciones"] .filter-group {
+  display: none !important;
+}
+
+html.tv-mode body[data-view]:not([data-view="inicio"]) .view.is-active,
+html.tv-mode body[data-view="canciones"] .songs-view.is-active {
+  width: 100%;
+  min-height: 100vh;
+  margin-left: 0;
+}
+
+html.tv-mode body[data-view="canciones"] .songs-view.is-active {
+  display: block;
+  padding: 0;
+}
+
+html.tv-mode body[data-view="canciones"] .songs-main {
+  width: 100%;
+  padding: 42px clamp(42px, 4vw, 76px) 224px;
+}
+
+html.tv-mode .tv-masthead {
+  display: flex;
+  min-height: 42px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  border-bottom: 1px solid rgba(241, 241, 237, 0.14);
+}
+
+html.tv-mode .tv-masthead > p {
+  margin: 0;
+  color: #9df2df;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+html.tv-mode .tv-remote-guide {
+  display: flex;
+  align-items: center;
+  gap: clamp(18px, 2.2vw, 38px);
+  color: #c2c8c6;
+  font-size: clamp(14px, 0.95vw, 18px);
+}
+
+html.tv-mode .tv-remote-guide span {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  white-space: nowrap;
+}
+
+html.tv-mode .tv-remote-guide kbd {
+  display: inline-grid;
+  min-width: 42px;
+  min-height: 30px;
+  place-items: center;
+  padding: 3px 9px;
+  border: 1px solid rgba(241, 241, 237, 0.34);
+  border-radius: 5px;
+  background: #0d1112;
+  color: #f1f1ed;
+  font: inherit;
+  font-weight: 700;
+}
+
+html.tv-mode body[data-view="canciones"] .songs-heading {
+  padding: 30px 0 0;
+}
+
+html.tv-mode body[data-view="canciones"] .songs-heading h2 {
+  gap: 28px;
+  font-size: clamp(58px, 4.5vw, 86px);
+}
+
+html.tv-mode .songs-intro {
+  max-width: 62ch;
+  margin-top: 14px;
+  color: #c2c8c6;
+  font-size: clamp(17px, 1.15vw, 22px);
+  line-height: 1.4;
+}
+
+html.tv-mode body[data-view="canciones"] .song-toolbar {
+  min-height: 66px;
+  padding: 14px 0 18px;
+}
+
+html.tv-mode body[data-view="canciones"] .songs-count {
+  min-width: 260px;
+  color: #c2c8c6;
+  font-size: clamp(14px, 0.9vw, 17px);
+}
+
+html.tv-mode body[data-view="canciones"] .song-grid {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: clamp(20px, 1.7vw, 32px);
+}
+
+html.tv-mode body[data-view="canciones"] .song-card {
+  overflow: visible;
+  border-color: rgba(241, 241, 237, 0.12);
+  border-radius: 9px;
+  background: #0d1112;
+}
+
+html.tv-mode body[data-view="canciones"] .cover-button {
+  aspect-ratio: 2 / 3;
+  border-radius: 8px 8px 0 0;
+  transition: transform 170ms ease, outline-color 170ms ease;
+}
+
+html.tv-mode body[data-view="canciones"] .song-card:focus-within {
+  z-index: 4;
+  border-color: #9df2df;
+  box-shadow: 0 0 0 3px #020304, 0 0 0 7px #9df2df, 0 22px 54px rgba(0, 0, 0, 0.66);
+  transform: scale(1.045);
+}
+
+html.tv-mode body[data-view="canciones"] .cover-button:focus-visible {
+  outline: none;
+}
+
+html.tv-mode body[data-view="canciones"] .song-card:focus-within .cover-art {
+  filter: saturate(1) contrast(1.06);
+}
+
+html.tv-mode body[data-view="canciones"] .play-pill {
+  bottom: 14px;
+  left: 14px;
+  width: 50px;
+  height: 50px;
+  border-width: 2px;
+  border-color: #9df2df;
+  background: rgba(2, 3, 4, 0.88);
+  color: #9df2df;
+  font-size: 17px;
+  opacity: 1;
+}
+
+html.tv-mode body[data-view="canciones"] .song-info {
+  min-height: 62px;
+  gap: 12px;
+  padding: 12px 13px 8px;
+}
+
+html.tv-mode body[data-view="canciones"] .song-number {
+  width: 28px;
+  height: 28px;
+  border-color: rgba(157, 242, 223, 0.55);
+  color: #9df2df;
+  font-size: 12px;
+}
+
+html.tv-mode body[data-view="canciones"] .song-title {
+  overflow: hidden;
+  color: #f1f1ed;
+  font-size: clamp(16px, 1.05vw, 21px);
+  font-weight: 600;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+html.tv-mode body[data-view="canciones"] .song-card.is-active::after {
+  position: absolute;
+  right: 12px;
+  bottom: -24px;
+  color: #9df2df;
+  content: "Seleccionada";
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+html.tv-mode body[data-view="canciones"] .song-card.is-playing::after {
+  content: "Reproduciendo";
+}
+
+html.tv-mode .player {
+  min-height: var(--player-height);
+  grid-template-columns: minmax(340px, 0.85fr) minmax(560px, 1.45fr);
+  gap: clamp(36px, 4vw, 80px);
+  padding: 18px clamp(48px, 5vw, 96px);
+  border-top: 2px solid rgba(157, 242, 223, 0.45);
+  background: #05090b;
+}
+
+html.tv-mode .player-window-actions,
+html.tv-mode .player-actions,
+html.tv-mode #shuffleButton,
+html.tv-mode #repeatButton {
+  display: none;
+}
+
+html.tv-mode .player-track {
+  gap: 22px;
+}
+
+html.tv-mode .mini-cover {
+  width: 120px;
+  height: 120px;
+  border: 2px solid rgba(241, 241, 237, 0.22);
+  border-radius: 7px;
+}
+
+html.tv-mode .player-meta strong {
+  max-width: 22ch;
+  color: #f1f1ed;
+  font-size: clamp(22px, 1.7vw, 32px);
+}
+
+html.tv-mode .player-meta span {
+  margin-top: 8px;
+  color: #929b99;
+  font-size: clamp(15px, 1vw, 19px);
+}
+
+html.tv-mode .player-main {
+  gap: 14px;
+}
+
+html.tv-mode .player-buttons {
+  gap: clamp(26px, 3vw, 52px);
+}
+
+html.tv-mode .player button {
+  width: 64px;
+  height: 64px;
+  min-width: 64px;
+  min-height: 64px;
+  border: 2px solid rgba(241, 241, 237, 0.2);
+  color: #c2c8c6;
+}
+
+html.tv-mode .player .main-play {
+  width: 82px;
+  height: 82px;
+  min-width: 82px;
+  min-height: 82px;
+  background: #f1f1ed;
+  color: #020304;
+}
+
+html.tv-mode .player button:focus-visible {
+  border-color: #020304;
+  outline: 6px solid #9df2df;
+  outline-offset: 5px;
+  transform: scale(1.08);
+}
+
+html.tv-mode .player .player-icon {
+  width: 30px;
+  height: 30px;
+}
+
+html.tv-mode .player .main-play .player-icon {
+  width: 36px;
+  height: 36px;
+}
+
+html.tv-mode .timeline {
+  grid-template-columns: 64px minmax(0, 1fr) 64px;
+  gap: 16px;
+  color: #c2c8c6;
+  font-size: 17px;
+}
+
+html.tv-mode .timeline input[type="range"] {
+  min-height: 44px;
+}
+
+html.tv-mode .toast {
+  right: 54px;
+  bottom: calc(var(--player-height) + 28px);
+  max-width: 46ch;
+  padding: 18px 24px;
+  border-color: #9df2df;
+  background: #0d1112;
+  color: #f1f1ed;
+  font-size: 19px;
+}
+
+html.tv-mode body[data-view="inicio"] {
+  overflow-y: auto;
+}
+
+html.tv-mode body[data-view="inicio"] .life-entry:focus-visible {
+  outline: 6px solid #9df2df;
+  outline-offset: 6px;
+}
+
+@media (max-width: 1600px) {
+  html.tv-mode body[data-view="canciones"] .song-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1100px), (max-height: 720px) {
+  html.tv-mode body {
+    --player-height: 144px;
+  }
+
+  html.tv-mode body[data-view="canciones"] .songs-main {
+    padding: 28px 34px 180px;
+  }
+
+  html.tv-mode .tv-remote-guide {
+    gap: 14px;
+    font-size: 13px;
+  }
+
+  html.tv-mode body[data-view="canciones"] .songs-heading {
+    padding-top: 20px;
+  }
+
+  html.tv-mode body[data-view="canciones"] .songs-heading h2 {
+    font-size: 52px;
+  }
+
+  html.tv-mode .songs-intro {
+    font-size: 15px;
+  }
+
+  html.tv-mode body[data-view="canciones"] .song-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  html.tv-mode .player {
+    grid-template-columns: minmax(280px, 0.8fr) minmax(430px, 1.35fr);
+    gap: 28px;
+    padding: 12px 36px;
+  }
+
+  html.tv-mode .mini-cover {
+    width: 96px;
+    height: 96px;
+  }
+
+  html.tv-mode .player button {
+    width: 56px;
+    height: 56px;
+    min-width: 56px;
+    min-height: 56px;
+  }
+
+  html.tv-mode .player .main-play {
+    width: 70px;
+    height: 70px;
+    min-width: 70px;
+    min-height: 70px;
+  }
+}
