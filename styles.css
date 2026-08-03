@@ -4549,8 +4549,8 @@ body[data-view="videos"] .text-link { display: none; }
 
 .player .player-window-actions button:hover,
 .player .player-window-actions button:focus-visible {
-  background: rgba(212, 72, 36, .1);
-  color: var(--player-orange-bright);
+  background: linear-gradient(90deg, rgba(114, 231, 207, .09), rgba(167, 143, 255, .08));
+  color: #9df2df;
 }
 
 .player.is-minimized {
