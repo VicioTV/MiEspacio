@@ -12,6 +12,12 @@ python -m http.server 4173
 
 Luego abrí `http://127.0.0.1:4173/`. El servidor es necesario para probar Web Audio; abrir `index.html` con `file://` deshabilita el ecualizador.
 
+## Modo TV
+
+Los navegadores Samsung Smart TV/Tizen activan automáticamente una interfaz musical para control remoto y abren el catálogo de canciones. La misma versión puede probarse desde una computadora agregando `?tv=1` a la URL, por ejemplo `http://127.0.0.1:4173/?tv=1#canciones`. Para desactivar una detección de TV puede usarse `?tv=0`.
+
+En el modo TV, las flechas desplazan el foco, OK/Enter reproduce, la tecla multimedia de reproducción/pausa controla el audio y Volver regresa al inicio. La experiencia normal de escritorio no cambia.
+
 ## Estructura
 
 - `index.html`: contenido y semántica de las cinco vistas.

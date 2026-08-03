@@ -17,13 +17,19 @@
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23020304'/%3E%3Cpath d='M17 21h30M17 32h22M17 43h30' stroke='%239df2df' stroke-width='5' stroke-linecap='square'/%3E%3C/svg%3E">
     <link rel="preload" href="assets/fonts/archivo-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="assets/fonts/bodoni-moda-latin.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="stylesheet" href="styles.css?v=20260803-complete-dossier">
+    <link rel="stylesheet" href="styles.css?v=20260803-tv-mode">
   </head>
   <body data-view="inicio">
     <script>
       (() => {
-        const route = location.hash.slice(1);
+        const tvOverride = new URLSearchParams(location.search).get("tv");
+        const isSamsungTv = /SMART-TV|Tizen|SamsungBrowser.*TV/i.test(navigator.userAgent);
+        const isTvMode = tvOverride === "1" || (tvOverride !== "0" && isSamsungTv);
+        const requestedRoute = location.hash.slice(1);
+        const route = requestedRoute || (isTvMode ? "canciones" : "inicio");
         const views = ["inicio", "canciones", "proyectos", "futuros", "imagenes", "videos"];
+        document.documentElement.classList.toggle("tv-mode", isTvMode);
+        document.body.dataset.device = isTvMode ? "tv" : "standard";
         document.body.dataset.view = views.includes(route) ? route : "inicio";
       })();
     </script>
@@ -88,6 +94,15 @@
 
 
         <div class="songs-main">
+          <div class="tv-masthead">
+            <p>Modo TV</p>
+            <div class="tv-remote-guide" aria-label="Ayuda del control remoto">
+              <span><kbd>← ↑ ↓ →</kbd> Navegar</span>
+              <span><kbd>OK</kbd> Reproducir</span>
+              <span><kbd>⏯</kbd> Pausa</span>
+              <span><kbd>Volver</kbd> Inicio</span>
+            </div>
+          </div>
           <header class="songs-heading">
             <div>
               <p class="eyebrow">Archivo sonoro / 01</p>
@@ -466,6 +481,6 @@
     </aside>
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
-    <script src="app.js?v=20260802-equalizer-cors"></script>
+    <script src="app.js?v=20260803-tv-mode"></script>
   </body>
 </html>

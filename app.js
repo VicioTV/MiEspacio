@@ -68,6 +68,7 @@ const trebleRange = document.querySelector("#trebleRange");
 const projectScrollControl = document.querySelector("#projectScrollControl");
 const projectScrollThumb = document.querySelector("#projectScrollThumb");
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+const isTvMode = document.documentElement.classList.contains("tv-mode");
 
 let projectScrollFrame = 0;
 
@@ -241,6 +242,88 @@ function scrollBehavior() {
   return reducedMotion.matches ? "auto" : "smooth";
 }
 
+function getTvFocusableElements() {
+  if (!isTvMode) return [];
+  const containers = [document.querySelector(".view.is-active")];
+  if (player.classList.contains("is-visible")) containers.push(player);
+
+  return containers
+    .filter(Boolean)
+    .flatMap((container) => [...container.querySelectorAll("button, a[href], input:not([disabled]), [tabindex]:not([tabindex='-1'])")])
+    .filter((element) => {
+      if (element.inert || element.closest("[inert]")) return false;
+      const styles = window.getComputedStyle(element);
+      const rect = element.getBoundingClientRect();
+      return styles.display !== "none" && styles.visibility !== "hidden" && rect.width > 0 && rect.height > 0;
+    });
+}
+
+function focusTvElement(element) {
+  if (!element) return;
+  element.focus({ preventScroll: true });
+  element.scrollIntoView({
+    behavior: scrollBehavior(),
+    block: "center",
+    inline: "nearest"
+  });
+}
+
+function focusInitialTvControl({ force = false } = {}) {
+  if (!isTvMode) return;
+  const focusableElements = getTvFocusableElements();
+  if (!focusableElements.length) return;
+  if (!force && focusableElements.includes(document.activeElement)) return;
+
+  const selectedSongButton = state.currentSong
+    ? songGrid.querySelector(`[data-play="${state.currentSong.id}"]`)
+    : null;
+  const firstSongButton = songGrid.querySelector("[data-play]");
+  focusTvElement(selectedSongButton || firstSongButton || focusableElements[0]);
+}
+
+function moveTvFocus(key) {
+  const focusableElements = getTvFocusableElements();
+  if (!focusableElements.length) return;
+
+  const activeElement = focusableElements.includes(document.activeElement)
+    ? document.activeElement
+    : null;
+  if (!activeElement) {
+    focusInitialTvControl({ force: true });
+    return;
+  }
+
+  const vectors = {
+    ArrowLeft: [-1, 0],
+    ArrowRight: [1, 0],
+    ArrowUp: [0, -1],
+    ArrowDown: [0, 1]
+  };
+  const [directionX, directionY] = vectors[key];
+  const sourceRect = activeElement.getBoundingClientRect();
+  const sourceX = sourceRect.left + sourceRect.width / 2;
+  const sourceY = sourceRect.top + sourceRect.height / 2;
+
+  const candidates = focusableElements
+    .filter((element) => element !== activeElement)
+    .map((element) => {
+      const rect = element.getBoundingClientRect();
+      const deltaX = rect.left + rect.width / 2 - sourceX;
+      const deltaY = rect.top + rect.height / 2 - sourceY;
+      const primaryDistance = directionX ? deltaX * directionX : deltaY * directionY;
+      const crossDistance = Math.abs(directionX ? deltaY : deltaX);
+      return { element, primaryDistance, crossDistance };
+    })
+    .filter(({ primaryDistance }) => primaryDistance > 8)
+    .sort((a, b) => {
+      const aScore = a.primaryDistance + a.crossDistance * 2.4;
+      const bScore = b.primaryDistance + b.crossDistance * 2.4;
+      return aScore - bScore;
+    });
+
+  focusTvElement(candidates[0]?.element);
+}
+
 function updateProjectScrollControl() {
   const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
   const isVisible = document.body.dataset.view !== "inicio" && window.innerWidth > 940 && maxScroll > 2;
@@ -280,6 +363,7 @@ function formatTime(seconds) {
 }
 
 function renderSongs() {
+  const focusedSongId = isTvMode ? Number(document.activeElement?.dataset?.play) : NaN;
   const orderedSongs = state.sort === "title"
     ? [...songs].sort((a, b) => a.title.localeCompare(b.title, "es"))
     : [...songs];
@@ -290,7 +374,7 @@ function renderSongs() {
     return `
       <article class="song-card${isActive ? " is-active" : ""}${isPlaying ? " is-playing" : ""}" data-song-id="${song.id}">
         <button class="cover-button" type="button" data-play="${song.id}" aria-label="${isPlaying ? "Pausar" : "Reproducir"} ${song.title}">
-          <img class="cover-art" src="${encodeURI(song.cover)}" srcset="${encodeURI(song.cover)} 360w, ${encodeURI(song.coverLarge)} 720w" sizes="(max-width: 620px) calc((100vw - 42px) / 2), (max-width: 940px) calc((100vw - 68px) / 3), (max-width: 1280px) 18vw, 14vw" alt="Portada de ${song.title}" width="360" height="540" loading="lazy" decoding="async" fetchpriority="low">
+          <img class="cover-art" src="${encodeURI(song.cover)}" srcset="${encodeURI(song.cover)} 360w, ${encodeURI(song.coverLarge)} 720w" sizes="(max-width: 620px) calc((100vw - 42px) / 2), (max-width: 940px) calc((100vw - 68px) / 3), (max-width: 1280px) 18vw, 14vw" alt="Portada de ${song.title}" width="360" height="540" loading="${isTvMode && index < 12 ? "eager" : "lazy"}" decoding="async" fetchpriority="${isTvMode && index < 6 ? "high" : "low"}">
           <span class="cover-fallback" aria-hidden="true">Portada no disponible</span>
           <span class="equalizer" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
           <span class="play-pill" aria-hidden="true">${isPlaying ? "Ⅱ" : "▶"}</span>
@@ -304,6 +388,9 @@ function renderSongs() {
     `;
   }).join("");
 
+  if (Number.isFinite(focusedSongId)) {
+    window.requestAnimationFrame(() => focusTvElement(songGrid.querySelector(`[data-play="${focusedSongId}"]`)));
+  }
 }
 
 songGrid.addEventListener("error", (event) => {
@@ -352,6 +439,7 @@ function navigate(route, { historyMode = "replace", moveFocus = false } = {}) {
   window.requestAnimationFrame(() => window.requestAnimationFrame(() => {
     window.scrollTo({ top: 0, behavior: "auto" });
     requestProjectScrollUpdate();
+    if (isTvMode) focusInitialTvControl({ force: moveFocus });
   }));
 }
 
@@ -681,6 +769,55 @@ document.querySelector("#shareButton").addEventListener("click", async () => {
 
 window.addEventListener("popstate", () => navigate(location.hash.slice(1) || "inicio", { historyMode: "none", moveFocus: false }));
 window.addEventListener("keydown", (event) => {
+  if (isTvMode) {
+    const keyCode = event.keyCode || event.which;
+    const isBackKey = event.key === "Escape" || event.key === "BrowserBack" || event.key === "GoBack" || keyCode === 10009;
+    const mediaActions = {
+      MediaPlayPause: () => togglePlayback(),
+      MediaPlay: () => state.currentSong ? playAudio() : selectSong(songs[0].id, true),
+      MediaPause: () => pauseAudio(),
+      MediaTrackPrevious: () => playAdjacent(-1),
+      MediaTrackNext: () => playAdjacent(1)
+    };
+    const mediaCodeActions = {
+      19: () => pauseAudio(),
+      176: () => playAdjacent(1),
+      177: () => playAdjacent(-1),
+      415: () => state.currentSong ? playAudio() : selectSong(songs[0].id, true),
+      10252: () => togglePlayback()
+    };
+    const mediaAction = mediaActions[event.key] || mediaCodeActions[keyCode];
+
+    if (mediaAction) {
+      event.preventDefault();
+      mediaAction();
+      updatePlayer();
+      return;
+    }
+
+    if (isBackKey) {
+      event.preventDefault();
+      if (equalizerPanel.classList.contains("is-open")) {
+        setEqualizerOpen(false);
+      } else if (document.body.dataset.view !== "inicio") {
+        navigate("inicio", { historyMode: "push", moveFocus: true });
+      }
+      return;
+    }
+
+    if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(event.key)) {
+      const activeElement = document.activeElement;
+      const isHorizontalRange = activeElement instanceof HTMLInputElement
+        && activeElement.type === "range"
+        && (event.key === "ArrowLeft" || event.key === "ArrowRight");
+      if (!isHorizontalRange) {
+        event.preventDefault();
+        moveTvFocus(event.key);
+        return;
+      }
+    }
+  }
+
   const activeElement = document.activeElement;
   const isInteractive = activeElement?.closest?.("button, a, input, textarea, select, [contenteditable='true']");
   if (event.code === "Space" && state.currentSong && !isInteractive) {
@@ -692,4 +829,17 @@ window.addEventListener("keydown", (event) => {
   }
 });
 
-navigate(location.hash.slice(1) || "inicio", { historyMode: "replace" });
+if (isTvMode && window.tizen?.tvinputdevice) {
+  try {
+    window.tizen.tvinputdevice.registerKeyBatch([
+      "MediaPlayPause",
+      "MediaPlay",
+      "MediaPause",
+      "MediaTrackPrevious",
+      "MediaTrackNext"
+    ]);
+  } catch {}
+}
+
+const initialRoute = location.hash.slice(1) || (isTvMode ? "canciones" : "inicio");
+navigate(initialRoute, { historyMode: "replace" });
