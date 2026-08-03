@@ -349,7 +349,10 @@ function navigate(route, { historyMode = "replace", moveFocus = false } = {}) {
     }
   }
 
-  window.requestAnimationFrame(() => window.requestAnimationFrame(requestProjectScrollUpdate));
+  window.requestAnimationFrame(() => window.requestAnimationFrame(() => {
+    window.scrollTo({ top: 0, behavior: "auto" });
+    requestProjectScrollUpdate();
+  }));
 }
 
 async function selectSong(songId, shouldPlay = true) {

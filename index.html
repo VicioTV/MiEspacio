@@ -17,7 +17,7 @@
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23020304'/%3E%3Cpath d='M17 21h30M17 32h22M17 43h30' stroke='%239df2df' stroke-width='5' stroke-linecap='square'/%3E%3C/svg%3E">
     <link rel="preload" href="assets/fonts/archivo-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="assets/fonts/bodoni-moda-latin.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="stylesheet" href="styles.css?v=20260802-player-fix">
+    <link rel="stylesheet" href="styles.css?v=20260803-complete-dossier">
   </head>
   <body data-view="inicio">
     <script>
@@ -106,191 +106,315 @@
         </div>
       </section>
 
-      <section class="view projects-view" id="proyectos" aria-labelledby="projectsTitle">
-        <header class="projects-heading">
+      <section class="view tech-dossier-view projects-view" id="proyectos" aria-labelledby="projectsTitle">
+        <header class="tech-section-header">
           <button class="back-button" type="button" data-route="inicio" aria-label="Volver al inicio">←</button>
-          <div>
-            <p class="eyebrow">Trabajo / 02</p>
-            <h2 id="projectsTitle">Productos que construí.</h2>
+          <div class="tech-heading-copy">
+            <p class="eyebrow">Portfolio técnico / Sistemas entregados</p>
+            <h2 id="projectsTitle">Sistemas que llegan<br>a producción.</h2>
+            <p>No construimos pantallas aisladas. Diseñamos productos conectados con operaciones reales: catálogo, stock, ventas, audio, contenido, APIs e infraestructura.</p>
           </div>
-          <p>De la necesidad al sistema: estrategia, diseño, código y evolución.</p>
+          <dl class="tech-heading-metrics">
+            <div><dt>Lenguajes</dt><dd>HTML · CSS · JavaScript · TypeScript · SQL</dd></div>
+            <div><dt>Frameworks</dt><dd>Next.js · React · React Native · Electron · Fastify</dd></div>
+            <div><dt>Infraestructura</dt><dd>Vercel · GitHub Pages · Cloudflare R2 · PostgreSQL</dd></div>
+            <div><dt>Superficies</dt><dd>Web · Móvil · Escritorio · Audio · Video</dd></div>
+          </dl>
         </header>
 
-        <div class="project-list">
-          <article class="project-case project-case-visual project-iphone">
-            <div class="project-media" aria-hidden="true">
-              <img src="assets/projects/iphone-store.webp" alt="" width="950" height="700" loading="lazy" decoding="async">
-              <span class="project-media-word"><span>iPhone Store</span><span>Río Ceballos</span></span>
-            </div>
-            <span class="project-number">01</span>
-            <div class="project-content-panel">
-              <div class="project-copy">
-                <p class="project-type">Comercio digital · Producto full-stack</p>
+        <div class="tech-capability-rail">
+          <span>01 / Descubrimiento</span><span>02 / Arquitectura</span><span>03 / Implementación</span><span>04 / Validación</span><span>05 / Evolución</span>
+        </div>
+
+        <div class="tech-case-list">
+          <article class="tech-case">
+            <header class="tech-case-header">
+              <span class="tech-case-index">CASE_01</span>
+              <p class="tech-case-status"><span aria-hidden="true"></span>Producción</p>
+            </header>
+            <div class="tech-case-grid">
+              <figure class="tech-case-media">
+                <img src="assets/projects/iphone-store.webp" alt="Catálogo de iPhone Store Río Ceballos mostrado en distintos dispositivos" width="950" height="700" loading="lazy" decoding="async">
+                <figcaption>Retail digital / Catálogo conectado</figcaption>
+              </figure>
+              <div class="tech-case-body">
+                <p class="tech-kicker">Comercio digital · Producto full-stack</p>
                 <h3>iPhone Store<br>Río Ceballos</h3>
-                <p>Catálogo comercial con disponibilidad, filtros, cotización y consultas conectadas a la operación diaria.</p>
-              </div>
-              <div class="project-meta">
-                <p class="project-stack">Next.js · React · TypeScript · API propia</p>
-                <a class="project-link" href="https://www.iphonerc.com/" target="_blank" rel="noopener noreferrer" aria-label="Abrir iPhone Store Río Ceballos en una pestaña nueva">Ver proyecto ↗</a>
-              </div>
-            </div>
-          </article>
-
-          <article class="project-case project-case-visual project-orange">
-            <div class="project-media" aria-hidden="true">
-              <img src="assets/projects/orangepepper-optimized.webp" alt="" width="1200" height="751" loading="lazy" decoding="async">
-              <span class="project-media-word">OrangePepper</span>
-            </div>
-            <span class="project-number">02</span>
-            <div class="project-content-panel">
-              <div class="project-copy">
-                <p class="project-type">Identidad digital · Experiencia comercial</p>
-                <h3>Orange Pepper</h3>
-                <p>Una experiencia para explicar una propuesta compleja sin perder precisión, movimiento ni carácter.</p>
-              </div>
-              <div class="project-meta">
-                <p class="project-stack">HTML · CSS · JavaScript · GSAP</p>
-                <a class="project-link" href="https://viciotv.github.io/OrangePepper/" target="_blank" rel="noopener noreferrer" aria-label="Abrir Orange Pepper en una pestaña nueva">Ver proyecto ↗</a>
+                <p class="tech-case-summary">Una plataforma comercial conectada con la operación diaria. Organiza modelos, disponibilidad, precios y servicio técnico; reduce fricción en la consulta y convierte cada selección en una conversación de venta con contexto.</p>
+                <div class="tech-challenge-grid">
+                  <section><span>01</span><h4>Catálogo vivo</h4><p>Normalización de datos, filtros, comparación de modelos y lectura consistente de stock y precios.</p></section>
+                  <section><span>02</span><h4>Conversión</h4><p>Consultas y pedidos enviados por WhatsApp con el producto y la intención ya estructurados.</p></section>
+                  <section><span>03</span><h4>Operación</h4><p>Integración de datos comerciales y de servicio mediante API propia y fuentes administrables.</p></section>
+                </div>
+                <dl class="tech-facts">
+                  <div><dt>Frontend</dt><dd>Next.js · React · TypeScript</dd></div>
+                  <div><dt>Integraciones</dt><dd>API propia · Google Sheets · WhatsApp</dd></div>
+                  <div><dt>Entrega</dt><dd>Vercel · Responsive · Activos optimizados</dd></div>
+                </dl>
+                <a class="tech-action" href="https://www.iphonerc.com/" target="_blank" rel="noopener noreferrer">Explorar producto <span aria-hidden="true">↗</span></a>
               </div>
             </div>
           </article>
 
-          <article class="project-case project-case-visual project-vicio">
-            <div class="project-media" aria-hidden="true">
-              <img src="assets/projects/viciotv-screen.webp" alt="" width="1200" height="805" loading="lazy" decoding="async">
-            </div>
-            <span class="project-number">03</span>
-            <div class="project-content-panel">
-              <div class="project-copy">
-                <p class="project-type">Aplicación audiovisual</p>
-                <h3>VicioTV</h3>
-                <p>Aplicación con perfiles, descubrimiento, favoritos, persistencia y reproducción integrada.</p>
-              </div>
-              <div class="project-meta">
-                <p class="project-stack">Next.js · React · TypeScript · Tailwind</p>
-                <a class="project-link" href="https://viciotv.github.io/viciotv/" target="_blank" rel="noopener noreferrer" aria-label="Abrir VicioTV en una pestaña nueva">Ver proyecto ↗</a>
-              </div>
-            </div>
-          </article>
-
-          <article class="project-case project-case-visual project-continuum">
-            <div class="project-media" aria-hidden="true">
-              <img src="assets/projects/continuum-screen.webp" alt="" width="1200" height="765" loading="lazy" decoding="async">
-            </div>
-            <span class="project-number">04</span>
-            <div class="project-content-panel">
-              <div class="project-copy">
-                <p class="project-type">Televisión en vivo · Experiencia global</p>
-                <h3>VicioTV CONTINUUM</h3>
-                <p>Exploración de canales de televisión en vivo de todo el mundo, sin suscripción y sin necesidad de iniciar sesión.</p>
-              </div>
-              <div class="project-meta">
-                <p class="project-stack">HTML · CSS · JavaScript · HLS.js</p>
-                <a class="project-link" href="https://creador100k.github.io/ViceandoTV/" target="_blank" rel="noopener noreferrer" aria-label="Abrir VicioTV Continuum en una pestaña nueva">Ver proyecto ↗</a>
+          <article class="tech-case">
+            <header class="tech-case-header">
+              <span class="tech-case-index">CASE_02</span>
+              <p class="tech-case-status"><span aria-hidden="true"></span>Producción</p>
+            </header>
+            <div class="tech-case-grid is-reversed">
+              <figure class="tech-case-media is-device">
+                <img src="assets/projects/iphone-mayorista.webp" alt="Línea de iPhone disponibles en el configurador mayorista" width="1200" height="800" loading="lazy" decoding="async">
+                <figcaption>B2B / Configurador comercial</figcaption>
+              </figure>
+              <div class="tech-case-body">
+                <p class="tech-kicker">Venta mayorista · Lógica comercial</p>
+                <h3>iPhone Store<br>Mayorista</h3>
+                <p class="tech-case-summary">Un configurador B2B que transforma una lista compleja de variantes en un pedido preciso: modelo, color, cantidad, disponibilidad, total y condición de pago quedan resueltos antes de abrir WhatsApp.</p>
+                <div class="tech-challenge-grid">
+                  <section><span>01</span><h4>Inventario</h4><p>Stock por modelo y color, con límites de cantidad ligados a cada combinación disponible.</p></section>
+                  <section><span>02</span><h4>Cálculo</h4><p>Actualización inmediata del total y aplicación verificable del descuento para pagos en USDT.</p></section>
+                  <section><span>03</span><h4>Pedido</h4><p>Composición automática de un mensaje comercial completo, legible y listo para confirmar.</p></section>
+                </div>
+                <dl class="tech-facts">
+                  <div><dt>Base</dt><dd>HTML semántico · CSS responsive</dd></div>
+                  <div><dt>Lógica</dt><dd>JavaScript · Estado · Cálculo de precios</dd></div>
+                  <div><dt>Canal</dt><dd>Vercel · Deep links de WhatsApp</dd></div>
+                </dl>
+                <a class="tech-action" href="https://www.iphonerc.com/mayorista" target="_blank" rel="noopener noreferrer">Abrir mayorista <span aria-hidden="true">↗</span></a>
               </div>
             </div>
           </article>
 
-          <article class="project-case project-case-visual project-case-featured project-creador">
-            <div class="project-media project-media-type" aria-hidden="true">
-              <span>Problema</span>
-              <span>Sistema</span>
-              <span>Producto</span>
-              <span>Evolución</span>
-            </div>
-            <span class="project-number">05</span>
-            <div class="project-content-panel">
-              <div class="project-copy">
-                <p class="project-type">Ingeniería de producto digital</p>
-                <h3>Creador100K</h3>
-                <p>Mi enfoque para transformar problemas complejos de negocio en software claro, confiable y mantenible.</p>
-              </div>
-              <div class="project-meta">
-                <p class="project-stack">Estrategia · Arquitectura · Producto · Evolución</p>
-                <a class="project-link" href="https://creador100k.vercel.app/" target="_blank" rel="noopener noreferrer" aria-label="Abrir Creador100K en una pestaña nueva">Ver enfoque ↗</a>
+          <article class="tech-case">
+            <header class="tech-case-header">
+              <span class="tech-case-index">CASE_03</span>
+              <p class="tech-case-status"><span aria-hidden="true"></span>En línea</p>
+            </header>
+            <div class="tech-case-grid">
+              <figure class="tech-case-media is-music">
+                <img src="assets/projects/miespacio-music.webp" alt="Selección de portadas del catálogo musical de MiEspacio" width="1200" height="750" loading="lazy" decoding="async">
+                <figcaption>Streaming / Experiencia Web Audio</figcaption>
+              </figure>
+              <div class="tech-case-body">
+                <p class="tech-kicker">Producto musical · Audio en la web</p>
+                <h3>MiEspacio<br>Música</h3>
+                <p class="tech-case-summary">Una biblioteca de 17 lanzamientos con reproducción persistente, navegación por estados y procesamiento de audio en tiempo real. La interfaz coordina catálogo, streaming remoto y ecualización sin abandonar el navegador.</p>
+                <div class="tech-challenge-grid">
+                  <section><span>01</span><h4>Reproductor</h4><p>Estado sincronizado entre pista activa, controles, progreso, volumen y navegación del sitio.</p></section>
+                  <section><span>02</span><h4>Audio</h4><p>Grafo de Web Audio API, ecualizador y streaming desde R2 con CORS y solicitudes por rangos.</p></section>
+                  <section><span>03</span><h4>Rendimiento</h4><p>Portadas WebP responsivas, carga diferida y una experiencia accesible en múltiples tamaños.</p></section>
+                </div>
+                <dl class="tech-facts">
+                  <div><dt>Cliente</dt><dd>HTML · CSS · JavaScript</dd></div>
+                  <div><dt>Motor</dt><dd>Web Audio API · Audio HTML5</dd></div>
+                  <div><dt>Infraestructura</dt><dd>Cloudflare R2 · GitHub Pages</dd></div>
+                </dl>
+                <button class="tech-action" type="button" data-route="canciones">Escuchar catálogo <span aria-hidden="true">↗</span></button>
               </div>
             </div>
           </article>
         </div>
+
+        <section class="tech-expanded-cases" aria-labelledby="expandedCasesTitle">
+          <header class="tech-expanded-heading">
+            <p class="eyebrow">Sistemas entregados / 04–07</p>
+            <h3 id="expandedCasesTitle">Más trabajo.<br>El mismo rigor.</h3>
+            <p>Cuatro productos adicionales presentados con la misma profundidad: propósito, decisiones de arquitectura, complejidad resuelta y tecnología aplicada.</p>
+          </header>
+
+          <div class="tech-case-list">
+            <article class="tech-case">
+              <header class="tech-case-header">
+                <span class="tech-case-index">CASE_04</span>
+                <p class="tech-case-status"><span aria-hidden="true"></span>Producción</p>
+              </header>
+              <div class="tech-case-grid is-reversed">
+                <figure class="tech-case-media is-orange">
+                  <img src="assets/projects/orangepepper-optimized.webp" alt="Experiencia visual del sitio de coctelería Orange Pepper" width="1200" height="751" loading="lazy" decoding="async">
+                  <figcaption>Identidad digital / Narrativa en movimiento</figcaption>
+                </figure>
+                <div class="tech-case-body">
+                  <p class="tech-kicker">Experiencia comercial · Dirección de arte web</p>
+                  <h3>Orange<br>Pepper</h3>
+                  <p class="tech-case-summary">Una landing inmersiva para una barra móvil y coctelería de autor. La experiencia convierte temporadas, ingredientes, servicio y personalidad de marca en una narración visual continua, sin depender de un framework ni de un proceso de compilación.</p>
+                  <div class="tech-challenge-grid">
+                    <section><span>01</span><h4>Narrativa</h4><p>Arquitectura de contenido por estaciones, filosofía, categorías, servicio y contacto.</p></section>
+                    <section><span>02</span><h4>Movimiento</h4><p>GSAP y ScrollTrigger coordinan revelados, transiciones y elementos flotantes con el desplazamiento.</p></section>
+                    <section><span>03</span><h4>Resiliencia</h4><p>Fallbacks progresivos, actualización de medidas y tratamiento específico para movimiento reducido.</p></section>
+                  </div>
+                  <dl class="tech-facts">
+                    <div><dt>Base</dt><dd>HTML · CSS · JavaScript</dd></div>
+                    <div><dt>Movimiento</dt><dd>GSAP · ScrollTrigger · Lottie · Swiper</dd></div>
+                    <div><dt>Entrega</dt><dd>GitHub Pages · Sin build · Responsive</dd></div>
+                  </dl>
+                  <a class="tech-action" href="https://viciotv.github.io/OrangePepper/" target="_blank" rel="noopener noreferrer">Explorar experiencia <span aria-hidden="true">↗</span></a>
+                </div>
+              </div>
+            </article>
+
+            <article class="tech-case">
+              <header class="tech-case-header">
+                <span class="tech-case-index">CASE_05</span>
+                <p class="tech-case-status"><span aria-hidden="true"></span>En línea</p>
+              </header>
+              <div class="tech-case-grid">
+                <figure class="tech-case-media is-vicio">
+                  <img src="assets/projects/viciotv-screen.webp" alt="Pantalla principal de descubrimiento de contenido en VicioTV" width="1200" height="805" loading="lazy" decoding="async">
+                  <figcaption>PWA audiovisual / Perfiles y descubrimiento</figcaption>
+                </figure>
+                <div class="tech-case-body">
+                  <p class="tech-kicker">Aplicación audiovisual · Producto instalable</p>
+                  <h3>VicioTV</h3>
+                  <p class="tech-case-summary">Una experiencia de descubrimiento para películas, series y anime con perfiles independientes. Integra metadatos remotos, favoritos, historial y continuidad de reproducción dentro de una aplicación web instalable.</p>
+                  <div class="tech-challenge-grid">
+                    <section><span>01</span><h4>Descubrimiento</h4><p>Datos de TMDB organizados en carruseles, búsqueda, tendencias, detalle y navegación contextual.</p></section>
+                    <section><span>02</span><h4>Persistencia</h4><p>Favoritos, progreso y “Continuar viendo” aislados por perfil mediante almacenamiento local.</p></section>
+                    <section><span>03</span><h4>Aplicación</h4><p>Manifest, service worker y estrategias de red y caché convierten el sitio en una PWA.</p></section>
+                  </div>
+                  <dl class="tech-facts">
+                    <div><dt>Cliente</dt><dd>HTML · CSS · JavaScript</dd></div>
+                    <div><dt>Datos</dt><dd>TMDB API · Proveedores · DiceBear</dd></div>
+                    <div><dt>Plataforma</dt><dd>PWA · Service Worker · Web Storage</dd></div>
+                  </dl>
+                  <a class="tech-action" href="https://viciotv.github.io/viciotv/" target="_blank" rel="noopener noreferrer">Abrir VicioTV <span aria-hidden="true">↗</span></a>
+                </div>
+              </div>
+            </article>
+
+            <article class="tech-case">
+              <header class="tech-case-header">
+                <span class="tech-case-index">CASE_06</span>
+                <p class="tech-case-status"><span aria-hidden="true"></span>En línea</p>
+              </header>
+              <div class="tech-case-grid is-reversed">
+                <figure class="tech-case-media is-continuum">
+                  <img src="assets/projects/continuum-screen.webp" alt="Explorador de canales internacionales de VicioTV CONTINUUM" width="1200" height="765" loading="lazy" decoding="async">
+                  <figcaption>Televisión global / Pipeline de datos</figcaption>
+                </figure>
+                <div class="tech-case-body">
+                  <p class="tech-kicker">Televisión en vivo · Catálogo mundial</p>
+                  <h3>VicioTV<br>CONTINUUM</h3>
+                  <p class="tech-case-summary">Un navegador de televisión abierta que organiza más de 10.000 señales internacionales. Un pipeline diario procesa fuentes públicas, genera índices livianos y entrega datos estáticos listos para búsqueda y reproducción HLS.</p>
+                  <div class="tech-challenge-grid">
+                    <section><span>01</span><h4>Datos</h4><p>Python combina canales, streams, guías, países y categorías; elimina señales cerradas y contenido no apto.</p></section>
+                    <section><span>02</span><h4>Índices</h4><p>Cachés especializados reducen el peso inicial y aceleran filtros por país, categoría y texto.</p></section>
+                    <section><span>03</span><h4>Reproducción</h4><p>HLS.js administra manifiestos, errores de señal y compatibilidad dentro del reproductor web.</p></section>
+                  </div>
+                  <dl class="tech-facts">
+                    <div><dt>Frontend</dt><dd>HTML · CSS · JavaScript · HLS.js</dd></div>
+                    <div><dt>Pipeline</dt><dd>Python · GitHub Actions · JSON estático</dd></div>
+                    <div><dt>Datos</dt><dd>iptv-org API · Actualización diaria</dd></div>
+                  </dl>
+                  <a class="tech-action" href="https://creador100k.github.io/ViceandoTV/" target="_blank" rel="noopener noreferrer">Explorar señales <span aria-hidden="true">↗</span></a>
+                </div>
+              </div>
+            </article>
+
+            <article class="tech-case">
+              <header class="tech-case-header">
+                <span class="tech-case-index">CASE_07</span>
+                <p class="tech-case-status"><span aria-hidden="true"></span>Producción</p>
+              </header>
+              <div class="tech-case-grid">
+                <figure class="tech-case-media is-creador">
+                  <div class="creador-system-cover" aria-hidden="true">
+                    <span>Problema</span><i>→</i><span>Criterio</span><i>→</i><span>Sistema</span><i>→</i><strong>Producto</strong>
+                  </div>
+                  <figcaption>Ingeniería de producto / Método y arquitectura</figcaption>
+                </figure>
+                <div class="tech-case-body">
+                  <p class="tech-kicker">Ingeniería de producto digital · Portfolio estratégico</p>
+                  <h3>Creador<br>100K</h3>
+                  <p class="tech-case-summary">Un sitio que explica cómo transformamos problemas ambiguos en software mantenible. La arquitectura editorial conecta contexto, decisiones, capacidades y evidencia técnica sin ocultar la complejidad del proceso.</p>
+                  <div class="tech-challenge-grid">
+                    <section><span>01</span><h4>Modelo</h4><p>El contenido traduce descubrimiento, límites y arquitectura en un recorrido comprensible.</p></section>
+                    <section><span>02</span><h4>Renderizado</h4><p>Server Components conservan el contenido esencial; la capa cliente aísla interacción y movimiento.</p></section>
+                    <section><span>03</span><h4>Escalabilidad</h4><p>Componentes tipados, rutas modernas y renderizado híbrido sostienen rendimiento y evolución.</p></section>
+                  </div>
+                  <dl class="tech-facts">
+                    <div><dt>Core</dt><dd>Next.js 16 · React 19 · TypeScript</dd></div>
+                    <div><dt>Interfaz</dt><dd>Tailwind CSS 4 · GSAP · Lucide React</dd></div>
+                    <div><dt>Arquitectura</dt><dd>App Router · SSR y CSR · Vercel</dd></div>
+                  </dl>
+                  <a class="tech-action" href="https://creador100k.vercel.app/" target="_blank" rel="noopener noreferrer">Conocer el enfoque <span aria-hidden="true">↗</span></a>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
       </section>
 
-      <section class="view future-view" id="futuros" aria-labelledby="futureTitle">
-        <header class="future-heading">
+      <section class="view tech-dossier-view future-view" id="futuros" aria-labelledby="futureTitle">
+        <header class="tech-section-header">
           <button class="back-button" type="button" data-route="inicio" aria-label="Volver al inicio">←</button>
-          <div>
-            <p class="eyebrow">En construcción / 03</p>
-            <h2 id="futureTitle">Lo próximo ya empezó.</h2>
+          <div class="tech-heading-copy">
+            <p class="eyebrow">Laboratorio / Sistemas en construcción</p>
+            <h2 id="futureTitle">Lo complejo<br>ya está en marcha.</h2>
+            <p>Productos de largo alcance construidos por capas: primero el dominio, después la arquitectura y, sobre fundamentos verificables, la experiencia final.</p>
           </div>
-          <p>Proyectos de largo alcance que todavía están creciendo, con su arquitectura, alcance y estado real.</p>
+          <dl class="tech-heading-metrics">
+            <div><dt>Método</dt><dd>Iteraciones pequeñas · Decisiones documentadas</dd></div>
+            <div><dt>Calidad</dt><dd>Pruebas de dominio · Validación visual · Perfiles de rendimiento</dd></div>
+            <div><dt>Arquitectura</dt><dd>Monorepos · Paquetes compartidos · Pipelines deterministas</dd></div>
+            <div><dt>Estado</dt><dd>Avance real · Riesgos visibles · Próximo hito explícito</dd></div>
+          </dl>
         </header>
 
-        <article class="future-project">
-          <div class="future-hero">
-            <img src="assets/projects/kick57.webp" alt="Identidad visual de KICK57" width="1200" height="900" loading="lazy" decoding="async">
-            <div class="future-hero-copy">
-              <p class="project-type">Plataforma deportiva · Producto en desarrollo</p>
-              <h3>KICK57</h3>
-              <p>Un sistema integral para administrar la vida de un club de fútbol 5 y 7, desde la reserva hasta el partido, el pago y la comunidad.</p>
+        <div class="future-dossier-list">
+          <article class="future-dossier">
+            <header class="tech-case-header">
+              <span class="tech-case-index">BUILD_01</span>
+              <p class="tech-case-status is-building"><span aria-hidden="true"></span>Fase 1</p>
+            </header>
+            <div class="future-dossier-hero">
+              <img src="assets/projects/kick57.webp" alt="Identidad visual de la plataforma deportiva KICK57" width="1200" height="900" loading="lazy" decoding="async">
+              <div><p class="tech-kicker">Plataforma deportiva · Monorepo</p><h3>KICK57</h3><p>Un sistema integral para administrar la vida de un club de fútbol 5 y 7. Une reservas, ocupación de canchas, participantes, pagos y comunidad bajo un mismo dominio.</p></div>
             </div>
-          </div>
-
-          <div class="future-overview">
-            <div>
-              <p class="eyebrow">Visión del producto</p>
-              <h3>Una operación.<br>Cuatro superficies.</h3>
+            <div class="future-architecture">
+              <div class="future-dossier-intro"><p class="eyebrow">Arquitectura del producto</p><h4>Una operación.<br>Cuatro superficies.</h4><p>La web administrativa, la web de jugadores y la aplicación móvil consumen una API central. Las reglas críticas viven en paquetes compartidos y persisten en una única fuente de verdad.</p></div>
+              <ol class="architecture-flow" aria-label="Arquitectura de KICK57">
+                <li><span>Clientes</span><strong>Next.js Admin<br>Next.js Player<br>React Native + Expo</strong></li>
+                <li aria-hidden="true">→</li>
+                <li><span>Servicios</span><strong>Fastify API<br>Dominio compartido</strong></li>
+                <li aria-hidden="true">→</li>
+                <li><span>Datos</span><strong>PostgreSQL<br>Prisma ORM</strong></li>
+              </ol>
             </div>
-            <p>La experiencia reúne una app móvil para jugadores, una web complementaria, un panel de administración de escritorio y una API central. Todas comparten las mismas reglas de negocio y una única base de datos.</p>
-          </div>
-
-          <ul class="future-capabilities" aria-label="Alcance de KICK57">
-            <li><article>
-              <span>01</span>
-              <h4>Partidos y canchas</h4>
-              <p>Reservas por hora, formatos F5 y F7, cupos, equipos, profesores, torneos y control de solapamientos.</p>
-            </article></li>
-            <li><article>
-              <span>02</span>
-              <h4>Pagos y operación</h4>
-              <p>Señas, pagos totales, Mercado Pago, cancelaciones, reembolsos con trazabilidad, caja y arqueo.</p>
-            </article></li>
-            <li><article>
-              <span>03</span>
-              <h4>Cantina</h4>
-              <p>Productos, stock, pedidos en tiempo real, promociones y reglas comerciales configurables.</p>
-            </article></li>
-            <li><article>
-              <span>04</span>
-              <h4>Comunidad</h4>
-              <p>Perfiles, actividad, chats, invitaciones, historial de partidos y sistema de valoración.</p>
-            </article></li>
-          </ul>
-
-          <div class="future-progress">
-            <div>
-              <p class="eyebrow">Estado actual</p>
-              <h3>Fundaciones e identidad.</h3>
-              <p>El monorepo, la arquitectura de aplicaciones, las reglas centrales del dominio y la primera fase de identidad ya están definidos e implementados.</p>
+            <div class="future-module-grid">
+              <section><span>01 / Dominio</span><h4>Reglas antes que pantallas</h4><p>Ocupación F5 y F7, precios, cancelaciones e invariantes expresadas como código comprobable.</p></section>
+              <section><span>02 / Identidad</span><h4>Acceso consistente</h4><p>Normalización de teléfono y correo, roles, etiquetas y cambio obligatorio de contraseña.</p></section>
+              <section><span>03 / Datos</span><h4>Modelo trazable</h4><p>Partidos, canchas ocupadas, participantes y estados de pago relacionados desde Prisma.</p></section>
+              <section><span>04 / Próximo hito</span><h4>Autenticación real</h4><p>Hash y persistencia de credenciales, endpoints de acceso, recuperación y primeras pantallas funcionales.</p></section>
             </div>
-            <ol>
-              <li class="is-done"><span>01</span>Arquitectura y dominio</li>
-              <li class="is-active"><span>02</span>Identidad y roles</li>
-              <li><span>03</span>Canchas y calendario</li>
-              <li><span>04</span>Partidos y reservas</li>
-              <li><span>05</span>Pagos, cantina y comunidad</li>
-            </ol>
-          </div>
+            <div class="build-progress">
+              <div><p class="eyebrow">Estado verificado</p><h4>Fundaciones firmes.<br>Alcance transparente.</h4><p>La arquitectura, el dominio y sus pruebas están implementados. La identidad base avanza; autenticación, reservas, pagos y comunidad todavía son hitos de producto.</p></div>
+              <ol><li class="is-done"><span>01</span>Arquitectura y monorepo</li><li class="is-done"><span>02</span>Dominio y pruebas</li><li class="is-active"><span>03</span>Identidad base</li><li><span>04</span>Autenticación y persistencia</li><li><span>05</span>Reservas, pagos y comunidad</li></ol>
+            </div>
+            <footer class="tech-tags" aria-label="Tecnologías de KICK57"><span>TypeScript</span><span>Next.js</span><span>React Native</span><span>Expo</span><span>Fastify</span><span>PostgreSQL</span><span>Prisma</span><span>Jest</span></footer>
+          </article>
 
-          <footer class="future-stack">
-            <span>Next.js</span>
-            <span>React Native</span>
-            <span>Expo</span>
-            <span>Fastify</span>
-            <span>PostgreSQL</span>
-            <span>Prisma</span>
-            <span>WebSocket</span>
-            <span>Mercado Pago</span>
-          </footer>
-        </article>
+          <article class="future-dossier visual-studio-dossier">
+            <header class="tech-case-header">
+              <span class="tech-case-index">BUILD_02</span>
+              <p class="tech-case-status is-building"><span aria-hidden="true"></span>v0.44</p>
+            </header>
+            <div class="future-dossier-hero is-studio">
+              <img src="assets/projects/visual-studio-c100k.webp" alt="Interfaz de edición audiovisual de Visual Studio C100K" width="1200" height="675" loading="lazy" decoding="async">
+              <div><p class="tech-kicker">Aplicación de escritorio · Motor audiovisual</p><h3>VISUAL STUDIO<br>C100K</h3><p>Un entorno de producción para diseñar visuales musicales reactivos y exportarlos cuadro a cuadro. Combina edición de escenas, análisis de audio, renderizado gráfico y codificación de video en una sola herramienta.</p></div>
+            </div>
+            <dl class="studio-metrics"><div><dt>1920 × 1080</dt><dd>Salida nativa</dd></div><div><dt>60 FPS</dt><dd>Render offline</dd></div><div><dt>100+</dt><dd>Pruebas automatizadas</dd></div><div><dt>.afx</dt><dd>Proyecto portable</dd></div></dl>
+            <div class="studio-pipeline"><div><p class="eyebrow">Pipeline determinista</p><h4>Del pulso al fotograma.</h4></div><ol><li><span>01</span><strong>Audio</strong><small>Decodificación</small></li><li><span>02</span><strong>AudioTimeline</strong><small>FFT y eventos</small></li><li><span>03</span><strong>Visual Score</strong><small>Escenas y capas</small></li><li><span>04</span><strong>Canvas / WebGL</strong><small>Composición</small></li><li><span>05</span><strong>FFmpeg</strong><small>Video final</small></li></ol></div>
+            <div class="future-module-grid">
+              <section><span>01 / Editor</span><h4>Escenas con intención</h4><p>Timeline, capas, parámetros y proyectos portables para construir piezas sin depender del código.</p></section>
+              <section><span>02 / Reactividad</span><h4>Audio convertido en datos</h4><p>FFT y ruteo de eventos —kick, snare y hi-hat— hacia propiedades visuales controlables.</p></section>
+              <section><span>03 / Gráficos</span><h4>Dos motores coordinados</h4><p>Canvas 2D y Three.js/WebGL comparten composición, vista previa y una línea temporal exacta.</p></section>
+              <section><span>04 / Exportación</span><h4>Resultado reproducible</h4><p>Render offline a 60 FPS y codificación con FFmpeg para obtener el mismo resultado en cada salida.</p></section>
+            </div>
+            <footer class="tech-tags" aria-label="Tecnologías de Visual Studio C100K"><span>JavaScript</span><span>React</span><span>Electron</span><span>Three.js</span><span>WebGL</span><span>Canvas</span><span>FFT</span><span>FFmpeg</span><span>Jest</span><span>Webpack</span><span>Zustand</span></footer>
+          </article>
+        </div>
+
+        <aside class="engineering-note" aria-labelledby="engineeringTitle"><span>ENGINEERING_LOG</span><div><p class="eyebrow">El trabajo que no se ve</p><h3 id="engineeringTitle">La complejidad no se maquilla.<br>Se resuelve.</h3></div><p>Cada producto exige investigar, modelar reglas, probar casos límite, medir rendimiento y volver sobre decisiones anteriores. El resultado final puede sentirse simple porque detrás hubo arquitectura, criterio y muchas iteraciones hasta que cada capa trabajó como un solo sistema.</p></aside>
       </section>
 
       <section class="view placeholder-view" id="imagenes" aria-labelledby="imagesTitle">
