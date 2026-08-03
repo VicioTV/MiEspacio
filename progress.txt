@@ -16,6 +16,8 @@
 - La vista Música bajó de 8,91 MiB a 388 KiB; Lighthouse final: Performance 93, Accesibilidad 100, Buenas prácticas 100 y SEO 100.
 - Corregido el CLS de acceso directo por hash: 0,147 a 0 mediante inicialización temprana de `data-view`.
 - Archivo y Bodoni Moda ahora se sirven localmente; FCP de Música medido en 1,8 s.
+- Corregido el rojo residual del estado activo en la navegación de Inicio; ahora comparte la superficie fría del panel lateral.
+- Restaurados a 24 × 24 px los controles de minimizar y cerrar para evitar solapamientos con volumen y acciones; verificado a 1280, 820 y 375 px.
 
 Pendiente externo:
 - Configurar CORS y `Cache-Control` en Cloudflare R2 para habilitar el ecualizador y cachear audio.

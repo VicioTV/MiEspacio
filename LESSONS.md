@@ -10,3 +10,4 @@
 - Los masters de imagen pueden permanecer fuera del repositorio, pero los derivados optimizados deben versionarse junto con el sitio para evitar depender de cabeceras de terceros.
 - Medir CLS también en accesos directos por hash: inicializar siempre la vista correcta antes del primer render.
 - Una mejora de dependencia puede reducir FCP sin elevar el score global en todas las corridas; documentar métricas individuales y no optimizar para un número aislado.
+- Las reglas globales de tamaño táctil necesitan excepciones explícitas para controles de ventana posicionados de forma absoluta; medir sus límites contra los controles vecinos en cada breakpoint.

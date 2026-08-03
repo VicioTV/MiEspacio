@@ -25,6 +25,8 @@
   --surface: #131314;
   --line: #2a2929;
   --accent: #ff4f2d;
+  --accent-cool: #9df2df;
+  --interaction-cool-surface: linear-gradient(90deg, rgba(114, 231, 207, 0.09), rgba(167, 143, 255, 0.08), transparent 76%);
   --acid: #d5ff44;
   --header-height: 76px;
   --player-height: 92px;
@@ -3848,7 +3850,7 @@ body[data-view="inicio"] .life-entry::before { display: none; }
 body[data-view="inicio"] .life-entry:hover,
 body[data-view="inicio"] .life-entry:focus-visible {
   padding-inline: 9px 6px;
-  background: linear-gradient(90deg, rgba(255,74,39,.08), transparent 74%);
+  background: var(--interaction-cool-surface);
   outline: none;
 }
 .entry-number { color: var(--r26-orange); font-size: 11px; font-weight: 650; font-variant-numeric: tabular-nums; }
@@ -4549,8 +4551,8 @@ body[data-view="videos"] .text-link { display: none; }
 
 .player .player-window-actions button:hover,
 .player .player-window-actions button:focus-visible {
-  background: linear-gradient(90deg, rgba(114, 231, 207, .09), rgba(167, 143, 255, .08));
-  color: #9df2df;
+  background: var(--interaction-cool-surface);
+  color: var(--accent-cool);
 }
 
 .player.is-minimized {
@@ -5849,7 +5851,7 @@ body[data-view="inicio"] .archive-rail b,
 }
 .archive-shell-sidebar .music-chapters a:hover,
 .archive-shell-sidebar .music-chapters a:focus-visible {
-  background: linear-gradient(90deg, rgba(114, 231, 207, 0.09), rgba(167, 143, 255, 0.08), transparent 76%) !important;
+  background: var(--interaction-cool-surface) !important;
 }
 .archive-shell-sidebar .music-chapters a:nth-child(2) > * { animation-delay: -0.35s !important; }
 .archive-shell-sidebar .music-chapters a:nth-child(3) > * { animation-delay: -0.7s !important; }
@@ -6088,6 +6090,11 @@ body[data-view="inicio"] .editorial-deck {
 .player .main-play {
   min-width: 44px;
   min-height: 44px;
+}
+
+.player .player-window-actions button {
+  min-width: 24px;
+  min-height: 24px;
 }
 
 .player input[type="range"] {
