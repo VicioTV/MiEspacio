@@ -71,6 +71,13 @@ const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const isTvMode = document.documentElement.classList.contains("tv-mode");
 
 let projectScrollFrame = 0;
+let tvPointerX = null;
+let tvPointerY = null;
+let tvPointerDeltaX = 0;
+let tvPointerDeltaY = 0;
+let tvPointerStepAt = 0;
+let tvPointedControl = null;
+let tvWheelStepAt = 0;
 
 document.querySelector("#songCount").textContent = songs.length;
 volumeRange.value = String(state.volume);
@@ -322,6 +329,100 @@ function moveTvFocus(key) {
     });
 
   focusTvElement(candidates[0]?.element);
+}
+
+function getTvDirection(event) {
+  const directionNames = {
+    ArrowLeft: "ArrowLeft",
+    Left: "ArrowLeft",
+    ArrowRight: "ArrowRight",
+    Right: "ArrowRight",
+    ArrowUp: "ArrowUp",
+    Up: "ArrowUp",
+    ArrowDown: "ArrowDown",
+    Down: "ArrowDown"
+  };
+  const directionCodes = {
+    37: "ArrowLeft",
+    38: "ArrowUp",
+    39: "ArrowRight",
+    40: "ArrowDown"
+  };
+  return directionNames[event.key] || directionNames[event.code] || directionCodes[event.keyCode || event.which] || null;
+}
+
+function handleTvPointerMove(event) {
+  if (!isTvMode) return;
+
+  document.documentElement.classList.add("tv-pointer-navigation");
+  const pointedControl = event.target.closest?.(".cover-button, .player button, .player input[type='range'], .life-entry");
+  if (pointedControl && pointedControl !== tvPointedControl && pointedControl !== document.activeElement) {
+    pointedControl.focus({ preventScroll: true });
+  }
+  tvPointedControl = pointedControl || null;
+
+  if (tvPointerX === null || tvPointerY === null) {
+    tvPointerX = event.clientX;
+    tvPointerY = event.clientY;
+    return;
+  }
+
+  const movementX = event.clientX - tvPointerX;
+  const movementY = event.clientY - tvPointerY;
+  tvPointerX = event.clientX;
+  tvPointerY = event.clientY;
+  tvPointerDeltaX += movementX;
+  tvPointerDeltaY += movementY;
+
+  const now = Date.now();
+  if (now - tvPointerStepAt < 170) return;
+
+  const horizontalMovement = Math.abs(tvPointerDeltaX);
+  const verticalMovement = Math.abs(tvPointerDeltaY);
+  let direction = null;
+  if (horizontalMovement >= 12 && horizontalMovement > verticalMovement * 1.2) {
+    direction = tvPointerDeltaX > 0 ? "ArrowRight" : "ArrowLeft";
+  } else if (verticalMovement >= 12 && verticalMovement > horizontalMovement * 1.2) {
+    direction = tvPointerDeltaY > 0 ? "ArrowDown" : "ArrowUp";
+  }
+
+  if (!direction) return;
+  tvPointerDeltaX = 0;
+  tvPointerDeltaY = 0;
+  tvPointerStepAt = now;
+  moveTvFocus(direction);
+}
+
+function handleTvPointerClick(event) {
+  if (!isTvMode || !document.documentElement.classList.contains("tv-pointer-navigation") || event.detail === 0) return;
+  const focusedControl = document.activeElement;
+  if (!focusedControl?.matches?.(".cover-button, .player button, .life-entry")) return;
+
+  const pointedControl = event.target.closest?.(".cover-button, .player button, .life-entry");
+  if (pointedControl === focusedControl) return;
+  event.preventDefault();
+  event.stopImmediatePropagation();
+  focusedControl.click();
+}
+
+function handleTvWheel(event) {
+  if (!isTvMode) return;
+  const now = Date.now();
+  if (now - tvWheelStepAt < 180) {
+    event.preventDefault();
+    return;
+  }
+
+  const horizontalMovement = Math.abs(event.deltaX);
+  const verticalMovement = Math.abs(event.deltaY);
+  if (horizontalMovement < 4 && verticalMovement < 4) return;
+  event.preventDefault();
+  tvWheelStepAt = now;
+  if (horizontalMovement > verticalMovement) {
+    moveTvFocus(event.deltaX > 0 ? "ArrowRight" : "ArrowLeft");
+  } else {
+    moveTvFocus(event.deltaY > 0 ? "ArrowDown" : "ArrowUp");
+  }
 }
 
 function updateProjectScrollControl() {
@@ -617,6 +718,11 @@ function bindAudioEvents(element) {
 
 bindAudioEvents(audio);
 
+document.addEventListener("pointermove", handleTvPointerMove, { passive: true });
+document.addEventListener("mousemove", handleTvPointerMove, { passive: true });
+document.addEventListener("wheel", handleTvWheel, { passive: false });
+document.addEventListener("click", handleTvPointerClick, true);
+
 document.addEventListener("click", (event) => {
   const routeTarget = event.target.closest("[data-route]");
   if (routeTarget) {
@@ -805,14 +911,15 @@ window.addEventListener("keydown", (event) => {
       return;
     }
 
-    if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(event.key)) {
+    const tvDirection = getTvDirection(event);
+    if (tvDirection) {
       const activeElement = document.activeElement;
       const isHorizontalRange = activeElement instanceof HTMLInputElement
         && activeElement.type === "range"
-        && (event.key === "ArrowLeft" || event.key === "ArrowRight");
+        && (tvDirection === "ArrowLeft" || tvDirection === "ArrowRight");
       if (!isHorizontalRange) {
         event.preventDefault();
-        moveTvFocus(event.key);
+        moveTvFocus(tvDirection);
         return;
       }
     }

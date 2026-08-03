@@ -6381,6 +6381,12 @@ html.tv-mode {
   scroll-padding-block: 36vh 220px;
 }
 
+html.tv-mode.tv-pointer-navigation,
+html.tv-mode.tv-pointer-navigation body,
+html.tv-mode.tv-pointer-navigation body * {
+  cursor: none !important;
+}
+
 html.tv-mode body {
   --player-height: 176px;
   min-width: 0;
