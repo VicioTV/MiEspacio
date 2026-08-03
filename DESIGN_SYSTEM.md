@@ -13,6 +13,7 @@ Archivo editorial nocturno: una interfaz sobria para presentar producto, desarro
 - Texto tenue: `#929b99`
 - Línea: `rgba(241, 241, 237, 0.12)`
 - Acento frío: `#9df2df`
+- Superficie interactiva fría: verde–violeta translúcido para `hover` y foco protagonista
 - Acento cálido reservado: `#ff5a2f`
 
 ## Tipografía
@@ -27,6 +28,7 @@ Archivo editorial nocturno: una interfaz sobria para presentar producto, desarro
 ## Interacción
 
 - Área táctil mínima: 44 × 44 px.
+- Los controles auxiliares de ventana del reproductor usan 24 × 24 px para no invadir volumen ni acciones; conservan foco visible y etiquetas accesibles.
 - Foco siempre visible en controles interactivos.
 - Las transiciones deben durar 150–300 ms y usar `transform` u `opacity`.
 - `prefers-reduced-motion: reduce` desactiva toda animación decorativa.
