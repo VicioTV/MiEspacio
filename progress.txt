@@ -20,6 +20,15 @@
 - Restaurados a 24 × 24 px los controles de minimizar y cerrar para evitar solapamientos con volumen y acciones; verificado a 1280, 820 y 375 px.
 
 Pendiente externo:
-- Configurar CORS y `Cache-Control` en Cloudflare R2 para habilitar el ecualizador y cachear audio.
 - Configurar `Cache-Control` para los audios alojados en R2.
 - Consolidar la hoja de estilos heredada en archivos por componente/vista.
+
+2026-08-05 — Estado actual del producto y del dossier
+
+- MiEspacio Música funciona en web responsive y suma una interfaz de diez pies para Samsung Smart TV/Tizen.
+- Implementados foco direccional, OK/Enter, teclas multimedia, Volver, puntero y rueda para controles remotos Samsung.
+- Optimizados navegación, hidratación progresiva de portadas y respuesta en navegadores Tizen legacy.
+- CORS y solicitudes por rangos de Cloudflare R2 verificados en producción; `Cache-Control` continúa pendiente.
+- El dossier técnico fue contrastado con el código actual de iPhone Store, KICK57, VicioTV, CONTINUUM y Visual Studio C100K.
+- Visual Studio C100K actualizado a v0.44.0: workspace canvas-first, Autopiloto, Copiloto, `.afx` v5 y 1.314 pruebas aprobadas en 190 suites.
+- KICK57 conserva su estado fundacional con los límites actuales documentados.

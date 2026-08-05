@@ -97,7 +97,7 @@
         <div class="songs-main">
           <div class="tv-masthead">
             <p>Modo TV</p>
-            <div class="tv-remote-guide" aria-label="Ayuda del control remoto">
+            <div class="tv-remote-guide" role="group" aria-label="Ayuda del control remoto">
               <span><kbd>← ↑ ↓ →</kbd> Navegar</span>
               <span><kbd>OK</kbd> Reproducir</span>
               <span><kbd>⏯</kbd> Pausa</span>
@@ -126,7 +126,7 @@
         <header class="tech-section-header">
           <button class="back-button" type="button" data-route="inicio" aria-label="Volver al inicio">←</button>
           <div class="tech-heading-copy">
-            <p class="eyebrow">Portfolio técnico / Sistemas entregados</p>
+            <p class="eyebrow">Portfolio técnico / Estado al 05.08.2026</p>
             <h2 id="projectsTitle">Sistemas que llegan<br>a producción.</h2>
             <p>No construimos pantallas aisladas. Diseñamos productos conectados con operaciones reales: catálogo, stock, ventas, audio, contenido, APIs e infraestructura.</p>
           </div>
@@ -134,7 +134,7 @@
             <div><dt>Lenguajes</dt><dd>HTML · CSS · JavaScript · TypeScript · SQL</dd></div>
             <div><dt>Frameworks</dt><dd>Next.js · React · React Native · Electron · Fastify</dd></div>
             <div><dt>Infraestructura</dt><dd>Vercel · GitHub Pages · Cloudflare R2 · PostgreSQL</dd></div>
-            <div><dt>Superficies</dt><dd>Web · Móvil · Escritorio · Audio · Video</dd></div>
+            <div><dt>Superficies</dt><dd>Web · Móvil · Escritorio · Smart TV · Audio · Video</dd></div>
           </dl>
         </header>
 
@@ -156,16 +156,16 @@
               <div class="tech-case-body">
                 <p class="tech-kicker">Comercio digital · Producto full-stack</p>
                 <h3>iPhone Store<br>Río Ceballos</h3>
-                <p class="tech-case-summary">Una plataforma comercial conectada con la operación diaria. Organiza modelos, disponibilidad, precios y servicio técnico; reduce fricción en la consulta y convierte cada selección en una conversación de venta con contexto.</p>
+                <p class="tech-case-summary">Una aplicación comercial conectada con inventario, promociones, galería y servicio técnico administrados desde Google Sheets. El catálogo reúne Apple y Xiaomi, simplifica la elección y convierte cada consulta en una conversación de venta con contexto.</p>
                 <div class="tech-challenge-grid">
-                  <section><span>01</span><h4>Catálogo vivo</h4><p>Normalización de datos, filtros, comparación de modelos y lectura consistente de stock y precios.</p></section>
-                  <section><span>02</span><h4>Conversión</h4><p>Consultas y pedidos enviados por WhatsApp con el producto y la intención ya estructurados.</p></section>
-                  <section><span>03</span><h4>Operación</h4><p>Integración de datos comerciales y de servicio mediante API propia y fuentes administrables.</p></section>
+                  <section><span>01</span><h4>Catálogo vivo</h4><p>Búsqueda, filtros, variantes y promociones consumen datos normalizados con revalidación cada 60 segundos.</p></section>
+                  <section><span>02</span><h4>Decisión técnica</h4><p>Fichas detalladas, recomendación guiada y comparación de hasta tres equipos reducen incertidumbre antes de comprar.</p></section>
+                  <section><span>03</span><h4>Servicio y conversión</h4><p>Precios de reparaciones, disponibilidad y consultas estructuradas desembocan en atención por WhatsApp.</p></section>
                 </div>
                 <dl class="tech-facts">
-                  <div><dt>Frontend</dt><dd>Next.js · React · TypeScript</dd></div>
-                  <div><dt>Integraciones</dt><dd>API propia · Google Sheets · WhatsApp</dd></div>
-                  <div><dt>Entrega</dt><dd>Vercel · Responsive · Activos optimizados</dd></div>
+                  <div><dt>Frontend</dt><dd>Next.js 16 · React 19 · TypeScript</dd></div>
+                  <div><dt>Datos</dt><dd>Google Apps Script · Sheets · Caché por etiquetas</dd></div>
+                  <div><dt>Comercio</dt><dd>Comparador · Servicio técnico · WhatsApp</dd></div>
                 </dl>
                 <a class="tech-action" href="https://www.iphonerc.com/" target="_blank" rel="noopener noreferrer">Explorar producto <span aria-hidden="true">↗</span></a>
               </div>
@@ -204,26 +204,26 @@
           <article class="tech-case">
             <header class="tech-case-header">
               <span class="tech-case-index">CASE_03</span>
-              <p class="tech-case-status"><span aria-hidden="true"></span>En línea</p>
+              <p class="tech-case-status"><span aria-hidden="true"></span>Web + Smart TV</p>
             </header>
             <div class="tech-case-grid">
               <figure class="tech-case-media is-music">
                 <img src="assets/projects/miespacio-music.webp" alt="Selección de portadas del catálogo musical de MiEspacio" width="1200" height="750" loading="lazy" decoding="async">
-                <figcaption>Streaming / Experiencia Web Audio</figcaption>
+                <figcaption>Streaming / Web Audio / Samsung TV</figcaption>
               </figure>
               <div class="tech-case-body">
-                <p class="tech-kicker">Producto musical · Audio en la web</p>
+                <p class="tech-kicker">Producto musical · Web y Samsung Tizen</p>
                 <h3>MiEspacio<br>Música</h3>
-                <p class="tech-case-summary">Una biblioteca de 17 lanzamientos con reproducción persistente, navegación por estados y procesamiento de audio en tiempo real. La interfaz coordina catálogo, streaming remoto y ecualización sin abandonar el navegador.</p>
+                <p class="tech-case-summary">Una biblioteca de 17 lanzamientos con reproducción persistente, procesamiento de audio en tiempo real y una interfaz de diez pies para Samsung TV. El mismo producto coordina catálogo, streaming remoto, ecualización y control a distancia.</p>
                 <div class="tech-challenge-grid">
                   <section><span>01</span><h4>Reproductor</h4><p>Estado sincronizado entre pista activa, controles, progreso, volumen y navegación del sitio.</p></section>
-                  <section><span>02</span><h4>Audio</h4><p>Grafo de Web Audio API, ecualizador y streaming desde R2 con CORS y solicitudes por rangos.</p></section>
-                  <section><span>03</span><h4>Rendimiento</h4><p>Portadas WebP responsivas, carga diferida y una experiencia accesible en múltiples tamaños.</p></section>
+                  <section><span>02</span><h4>Control remoto</h4><p>Foco direccional, OK, teclas multimedia, Volver, puntero y rueda adaptados a TizenBrowser.</p></section>
+                  <section><span>03</span><h4>Audio y rendimiento</h4><p>Web Audio API, R2 con CORS y rangos, portadas WebP responsivas y carga progresiva.</p></section>
                 </div>
                 <dl class="tech-facts">
                   <div><dt>Cliente</dt><dd>HTML · CSS · JavaScript</dd></div>
-                  <div><dt>Motor</dt><dd>Web Audio API · Audio HTML5</dd></div>
-                  <div><dt>Infraestructura</dt><dd>Cloudflare R2 · GitHub Pages</dd></div>
+                  <div><dt>Audio</dt><dd>Web Audio API · Cloudflare R2 · CORS + Range</dd></div>
+                  <div><dt>Superficies</dt><dd>Web responsive · Samsung Tizen · GitHub Pages</dd></div>
                 </dl>
                 <button class="tech-action" type="button" data-route="canciones">Escuchar catálogo <span aria-hidden="true">↗</span></button>
               </div>
@@ -364,7 +364,7 @@
         <header class="tech-section-header">
           <button class="back-button" type="button" data-route="inicio" aria-label="Volver al inicio">←</button>
           <div class="tech-heading-copy">
-            <p class="eyebrow">Laboratorio / Sistemas en construcción</p>
+            <p class="eyebrow">Laboratorio / Estado al 05.08.2026</p>
             <h2 id="futureTitle">Lo complejo<br>ya está en marcha.</h2>
             <p>Productos de largo alcance construidos por capas: primero el dominio, después la arquitectura y, sobre fundamentos verificables, la experiencia final.</p>
           </div>
@@ -384,10 +384,10 @@
             </header>
             <div class="future-dossier-hero">
               <img src="assets/projects/kick57.webp" alt="Identidad visual de la plataforma deportiva KICK57" width="1200" height="900" loading="lazy" decoding="async">
-              <div><p class="tech-kicker">Plataforma deportiva · Monorepo</p><h3>KICK57</h3><p>Un sistema integral para administrar la vida de un club de fútbol 5 y 7. Une reservas, ocupación de canchas, participantes, pagos y comunidad bajo un mismo dominio.</p></div>
+              <div><p class="tech-kicker">Plataforma deportiva · Monorepo</p><h3>KICK57</h3><p>Una plataforma deportiva en fase fundacional. El monorepo comparte reglas de identidad, precios y bloqueo de canchas F5/F7 entre una API y tres clientes; reservas transaccionales, pagos y comunidad siguen en desarrollo.</p></div>
             </div>
             <div class="future-architecture">
-              <div class="future-dossier-intro"><p class="eyebrow">Arquitectura del producto</p><h4>Una operación.<br>Cuatro superficies.</h4><p>La web administrativa, la web de jugadores y la aplicación móvil consumen una API central. Las reglas críticas viven en paquetes compartidos y persisten en una única fuente de verdad.</p></div>
+              <div class="future-dossier-intro"><p class="eyebrow">Arquitectura del producto</p><h4>Una operación.<br>Cuatro superficies.</h4><p>La web administrativa, la web de jugadores y la aplicación móvil están diseñadas alrededor de una API central. El dominio vive en paquetes compartidos y Prisma define el esquema inicial de persistencia.</p></div>
               <ol class="architecture-flow" aria-label="Arquitectura de KICK57">
                 <li><span>Clientes</span><strong>Next.js Admin<br>Next.js Player<br>React Native + Expo</strong></li>
                 <li aria-hidden="true">→</li>
@@ -399,11 +399,11 @@
             <div class="future-module-grid">
               <section><span>01 / Dominio</span><h4>Reglas antes que pantallas</h4><p>Ocupación F5 y F7, precios, cancelaciones e invariantes expresadas como código comprobable.</p></section>
               <section><span>02 / Identidad</span><h4>Acceso consistente</h4><p>Normalización de teléfono y correo, roles, etiquetas y cambio obligatorio de contraseña.</p></section>
-              <section><span>03 / Datos</span><h4>Modelo trazable</h4><p>Partidos, canchas ocupadas, participantes y estados de pago relacionados desde Prisma.</p></section>
+              <section><span>03 / Datos</span><h4>Esquema trazable</h4><p>Prisma modela usuarios, partidos, canchas ocupadas, participantes y pagos; la conexión operativa aún está pendiente.</p></section>
               <section><span>04 / Próximo hito</span><h4>Autenticación real</h4><p>Hash y persistencia de credenciales, endpoints de acceso, recuperación y primeras pantallas funcionales.</p></section>
             </div>
             <div class="build-progress">
-              <div><p class="eyebrow">Estado verificado</p><h4>Fundaciones firmes.<br>Alcance transparente.</h4><p>La arquitectura, el dominio y sus pruebas están implementados. La identidad base avanza; autenticación, reservas, pagos y comunidad todavía son hitos de producto.</p></div>
+              <div><p class="eyebrow">Estado verificado</p><h4>Fundaciones firmes.<br>Alcance transparente.</h4><p>Las reglas de dominio, el esquema inicial y los prototipos están escritos. La API expone salud; persistencia, autenticación y pantallas conectadas son los próximos hitos.</p></div>
               <ol><li class="is-done"><span>01</span>Arquitectura y monorepo</li><li class="is-done"><span>02</span>Dominio y pruebas</li><li class="is-active"><span>03</span>Identidad base</li><li><span>04</span>Autenticación y persistencia</li><li><span>05</span>Reservas, pagos y comunidad</li></ol>
             </div>
             <footer class="tech-tags" aria-label="Tecnologías de KICK57"><span>TypeScript</span><span>Next.js</span><span>React Native</span><span>Expo</span><span>Fastify</span><span>PostgreSQL</span><span>Prisma</span><span>Jest</span></footer>
@@ -412,19 +412,19 @@
           <article class="future-dossier visual-studio-dossier">
             <header class="tech-case-header">
               <span class="tech-case-index">BUILD_02</span>
-              <p class="tech-case-status is-building"><span aria-hidden="true"></span>v0.44</p>
+              <p class="tech-case-status is-building"><span aria-hidden="true"></span>v0.44.0</p>
             </header>
             <div class="future-dossier-hero is-studio">
               <img src="assets/projects/visual-studio-c100k.webp" alt="Interfaz de edición audiovisual de Visual Studio C100K" width="1200" height="675" loading="lazy" decoding="async">
-              <div><p class="tech-kicker">Aplicación de escritorio · Motor audiovisual</p><h3>VISUAL STUDIO<br>C100K</h3><p>Un entorno de producción para diseñar visuales musicales reactivos y exportarlos cuadro a cuadro. Combina edición de escenas, análisis de audio, renderizado gráfico y codificación de video en una sola herramienta.</p></div>
+              <div><p class="tech-kicker">Aplicación de escritorio · Motor audiovisual</p><h3>VISUAL STUDIO<br>C100K</h3><p>Un estudio canvas-first que convierte canción, imagen y dirección artística en escenas audiovisuales sincronizadas. Autopiloto, Copiloto y edición manual operan sobre el mismo documento, desde el análisis musical hasta el video final.</p></div>
             </div>
-            <dl class="studio-metrics"><div><dt>1920 × 1080</dt><dd>Salida nativa</dd></div><div><dt>60 FPS</dt><dd>Render offline</dd></div><div><dt>100+</dt><dd>Pruebas automatizadas</dd></div><div><dt>.afx</dt><dd>Proyecto portable</dd></div></dl>
+            <dl class="studio-metrics"><div><dt>1920 × 1080</dt><dd>Lienzo horizontal</dd></div><div><dt>60 FPS</dt><dd>Simulación canónica</dd></div><div><dt>1.314</dt><dd>Pruebas aprobadas</dd></div><div><dt>.afx v5</dt><dd>Documento portable</dd></div></dl>
             <div class="studio-pipeline"><div><p class="eyebrow">Pipeline determinista</p><h4>Del pulso al fotograma.</h4></div><ol><li><span>01</span><strong>Audio</strong><small>Decodificación</small></li><li><span>02</span><strong>AudioTimeline</strong><small>FFT y eventos</small></li><li><span>03</span><strong>Visual Score</strong><small>Escenas y capas</small></li><li><span>04</span><strong>Canvas / WebGL</strong><small>Composición</small></li><li><span>05</span><strong>FFmpeg</strong><small>Video final</small></li></ol></div>
             <div class="future-module-grid">
-              <section><span>01 / Editor</span><h4>Escenas con intención</h4><p>Timeline, capas, parámetros y proyectos portables para construir piezas sin depender del código.</p></section>
-              <section><span>02 / Reactividad</span><h4>Audio convertido en datos</h4><p>FFT y ruteo de eventos —kick, snare y hi-hat— hacia propiedades visuales controlables.</p></section>
-              <section><span>03 / Gráficos</span><h4>Dos motores coordinados</h4><p>Canvas 2D y Three.js/WebGL comparten composición, vista previa y una línea temporal exacta.</p></section>
-              <section><span>04 / Exportación</span><h4>Resultado reproducible</h4><p>Render offline a 60 FPS y codificación con FFmpeg para obtener el mismo resultado en cada salida.</p></section>
+              <section><span>01 / Canvas-first</span><h4>Dirección y precisión</h4><p>El workspace reúne escenas, capas y rail creativo; conexiones superpuestas, Scene Sync Rigs y el modo Avanzado abren control fino.</p></section>
+              <section><span>02 / Inteligencia musical</span><h4>Audio convertido en estructura</h4><p>AudioTimeline y Visual Score transforman FFT, BPM, secciones, kick, snare y hi-hat en eventos deterministas.</p></section>
+              <section><span>03 / Autoría asistida</span><h4>Un solo documento</h4><p>Autopiloto genera escenas; Copiloto varía Título v5, Espectro y Progreso con bloqueos persistentes y un único Undo.</p></section>
+              <section><span>04 / Exportación</span><h4>Del preview al archivo</h4><p>Captura exacta, salida horizontal o vertical de 1 a 60 FPS y codificación H.264 o WebM mediante FFmpeg.</p></section>
             </div>
             <footer class="tech-tags" aria-label="Tecnologías de Visual Studio C100K"><span>JavaScript</span><span>React</span><span>Electron</span><span>Three.js</span><span>WebGL</span><span>Canvas</span><span>FFT</span><span>FFmpeg</span><span>Jest</span><span>Webpack</span><span>Zustand</span></footer>
           </article>

@@ -18,9 +18,11 @@ Los navegadores Samsung Smart TV/Tizen activan automáticamente una interfaz mus
 
 En el modo TV, las flechas desplazan el foco, OK/Enter reproduce, la tecla multimedia de reproducción/pausa controla el audio y Volver regresa al inicio. La experiencia normal de escritorio no cambia.
 
+El streaming desde Cloudflare R2 tiene CORS y solicitudes por rangos verificados para el dominio publicado. Esto permite que Web Audio procese el audio en el ecualizador; todavía falta definir `Cache-Control` para mejorar la reutilización de archivos versionados.
+
 ## Estructura
 
-- `index.html`: contenido y semántica de las cinco vistas.
+- `index.html`: contenido y semántica de las seis vistas.
 - `styles.css`: sistema visual y responsive.
 - `app.js`: navegación, catálogo musical y reproductor.
 - `assets/projects/`: imágenes optimizadas de casos.
@@ -29,4 +31,4 @@ En el modo TV, las flechas desplazan el foco, OK/Enter reproduce, la tecla multi
 - `DESIGN_SYSTEM.md`: reglas visuales y de interacción.
 - `progress.txt` y `LESSONS.md`: estado y decisiones aprendidas.
 
-Los audios se sirven desde Cloudflare R2; las portadas optimizadas forman parte del sitio. Para que el ecualizador y el cache de audio funcionen correctamente, el bucket debe permitir CORS para el dominio del portfolio y devolver `Cache-Control` en archivos versionados.
+Los audios se sirven desde Cloudflare R2; las portadas optimizadas forman parte del sitio. CORS ya está activo para el dominio del portfolio. El pendiente externo es devolver `Cache-Control` en los audios versionados.
