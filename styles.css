@@ -6608,7 +6608,7 @@ html.tv-mode body[data-view="canciones"] .song-card.is-playing::after {
 
 html.tv-mode .player {
   min-height: var(--player-height);
-  grid-template-columns: minmax(340px, 0.85fr) minmax(560px, 1.45fr);
+  grid-template-columns: minmax(340px, 0.85fr) minmax(560px, 1.45fr) 64px;
   gap: clamp(36px, 4vw, 80px);
   padding: 18px clamp(48px, 5vw, 96px);
   border-top: 2px solid rgba(157, 242, 223, 0.45);
@@ -6616,10 +6616,38 @@ html.tv-mode .player {
 }
 
 html.tv-mode .player-window-actions,
-html.tv-mode .player-actions,
 html.tv-mode #shuffleButton,
 html.tv-mode #repeatButton {
   display: none;
+}
+
+html.tv-mode .player-actions {
+  display: flex;
+  justify-content: center;
+  padding-right: 0;
+  pointer-events: none;
+}
+
+html.tv-mode .player-actions > :not(#equalizerButton),
+html.tv-mode .equalizer-panel {
+  display: none !important;
+}
+
+html.tv-mode #equalizerButton {
+  display: grid;
+  cursor: default;
+  opacity: 1;
+}
+
+html.tv-mode #equalizerButton[data-equalizer-status="active"] {
+  border-color: #9df2df;
+  background: rgba(157, 242, 223, 0.1);
+  color: #9df2df;
+}
+
+html.tv-mode #equalizerButton[data-equalizer-status="unavailable"] {
+  border-color: rgba(241, 241, 237, 0.12);
+  color: #626a68;
 }
 
 html.tv-mode .player-track {
@@ -6757,7 +6785,7 @@ html.tv-mode body[data-view="inicio"] .life-entry:focus-visible {
   }
 
   html.tv-mode .player {
-    grid-template-columns: minmax(280px, 0.8fr) minmax(430px, 1.35fr);
+    grid-template-columns: minmax(280px, 0.8fr) minmax(430px, 1.35fr) 56px;
     gap: 28px;
     padding: 12px 36px;
   }

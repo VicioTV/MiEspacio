@@ -117,42 +117,71 @@ let equalizerAnalyser;
 let equalizerInitialization;
 let equalizerSignalCheck;
 let equalizerUnavailable = location.protocol === "file:" || !MEDIA_CORS_ENABLED;
+let equalizerSignalConfirmed = false;
+let nativeAudioRecovery;
+let playbackRequestVersion = 0;
 let projectScrollDragOffset = null;
+
+function setTvEqualizerStatus(status) {
+  if (!isTvMode) return;
+
+  const labels = {
+    pending: "Iniciando ecualizador",
+    active: "Ecualizador activo: graves +5 dB, medios +3 dB y agudos +1 dB",
+    unavailable: "Ecualizador no disponible; reproducción sin procesamiento"
+  };
+  equalizerButton.dataset.equalizerStatus = status;
+  equalizerButton.setAttribute("aria-label", labels[status]);
+  equalizerButton.title = labels[status];
+}
 
 function lockTvEqualizerControls() {
   if (!isTvMode) return;
 
-  equalizerButton.hidden = true;
+  equalizerButton.hidden = false;
   equalizerButton.disabled = true;
+  equalizerButton.removeAttribute("aria-controls");
+  equalizerButton.setAttribute("aria-expanded", "false");
   equalizerPanel.hidden = true;
   equalizerPanel.inert = true;
   equalizerPanel.setAttribute("aria-hidden", "true");
   [bassRange, midRange, trebleRange, equalizerReset].forEach((control) => {
     control.disabled = true;
   });
+  setTvEqualizerStatus("pending");
 }
 
 lockTvEqualizerControls();
 
 async function ensureAudioGraph() {
   const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-  if (!AudioContextClass || equalizerUnavailable) return false;
+  if (!AudioContextClass || equalizerUnavailable) {
+    setTvEqualizerStatus("unavailable");
+    return false;
+  }
 
   if (audioContext && equalizerFilters) {
     if (audioContext.state === "suspended") await audioContext.resume();
-    return audioContext.state === "running";
+    const isReady = audioContext.state === "running";
+    setTvEqualizerStatus(isReady ? (equalizerSignalConfirmed ? "active" : "pending") : "unavailable");
+    return isReady;
   }
 
   if (equalizerInitialization) return equalizerInitialization;
   equalizerInitialization = buildAudioGraph(AudioContextClass);
-  const isReady = await equalizerInitialization;
-  equalizerInitialization = null;
-  return isReady;
+  try {
+    const isReady = await equalizerInitialization;
+    setTvEqualizerStatus(isReady ? "pending" : "unavailable");
+    return isReady;
+  } finally {
+    equalizerInitialization = null;
+  }
 }
 
 async function buildAudioGraph(AudioContextClass) {
-  const nextContext = new AudioContextClass({ latencyHint: "interactive" });
+  let nextContext;
   try {
+    nextContext = new AudioContextClass();
     if (nextContext.state === "suspended") await nextContext.resume();
     if (nextContext.state !== "running") {
       await nextContext.close();
@@ -181,11 +210,12 @@ async function buildAudioGraph(AudioContextClass) {
     audioSource = nextSource;
     equalizerFilters = { bass, mid, treble };
     equalizerAnalyser = analyser;
+    equalizerSignalConfirmed = false;
     applyEqualizer();
     scheduleEqualizerSignalCheck();
     return true;
   } catch {
-    if (nextContext.state !== "closed") await nextContext.close();
+    if (nextContext && nextContext.state !== "closed") await nextContext.close();
     return false;
   }
 }
@@ -193,25 +223,50 @@ async function buildAudioGraph(AudioContextClass) {
 function scheduleEqualizerSignalCheck() {
   clearTimeout(equalizerSignalCheck);
   if (!equalizerAnalyser || audio.paused) return;
-  equalizerSignalCheck = window.setTimeout(async () => {
-    if (!equalizerAnalyser || audio.paused) return;
+  const monitoredAudio = audio;
+  let attemptsRemaining = 4;
+
+  const inspectSignal = async () => {
+    if (monitoredAudio !== audio || !equalizerAnalyser || audio.paused) return;
     const samples = new Uint8Array(equalizerAnalyser.fftSize);
     equalizerAnalyser.getByteTimeDomainData(samples);
     const hasSignal = samples.some((sample) => Math.abs(sample - 128) > 1);
-    if (!hasSignal) {
-      equalizerUnavailable = true;
-      await restoreNativeAudio();
-      resetEqualizerControls();
-      showToast("El navegador bloqueó el ecualizador; restauré el audio original");
+    if (hasSignal) {
+      equalizerSignalConfirmed = true;
+      setTvEqualizerStatus("active");
+      return;
     }
-  }, 900);
+
+    attemptsRemaining -= 1;
+    if (attemptsRemaining > 0) {
+      equalizerSignalCheck = window.setTimeout(inspectSignal, 900);
+      return;
+    }
+
+    const recovered = await recoverNativeAudio(monitoredAudio, {
+      resumePlayback: true,
+      playbackRequest: playbackRequestVersion
+    });
+    resetEqualizerControls();
+    if (!isTvMode && recovered) showToast("El navegador bloqueó el ecualizador; restauré el audio original");
+  };
+
+  equalizerSignalCheck = window.setTimeout(inspectSignal, 900);
 }
 
-async function restoreNativeAudio() {
+async function startMediaPlayback(element) {
+  const playResult = element.play();
+  if (playResult && typeof playResult.then === "function") await playResult;
+}
+
+async function restoreNativeAudio({
+  resumePlayback = state.isPlaying && !audio.paused,
+  playbackRequest = playbackRequestVersion
+} = {}) {
   const previousAudio = audio;
   const source = previousAudio.currentSrc || previousAudio.src;
   const resumeAt = previousAudio.currentTime || 0;
-  const shouldResume = state.isPlaying && !previousAudio.paused;
+  const recoverySongId = state.currentSong?.id;
 
   previousAudio.pause();
   clearTimeout(equalizerSignalCheck);
@@ -222,12 +277,15 @@ async function restoreNativeAudio() {
   audioSource = undefined;
   equalizerFilters = undefined;
   equalizerAnalyser = undefined;
+  equalizerSignalConfirmed = false;
+  setTvEqualizerStatus("unavailable");
 
   audio = createAudioElement({ withCors: false });
+  const replacementAudio = audio;
   audio.volume = state.volume;
   bindAudioEvents(audio);
 
-  if (!source) return;
+  if (!source) return false;
   audio.src = source;
   audio.load();
   await new Promise((resolve) => {
@@ -235,11 +293,36 @@ async function restoreNativeAudio() {
     audio.addEventListener("loadedmetadata", finish, { once: true });
     window.setTimeout(finish, 800);
   });
+  if (audio !== replacementAudio || state.currentSong?.id !== recoverySongId) return true;
   if (Number.isFinite(audio.duration)) audio.currentTime = Math.min(resumeAt, Math.max(0, audio.duration - 0.1));
-  if (shouldResume) {
-    try { await audio.play(); } catch { state.isPlaying = false; }
+  if (resumePlayback && playbackRequest === playbackRequestVersion) {
+    try {
+      await startMediaPlayback(audio);
+      state.isPlaying = true;
+    } catch {
+      state.isPlaying = false;
+      return false;
+    }
   }
   updatePlayer();
+  return true;
+}
+
+async function recoverNativeAudio(failedAudio, {
+  resumePlayback = true,
+  playbackRequest = playbackRequestVersion
+} = {}) {
+  if (nativeAudioRecovery) return nativeAudioRecovery;
+  if (failedAudio !== audio) return state.isPlaying;
+
+  equalizerUnavailable = true;
+  setTvEqualizerStatus("unavailable");
+  nativeAudioRecovery = restoreNativeAudio({ resumePlayback, playbackRequest });
+  try {
+    return await nativeAudioRecovery;
+  } finally {
+    nativeAudioRecovery = null;
+  }
 }
 
 function resetEqualizerControls() {
@@ -271,6 +354,12 @@ function updateEqualizerControl(range, output, key) {
 }
 
 function setEqualizerOpen(isOpen) {
+  if (isTvMode) {
+    equalizerPanel.classList.remove("is-open");
+    equalizerPanel.setAttribute("aria-hidden", "true");
+    equalizerPanel.inert = true;
+    return;
+  }
   equalizerPanel.classList.toggle("is-open", isOpen);
   equalizerPanel.setAttribute("aria-hidden", String(!isOpen));
   equalizerPanel.inert = !isOpen;
@@ -734,39 +823,35 @@ async function selectSong(songId, shouldPlay = true) {
 
 async function playAudio() {
   if (!state.currentSong) return;
+  const playbackRequest = ++playbackRequestVersion;
   setPlayerVisible(true);
+  if (isTvMode) {
+    let equalizerReady = false;
+    try {
+      equalizerReady = await ensureAudioGraph();
+    } catch {}
+    if (!equalizerReady && audio.crossOrigin === "anonymous") {
+      await recoverNativeAudio(audio, { resumePlayback: false, playbackRequest });
+    }
+  }
+  if (playbackRequest !== playbackRequestVersion) return;
+  const playbackAudio = audio;
   try {
-    if (isTvMode) await ensureAudioGraph();
-    else if (audioContext?.state === "suspended") await audioContext.resume();
-    await audio.play();
+    if (!isTvMode && audioContext?.state === "suspended") await audioContext.resume();
+    await startMediaPlayback(playbackAudio);
+    if (playbackRequest !== playbackRequestVersion) {
+      playbackAudio.pause();
+      return;
+    }
     state.isPlaying = true;
     return;
   } catch {
-    if (audio.crossOrigin === "anonymous") {
-      const blockedAudio = audio;
-      blockedAudio.pause();
-      clearTimeout(equalizerSignalCheck);
-      try { audioSource?.disconnect(); } catch {}
-      try { if (audioContext && audioContext.state !== "closed") await audioContext.close(); } catch {}
-      audioContext = undefined;
-      audioSource = undefined;
-      equalizerFilters = undefined;
-      equalizerAnalyser = undefined;
-      equalizerUnavailable = true;
-
-      audio = new Audio();
-      audio.preload = "metadata";
-      audio.volume = state.volume;
-      bindAudioEvents(audio);
-      audio.src = encodeURI(state.currentSong.audio);
-      audio.load();
-
-      try {
-        await audio.play();
-        state.isPlaying = true;
-        showToast("Reproduciendo sin ecualizador: falta habilitar CORS en R2");
+    if (playbackAudio.crossOrigin === "anonymous") {
+      const recovered = await recoverNativeAudio(playbackAudio, { resumePlayback: true, playbackRequest });
+      if (recovered) {
+        if (!isTvMode) showToast("Reproduciendo sin ecualizador: falta habilitar CORS en R2");
         return;
-      } catch {}
+      }
     }
 
     state.isPlaying = false;
@@ -775,6 +860,7 @@ async function playAudio() {
 }
 
 function pauseAudio() {
+  playbackRequestVersion += 1;
   audio.pause();
   state.isPlaying = false;
 }
@@ -880,6 +966,16 @@ function bindAudioEvents(element) {
   });
   element.addEventListener("error", () => {
     if (element !== audio || !state.currentSong) return;
+    if (isTvMode && element.crossOrigin === "anonymous") {
+      recoverNativeAudio(element, {
+        resumePlayback: true,
+        playbackRequest: playbackRequestVersion
+      }).catch(() => {
+        state.isPlaying = false;
+        showToast("No se pudo reproducir este archivo");
+      });
+      return;
+    }
     state.isPlaying = false;
     updatePlayer();
     refreshSongGridState();
