@@ -119,6 +119,21 @@ let equalizerSignalCheck;
 let equalizerUnavailable = location.protocol === "file:" || !MEDIA_CORS_ENABLED;
 let projectScrollDragOffset = null;
 
+function lockTvEqualizerControls() {
+  if (!isTvMode) return;
+
+  equalizerButton.hidden = true;
+  equalizerButton.disabled = true;
+  equalizerPanel.hidden = true;
+  equalizerPanel.inert = true;
+  equalizerPanel.setAttribute("aria-hidden", "true");
+  [bassRange, midRange, trebleRange, equalizerReset].forEach((control) => {
+    control.disabled = true;
+  });
+}
+
+lockTvEqualizerControls();
+
 async function ensureAudioGraph() {
   const AudioContextClass = window.AudioContext || window.webkitAudioContext;
   if (!AudioContextClass || equalizerUnavailable) return false;
@@ -721,7 +736,8 @@ async function playAudio() {
   if (!state.currentSong) return;
   setPlayerVisible(true);
   try {
-    if (audioContext?.state === "suspended") await audioContext.resume();
+    if (isTvMode) await ensureAudioGraph();
+    else if (audioContext?.state === "suspended") await audioContext.resume();
     await audio.play();
     state.isPlaying = true;
     return;
