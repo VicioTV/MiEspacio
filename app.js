@@ -22,7 +22,8 @@ const songs = [
   { id: 16, title: "You a Loser", file: "YouALoser" },
   { id: 17, title: "Devil on My Shoulder", file: "DevilOnMyShoulder" },
   { id: 18, title: "Mi Sol", file: "MiSol" },
-  { id: 19, title: "Kick Me Out", file: "KickMeOut" }
+  { id: 19, title: "Kick Me Out", file: "KickMeOut" },
+  { id: 20, title: "Kick Me Out × ONE DAY (Mashup)", file: "KickMeOutxONEDAY" }
 ].map((song) => ({
   ...song,
   cover: `assets/covers/${song.file}-360.webp`,
