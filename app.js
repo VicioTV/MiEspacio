@@ -20,7 +20,8 @@ const songs = [
   { id: 14, title: "All These Dreams", file: "AllTheseDreams" },
   { id: 15, title: "Chase the Sun", file: "ChaseTheSun" },
   { id: 16, title: "You a Loser", file: "YouALoser" },
-  { id: 17, title: "Devil on My Shoulder", file: "DevilOnMyShoulder" }
+  { id: 17, title: "Devil on My Shoulder", file: "DevilOnMyShoulder" },
+  { id: 18, title: "Mi Sol", file: "MiSol" }
 ].map((song) => ({
   ...song,
   cover: `assets/covers/${song.file}-360.webp`,
