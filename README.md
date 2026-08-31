@@ -18,23 +18,24 @@ Los navegadores Samsung Smart TV/Tizen activan automáticamente una interfaz mus
 
 En el modo TV, las flechas desplazan el foco, OK/Enter reproduce, la tecla multimedia de reproducción/pausa controla el audio y Volver regresa al inicio. La experiencia normal de escritorio no cambia.
 
-El catálogo actual contiene “Still Here (Spanish)” y “Troppy Poppy”. Los audios se sirven desde la carpeta `mimusica/` de Cloudflare R2 con CORS y solicitudes por rangos habilitados para que Web Audio pueda procesarlos en el ecualizador.
+El catálogo actual contiene “Still Here (Spanish)”, “Troppy Poppy”, “No lo vimos pasar” y “Un paso más”. Los audios se sirven desde la carpeta `mimusica/` de Cloudflare R2 con CORS y solicitudes por rangos habilitados para que Web Audio pueda procesarlos en el ecualizador.
 
 ## Estructura
 
 - `index.html`: contenido y semántica de las seis vistas.
 - `styles.css`: sistema visual y responsive.
 - `app.js`: navegación, catálogo musical y reproductor.
+- `assets/covers/`: derivados WebP responsive de las portadas fuente.
 - `assets/projects/`: imágenes y evidencia visual de los casos.
 - `assets/fonts/`: Archivo y Bodoni Moda servidas localmente.
 - `DESIGN_SYSTEM.md`: reglas visuales y de interacción.
 - `progress.txt` y `LESSONS.md`: estado y decisiones aprendidas.
 
-Las dos canciones actuales todavía no tienen portadas en el repositorio, por lo que la interfaz usa su estado visual de respaldo. CORS y las solicitudes por rangos ya están activos para el dominio del portfolio.
+“Troppy Poppy” y “No lo vimos pasar” usan derivados WebP de 360 y 720 px generados desde `images/13096d27-9d44-423f-9f4c-ecdf08c77660.png` e `images/11dca6bb-4a34-40e3-a862-7410403b31d3.png`, respectivamente. “Still Here (Spanish)” y “Un paso más” conservan el respaldo visual previsto. CORS y las solicitudes por rangos ya están activos para el dominio del portfolio.
 
 ## Estado del archivo — 31.08.2026
 
-- MiEspacio Música abre una temporada nueva con dos canciones y sin recursos del catálogo anterior.
+- MiEspacio Música abre una temporada nueva con cuatro canciones y sin recursos del catálogo anterior.
 - KICK57 documenta su sistema local integrado sobre Next.js, Expo y Supabase, con los límites de producción visibles.
 - HELL BREATH reúne el portal de jugadores versionado y el vertical slice local del cliente D3D11.
 - Los casos sin avances verificables durante la última semana conservan su estado anterior.

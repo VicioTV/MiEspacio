@@ -36,12 +36,12 @@ Pendiente externo:
 2026-08-31 — Nueva temporada y avances de producto
 
 - Retirado el catálogo musical anterior junto con sus 42 portadas WebP y la composición visual que las representaba.
-- Integradas en MiEspacio “Still Here (Spanish)” y “Troppy Poppy”, publicadas en `mimusica/` de Cloudflare R2.
+- Integradas en MiEspacio “Still Here (Spanish)”, “Troppy Poppy”, “No lo vimos pasar” y “Un paso más”, publicadas en `mimusica/` de Cloudflare R2.
 - Verificados HTTP 200, solicitudes por rangos HTTP 206 y CORS para reproducción web, Web Audio y Samsung Tizen.
-- Las canciones nuevas no tienen portada: tarjetas y reproductor usan un respaldo visual accesible sin provocar solicitudes fallidas.
+- “Troppy Poppy” y “No lo vimos pasar” incorporan portadas WebP responsive derivadas de los originales PNG en R2; “Still Here (Spanish)” y “Un paso más” conservan el respaldo visual accesible.
 - KICK57 actualizado desde su antigua fase fundacional al sistema local integrado vigente: Player Web, Administración y app Expo sobre Supabase/PostgreSQL/Auth/Realtime/Storage.
 - KICK57 muestra reservas y pagos trazables, cantina, comunidad, perfiles, equipos, clases y torneos, además de sus gates de base de datos, E2E y móvil.
 - Añadido HELL BREATH como producto activo: portal de jugadores versionado y modernización local D3D11 con Icebound, Elvine, actores 3D, launcher y fallbacks legacy.
 - Explicitados los límites actuales: KICK57 todavía no es un release cloud y el cliente D3D11 de HELL BREATH sigue siendo un vertical slice local.
 - No se atribuyeron avances recientes a los productos sin evidencia de cambios durante la última semana.
-- QA final aprobada: sintaxis JavaScript, modo TV legacy, render a 1440 y 390 px, tipografía, carga/fallback de imágenes y ambos audios por rangos HTTP 206.
+- QA final aprobada: sintaxis JavaScript, modo TV legacy, render a 1440 y 390 px, tipografía, carga/fallback de imágenes y los cuatro audios por rangos HTTP 206.

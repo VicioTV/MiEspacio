@@ -1,11 +1,13 @@
 const MEDIA_BASE_URL = "https://pub-08916786b0ea4c109047b2d37424d0ea.r2.dev";
 const MEDIA_CORS_ENABLED = true;
-const MEDIA_VERSION = "20260831-new-catalog";
+const MEDIA_VERSION = "20260831-catalog-4";
 const mediaUrl = (folder, filename) => `${MEDIA_BASE_URL}/${folder}/${filename}?v=${MEDIA_VERSION}`;
 
 const songs = [
   { id: 1, title: "Still Here (Spanish)", audioFile: "Still Here (Spanish).mp3" },
-  { id: 2, title: "Troppy Poppy", audioFile: "troppypoppy.mp3" }
+  { id: 2, title: "Troppy Poppy", audioFile: "troppypoppy.mp3", coverFile: "TroppyPoppy" },
+  { id: 3, title: "No lo vimos pasar", audioFile: "No lo vimos pasar.mp3", coverFile: "NoLoVimosPasar" },
+  { id: 4, title: "Un paso más", audioFile: "Un paso mas.mp3" }
 ].map((song) => ({
   ...song,
   cover: song.coverFile ? `assets/covers/${song.coverFile}-360.webp` : null,

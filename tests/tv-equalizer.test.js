@@ -27,7 +27,11 @@ function startServer() {
         ? "text/javascript"
         : filePath.endsWith(".css")
           ? "text/css"
-          : "text/html";
+          : filePath.endsWith(".webp")
+            ? "image/webp"
+            : filePath.endsWith(".woff2")
+              ? "font/woff2"
+              : "text/html";
       response.writeHead(200, { "Content-Type": contentType });
       response.end(contents);
     });
@@ -170,6 +174,27 @@ async function collectToastMessages(page) {
 
     await page.goto(`http://127.0.0.1:${port}/?tv=1#canciones`, { waitUntil: "domcontentloaded", timeout: 5000 });
     await page.waitForFunction(() => typeof selectSong === "function");
+    await page.waitForFunction(() => [...document.querySelectorAll("#songGrid .cover-art")]
+      .every((image) => image.complete && image.naturalWidth > 0));
+    const catalogResult = await page.evaluate(() => ({
+      titles: songs.map((song) => song.title),
+      audioFiles: songs.map((song) => song.audioFile),
+      covers: songs.map((song) => song.cover),
+      renderedCards: document.querySelectorAll("#songGrid .song-card").length,
+      renderedCoverImages: document.querySelectorAll("#songGrid .cover-art").length,
+      missingCoverStates: document.querySelectorAll("#songGrid .has-image-error").length
+    }));
+    assert.deepEqual(catalogResult.titles, ["Still Here (Spanish)", "Troppy Poppy", "No lo vimos pasar", "Un paso más"]);
+    assert.deepEqual(catalogResult.audioFiles, ["Still Here (Spanish).mp3", "troppypoppy.mp3", "No lo vimos pasar.mp3", "Un paso mas.mp3"]);
+    assert.deepEqual(catalogResult.covers, [
+      null,
+      "assets/covers/TroppyPoppy-360.webp",
+      "assets/covers/NoLoVimosPasar-360.webp",
+      null
+    ]);
+    assert.equal(catalogResult.renderedCards, 4, "TV must render the complete four-song catalog");
+    assert.equal(catalogResult.renderedCoverImages, 2, "TV must render both supplied covers");
+    assert.equal(catalogResult.missingCoverStates, 2, "Still Here and Un paso más should use the missing-cover fallback");
     await collectToastMessages(page);
     await page.evaluate(() => selectSong(1, true));
     await page.waitForFunction(
@@ -326,6 +351,29 @@ async function collectToastMessages(page) {
     assert.equal(desktopResult.buttonDisabled, false, "Desktop equalizer button must remain editable");
     assert.equal(desktopResult.panelOpen, true, "Desktop equalizer panel must still open");
     assert.equal(desktopResult.rangesEnabled, true, "Desktop equalizer ranges must remain enabled");
+
+    await page.goto(`http://127.0.0.1:${port}/?tv=0#proyectos`, { waitUntil: "domcontentloaded", timeout: 5000 });
+    await page.waitForFunction(() => document.body.dataset.view === "proyectos");
+    const musicCase = page.locator("#proyectos .tech-case").nth(2);
+    await musicCase.scrollIntoViewIfNeeded();
+    const musicCaseResult = await musicCase.evaluate((element) => ({
+      hasAllTitles: ["Still Here (Spanish)", "Troppy Poppy", "No lo vimos pasar", "Un paso más"]
+        .every((title) => element.textContent.includes(title)),
+      hasFourReleases: element.textContent.includes("4 lanzamientos")
+    }));
+    assert.equal(musicCaseResult.hasAllTitles, true, "Music case must name the complete catalog");
+    assert.equal(musicCaseResult.hasFourReleases, true, "Music case must report four releases");
+    if (process.env.MUSIC_CASE_SCREENSHOT) {
+      await musicCase.screenshot({ path: process.env.MUSIC_CASE_SCREENSHOT });
+    }
+
+    await page.setViewportSize({ width: 390, height: 844 });
+    await musicCase.scrollIntoViewIfNeeded();
+    const mobileMusicCaseFits = await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1);
+    assert.equal(mobileMusicCaseFits, true, "Mobile music case must not overflow the viewport");
+    if (process.env.MUSIC_CASE_MOBILE_SCREENSHOT) {
+      await page.screenshot({ path: process.env.MUSIC_CASE_MOBILE_SCREENSHOT, fullPage: false });
+    }
     console.log("PASS: legacy TV applies the default equalizer and shows a non-editable active icon");
   } finally {
     await browser.close();
