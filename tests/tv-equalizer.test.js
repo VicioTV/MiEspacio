@@ -184,19 +184,20 @@ async function collectToastMessages(page) {
       renderedCoverImages: document.querySelectorAll("#songGrid .cover-art").length,
       missingCoverStates: document.querySelectorAll("#songGrid .has-image-error").length
     }));
-    assert.deepEqual(catalogResult.titles, ["Still Here (Spanish)", "Troppy Poppy", "No lo vimos pasar", "Un paso más"]);
-    assert.deepEqual(catalogResult.audioFiles, ["Still Here (Spanish).mp3", "troppypoppy.mp3", "No lo vimos pasar.mp3", "Un paso mas.mp3"]);
+    assert.deepEqual(catalogResult.titles, ["No lo vimos pasar", "Troppy Poppy", "Still Here (Spanish)", "Voy igual", "Un paso más"]);
+    assert.deepEqual(catalogResult.audioFiles, ["No lo vimos pasar.mp3", "troppypoppy.mp3", "Still Here (Spanish).mp3", "Voy igual.mp3", "Un paso mas.mp3"]);
     assert.deepEqual(catalogResult.covers, [
-      null,
-      "assets/covers/TroppyPoppy-360.webp",
       "assets/covers/NoLoVimosPasar-360.webp",
+      "assets/covers/TroppyPoppy-360.webp",
+      null,
+      null,
       null
     ]);
-    assert.equal(catalogResult.renderedCards, 4, "TV must render the complete four-song catalog");
+    assert.equal(catalogResult.renderedCards, 5, "TV must render the complete five-song catalog");
     assert.equal(catalogResult.renderedCoverImages, 2, "TV must render both supplied covers");
-    assert.equal(catalogResult.missingCoverStates, 2, "Still Here and Un paso más should use the missing-cover fallback");
+    assert.equal(catalogResult.missingCoverStates, 3, "Still Here, Voy igual, and Un paso más should use the missing-cover fallback");
     await collectToastMessages(page);
-    await page.evaluate(() => selectSong(1, true));
+    await page.evaluate(() => togglePlayback());
     await page.waitForFunction(
       () => document.querySelector("#equalizerButton").dataset.equalizerStatus === "active",
       null,
@@ -230,6 +231,19 @@ async function collectToastMessages(page) {
     assert.equal(result.buttonStatus, "active", "TV equalizer icon must confirm that processing is active");
     assert.equal(result.panelHidden, true, "TV must not expose the equalizer panel");
     assert.equal(result.rangesDisabled, true, "TV equalizer settings must not be editable");
+    const playbackSequence = await page.evaluate(() => {
+      const sequence = [state.currentSong?.title];
+      for (let index = 1; index < songs.length; index += 1) {
+        audio.dispatchEvent(new Event("ended"));
+        sequence.push(state.currentSong?.title);
+      }
+      return sequence;
+    });
+    assert.deepEqual(
+      playbackSequence,
+      ["No lo vimos pasar", "Troppy Poppy", "Still Here (Spanish)", "Voy igual", "Un paso más"],
+      "TV playback must start with No lo vimos pasar and follow the requested sequence"
+    );
     if (process.env.TV_EQ_SCREENSHOT) {
       await page.screenshot({ path: process.env.TV_EQ_SCREENSHOT, fullPage: false });
     }
@@ -254,7 +268,7 @@ async function collectToastMessages(page) {
     });
     await page.waitForFunction(() => typeof selectSong === "function");
     await collectToastMessages(page);
-    await page.evaluate(() => selectSong(1, true));
+    await page.evaluate(() => selectSong(songs[0].id, true));
     await page.waitForFunction(
       () => document.querySelector("#equalizerButton").dataset.equalizerStatus === "active",
       null,
@@ -273,7 +287,7 @@ async function collectToastMessages(page) {
     });
     await page.waitForFunction(() => typeof selectSong === "function");
     await collectToastMessages(page);
-    await page.evaluate(() => selectSong(1, true));
+    await page.evaluate(() => selectSong(songs[0].id, true));
     const fallbackResult = await page.evaluate(() => ({
       playbackMessages: window.__tvPlaybackMessages,
       buttonStatus: document.querySelector("#equalizerButton").dataset.equalizerStatus,
@@ -289,7 +303,7 @@ async function collectToastMessages(page) {
     });
     await page.waitForFunction(() => typeof selectSong === "function");
     await collectToastMessages(page);
-    await page.evaluate(() => selectSong(1, true));
+    await page.evaluate(() => selectSong(songs[0].id, true));
     await page.waitForFunction(() => audio.crossOrigin !== "anonymous" && state.isPlaying, null, { timeout: 2500 });
     const asyncErrorResult = await page.evaluate(() => ({
       playbackMessages: window.__tvPlaybackMessages,
@@ -303,7 +317,7 @@ async function collectToastMessages(page) {
       timeout: 5000
     });
     await page.waitForFunction(() => typeof selectSong === "function");
-    await page.evaluate(() => selectSong(1, true));
+    await page.evaluate(() => selectSong(songs[0].id, true));
     await page.waitForTimeout(100);
     await page.evaluate(() => pauseAudio());
     await page.waitForTimeout(900);
@@ -320,7 +334,7 @@ async function collectToastMessages(page) {
     });
     await page.waitForFunction(() => typeof selectSong === "function");
     await collectToastMessages(page);
-    await page.evaluate(() => selectSong(1, true));
+    await page.evaluate(() => selectSong(songs[0].id, true));
     const graphFailureResult = await page.evaluate(() => ({
       playbackMessages: window.__tvPlaybackMessages,
       buttonStatus: document.querySelector("#equalizerButton").dataset.equalizerStatus,
@@ -357,12 +371,12 @@ async function collectToastMessages(page) {
     const musicCase = page.locator("#proyectos .tech-case").nth(2);
     await musicCase.scrollIntoViewIfNeeded();
     const musicCaseResult = await musicCase.evaluate((element) => ({
-      hasAllTitles: ["Still Here (Spanish)", "Troppy Poppy", "No lo vimos pasar", "Un paso más"]
+      hasAllTitles: ["No lo vimos pasar", "Troppy Poppy", "Still Here (Spanish)", "Voy igual", "Un paso más"]
         .every((title) => element.textContent.includes(title)),
-      hasFourReleases: element.textContent.includes("4 lanzamientos")
+      hasFiveReleases: element.textContent.includes("5 lanzamientos")
     }));
     assert.equal(musicCaseResult.hasAllTitles, true, "Music case must name the complete catalog");
-    assert.equal(musicCaseResult.hasFourReleases, true, "Music case must report four releases");
+    assert.equal(musicCaseResult.hasFiveReleases, true, "Music case must report five releases");
     if (process.env.MUSIC_CASE_SCREENSHOT) {
       await musicCase.screenshot({ path: process.env.MUSIC_CASE_SCREENSHOT });
     }
