@@ -42,6 +42,7 @@ Archivo editorial nocturno: una interfaz sobria para presentar producto, desarro
 
 ## Medios
 
-- Portadas musicales: WebP de 360 y 720 px con `srcset` y `sizes`.
-- Montar 4 portadas al entrar en móvil y ampliar el catálogo progresivamente.
+- El arte de cada canción es opcional. Sin `coverFile`, la tarjeta y el reproductor muestran el respaldo visual previsto, sin solicitar una imagen inexistente.
+- Cuando una temporada incluya portadas, usar WebP de 360 y 720 px con `srcset` y `sizes`.
+- Los audios remotos se sirven desde Cloudflare R2 con CORS y solicitudes por rangos; cada cambio de catálogo actualiza `MEDIA_VERSION`.
 - Toda imagen debe reservar proporción, usar `decoding="async"` y ofrecer un estado de error legible.

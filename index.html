@@ -17,7 +17,7 @@
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23020304'/%3E%3Cpath d='M17 21h30M17 32h22M17 43h30' stroke='%239df2df' stroke-width='5' stroke-linecap='square'/%3E%3C/svg%3E">
     <link rel="preload" href="assets/fonts/archivo-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="assets/fonts/bodoni-moda-latin.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="stylesheet" href="styles.css?v=20260806-tv-equalizer-status">
+    <link rel="stylesheet" href="styles.css?v=20260831-new-catalog">
   </head>
   <body data-view="inicio">
     <script>
@@ -81,7 +81,7 @@
 
 
         <nav class="life-index" aria-label="Expedientes del archivo">
-          <p class="archive-updated"><span>Actualizado</span><span aria-hidden="true">&mdash;</span><time datetime="2026-08-13T17:37:00-03:00">13.08.2026 · 17:37 ART</time></p>
+          <p class="archive-updated"><span>Actualizado</span><span aria-hidden="true">&mdash;</span><time datetime="2026-08-31T03:28:00-03:00">31.08.2026 · 03:28 ART</time></p>
           <div class="navigation-heading"><span>Navegación</span><i></i><b>///</b></div>
           <a class="life-entry" href="#canciones" data-route="canciones"><span class="entry-number">01</span><span class="entry-copy"><span class="entry-title">Mi música</span><span class="entry-note">Producción, canciones y sonidos</span></span><span class="entry-arrow" aria-hidden="true">↗</span></a>
           <a class="life-entry" href="#proyectos" data-route="proyectos"><span class="entry-number">02</span><span class="entry-copy"><span class="entry-title">Mis proyectos</span><span class="entry-note">Productos y sistemas digitales</span></span><span class="entry-arrow" aria-hidden="true">↗</span></a>
@@ -109,12 +109,12 @@
             <div>
               <p class="eyebrow">Archivo sonoro / 01</p>
               <h2 id="songsTitle">Mi música <span class="title-wave" aria-hidden="true">∿∿</span></h2>
-              <p class="songs-intro">Cada canción es un universo.<br>Produzco, compongo y doy vida a historias sonoras que conectan emoción, tecnología y narrativa.</p>
+              <p class="songs-intro">Nueva temporada, nuevo catálogo.<br>&ldquo;Still Here (Spanish)&rdquo; y &ldquo;Troppy Poppy&rdquo; abren una etapa de canciones servidas desde R2 para web y TV.</p>
             </div>
           </header>
           <div class="song-toolbar">
-            <p class="songs-count"><span id="songCount">21</span> lanzamientos</p>
-            <div class="filter-group" role="group" aria-label="Ordenar canciones">
+            <p class="songs-count"><span id="songCount">2</span> lanzamientos</p>
+            <div class="filter-group" role="group" aria-label="Ordenar canciones" hidden>
               <button class="filter-button is-active" type="button" data-sort="original" aria-pressed="true">Orden original</button>
               <button class="filter-button" type="button" data-sort="title" aria-pressed="false">A–Z</button>
             </div>
@@ -127,14 +127,14 @@
         <header class="tech-section-header">
           <button class="back-button" type="button" data-route="inicio" aria-label="Volver al inicio">←</button>
           <div class="tech-heading-copy">
-            <p class="eyebrow">Portfolio técnico / Estado al 05.08.2026</p>
+            <p class="eyebrow">Portfolio técnico / Estado al 31.08.2026</p>
             <h2 id="projectsTitle">Sistemas que llegan<br>a producción.</h2>
             <p>No construimos pantallas aisladas. Diseñamos productos conectados con operaciones reales: catálogo, stock, ventas, audio, contenido, APIs e infraestructura.</p>
           </div>
           <dl class="tech-heading-metrics">
-            <div><dt>Lenguajes</dt><dd>HTML · CSS · JavaScript · TypeScript · SQL</dd></div>
-            <div><dt>Frameworks</dt><dd>Next.js · React · React Native · Electron · Fastify</dd></div>
-            <div><dt>Infraestructura</dt><dd>Vercel · GitHub Pages · Cloudflare R2 · PostgreSQL</dd></div>
+            <div><dt>Lenguajes</dt><dd>HTML · CSS · JavaScript · TypeScript · C++ · SQL</dd></div>
+            <div><dt>Frameworks y runtimes</dt><dd>Next.js · React · Expo · Electron · Win32</dd></div>
+            <div><dt>Infraestructura</dt><dd>Supabase · Vercel · GitHub Pages · Cloudflare R2</dd></div>
             <div><dt>Superficies</dt><dd>Web · Móvil · Escritorio · Smart TV · Audio · Video</dd></div>
           </dl>
         </header>
@@ -205,26 +205,28 @@
           <article class="tech-case">
             <header class="tech-case-header">
               <span class="tech-case-index">CASE_03</span>
-              <p class="tech-case-status"><span aria-hidden="true"></span>Web + Smart TV</p>
+              <p class="tech-case-status"><span aria-hidden="true"></span>Nueva temporada</p>
             </header>
             <div class="tech-case-grid">
-              <figure class="tech-case-media is-music">
-                <img src="assets/projects/miespacio-music.webp" alt="Selección de portadas del catálogo musical de MiEspacio" width="1200" height="750" loading="lazy" decoding="async">
-                <figcaption>Streaming / Web Audio / Samsung TV</figcaption>
+              <figure class="tech-case-media is-music is-creador">
+                <div class="creador-system-cover" role="img" aria-label="Nueva temporada musical: Still Here (Spanish) y Troppy Poppy">
+                  <span>Nueva temporada</span><i>→</i><span>Still Here</span><i>→</i><strong>Troppy Poppy</strong>
+                </div>
+                <figcaption>Nueva temporada / Cloudflare R2 / Samsung TV</figcaption>
               </figure>
               <div class="tech-case-body">
-                <p class="tech-kicker">Producto musical · Web y Samsung Tizen</p>
+                <p class="tech-kicker">Producto musical · Nueva temporada</p>
                 <h3>MiEspacio<br>Música</h3>
-                <p class="tech-case-summary">Una biblioteca de 21 lanzamientos con reproducción persistente, procesamiento de audio en tiempo real y una interfaz de diez pies para Samsung TV. El mismo producto coordina catálogo, streaming remoto, ecualización y control a distancia.</p>
+                <p class="tech-case-summary">La nueva temporada reinicia el catálogo con &ldquo;Still Here (Spanish)&rdquo; y &ldquo;Troppy Poppy&rdquo;. El reproductor conserva el streaming remoto, la ecualización en tiempo real y la experiencia de diez pies para Samsung TV, ahora con una única fuente de audio en Cloudflare R2.</p>
                 <div class="tech-challenge-grid">
                   <section><span>01</span><h4>Reproductor</h4><p>Estado sincronizado entre pista activa, controles, progreso, volumen y navegación del sitio.</p></section>
                   <section><span>02</span><h4>Control remoto</h4><p>Foco direccional, OK, teclas multimedia, Volver, puntero y rueda adaptados a TizenBrowser.</p></section>
-                  <section><span>03</span><h4>Audio y rendimiento</h4><p>Web Audio API, R2 con CORS y rangos, portadas WebP responsivas y carga progresiva.</p></section>
+                  <section><span>03</span><h4>Catálogo resiliente</h4><p>R2 entrega CORS y rangos; la interfaz contempla pistas sin portada y versiona el catálogo para evitar cachés obsoletas.</p></section>
                 </div>
                 <dl class="tech-facts">
                   <div><dt>Cliente</dt><dd>HTML · CSS · JavaScript</dd></div>
                   <div><dt>Audio</dt><dd>Web Audio API · Cloudflare R2 · CORS + Range</dd></div>
-                  <div><dt>Superficies</dt><dd>Web responsive · Samsung Tizen · GitHub Pages</dd></div>
+                  <div><dt>Catálogo</dt><dd>2 lanzamientos · Web responsive · Samsung Tizen</dd></div>
                 </dl>
                 <button class="tech-action" type="button" data-route="canciones">Escuchar catálogo <span aria-hidden="true">↗</span></button>
               </div>
@@ -365,15 +367,15 @@
         <header class="tech-section-header">
           <button class="back-button" type="button" data-route="inicio" aria-label="Volver al inicio">←</button>
           <div class="tech-heading-copy">
-            <p class="eyebrow">Laboratorio / Estado al 05.08.2026</p>
+            <p class="eyebrow">Laboratorio / Estado al 31.08.2026</p>
             <h2 id="futureTitle">Lo complejo<br>ya está en marcha.</h2>
             <p>Productos de largo alcance construidos por capas: primero el dominio, después la arquitectura y, sobre fundamentos verificables, la experiencia final.</p>
           </div>
           <dl class="tech-heading-metrics">
             <div><dt>Método</dt><dd>Iteraciones pequeñas · Decisiones documentadas</dd></div>
-            <div><dt>Calidad</dt><dd>Pruebas de dominio · Validación visual · Perfiles de rendimiento</dd></div>
-            <div><dt>Arquitectura</dt><dd>Monorepos · Paquetes compartidos · Pipelines deterministas</dd></div>
-            <div><dt>Estado</dt><dd>Avance real · Riesgos visibles · Próximo hito explícito</dd></div>
+            <div><dt>Calidad</dt><dd>pgTAP · Playwright · Pruebas nativas · Validación visual</dd></div>
+            <div><dt>Arquitectura</dt><dd>Supabase · D3D11 · Monorepos · Pipelines deterministas</dd></div>
+            <div><dt>Estado</dt><dd>Local verificado · Límites explícitos · Próximo hito</dd></div>
           </dl>
         </header>
 
@@ -381,33 +383,34 @@
           <article class="future-dossier">
             <header class="tech-case-header">
               <span class="tech-case-index">BUILD_01</span>
-              <p class="tech-case-status is-building"><span aria-hidden="true"></span>Fase 1</p>
+              <p class="tech-case-status"><span aria-hidden="true"></span>Local verificado</p>
             </header>
             <div class="future-dossier-hero">
               <img src="assets/projects/kick57.webp" alt="Identidad visual de la plataforma deportiva KICK57" width="1200" height="900" loading="lazy" decoding="async">
-              <div><p class="tech-kicker">Plataforma deportiva · Monorepo</p><h3>KICK57</h3><p>Una plataforma deportiva en fase fundacional. El monorepo comparte reglas de identidad, precios y bloqueo de canchas F5/F7 entre una API y tres clientes; reservas transaccionales, pagos y comunidad siguen en desarrollo.</p></div>
+              <div><p class="tech-kicker">Sistema deportivo · Web, móvil y administración</p><h3>KICK57</h3><p>Un sistema operativo local-first para el club. Player Web, Administración y la app Expo comparten un único backend Supabase, con reservas y pagos trazables, equipos, chats, perfiles, clases, torneos, comunidad y cantina.</p></div>
             </div>
             <div class="future-architecture">
-              <div class="future-dossier-intro"><p class="eyebrow">Arquitectura del producto</p><h4>Una operación.<br>Cuatro superficies.</h4><p>La web administrativa, la web de jugadores y la aplicación móvil están diseñadas alrededor de una API central. El dominio vive en paquetes compartidos y Prisma define el esquema inicial de persistencia.</p></div>
+              <div class="future-dossier-intro"><p class="eyebrow">Arquitectura del producto</p><h4>Un dominio.<br>Tres experiencias.</h4><p>Web, Android y Administración convergen sobre las mismas reglas de cancha, dinero, acceso y comunidad. Supabase concentra Auth, Realtime, Storage, Edge Functions y PostgreSQL con RLS.</p></div>
               <ol class="architecture-flow" aria-label="Arquitectura de KICK57">
-                <li><span>Clientes</span><strong>Next.js Admin<br>Next.js Player<br>React Native + Expo</strong></li>
+                <li><span>Experiencias</span><strong>Next.js Player<br>Next.js Admin<br>Expo Android</strong></li>
                 <li aria-hidden="true">→</li>
-                <li><span>Servicios</span><strong>Fastify API<br>Dominio compartido</strong></li>
+                <li><span>Servicios</span><strong>Supabase Auth<br>Realtime · Edge Functions</strong></li>
                 <li aria-hidden="true">→</li>
-                <li><span>Datos</span><strong>PostgreSQL<br>Prisma ORM</strong></li>
+                <li><span>Datos</span><strong>PostgreSQL + RLS<br>Storage privado</strong></li>
               </ol>
             </div>
+            <dl class="studio-metrics"><div><dt>97</dt><dd>Migraciones SQL</dd></div><div><dt>106</dt><dd>Archivos de prueba SQL</dd></div><div><dt>13</dt><dd>Specs E2E</dd></div><div><dt>221 / 221</dt><dd>Gate móvil</dd></div></dl>
             <div class="future-module-grid">
-              <section><span>01 / Dominio</span><h4>Reglas antes que pantallas</h4><p>Ocupación F5 y F7, precios, cancelaciones e invariantes expresadas como código comprobable.</p></section>
-              <section><span>02 / Identidad</span><h4>Acceso consistente</h4><p>Normalización de teléfono y correo, roles, etiquetas y cambio obligatorio de contraseña.</p></section>
-              <section><span>03 / Datos</span><h4>Esquema trazable</h4><p>Prisma modela usuarios, partidos, canchas ocupadas, participantes y pagos; la conexión operativa aún está pendiente.</p></section>
-              <section><span>04 / Próximo hito</span><h4>Autenticación real</h4><p>Hash y persistencia de credenciales, endpoints de acceso, recuperación y primeras pantallas funcionales.</p></section>
+              <section><span>01 / Reservas</span><h4>Cancha y dinero, atómicos</h4><p>F5/F7, ocupación, participantes, pagos, caja, chat y calendario nacen en una operación idempotente con rollback ante conflictos.</p></section>
+              <section><span>02 / Operación</span><h4>El club en una sola vista</h4><p>Administración, llegadas, saldos, historial, cantina, stock y efectivo comparten trazabilidad y permisos.</p></section>
+              <section><span>03 / Comunidad</span><h4>Identidad que persiste</h4><p>Perfiles, muro, medios privados, equipos, chats, profesores, clases y torneo mínimo forman una experiencia conectada.</p></section>
+              <section><span>04 / Resiliencia</span><h4>Recuperar sin duplicar</h4><p>RLS, Realtime, outbox y reconciliación resuelven respuestas perdidas, reintentos y recuperación entre navegadores.</p></section>
             </div>
             <div class="build-progress">
-              <div><p class="eyebrow">Estado verificado</p><h4>Fundaciones firmes.<br>Alcance transparente.</h4><p>Las reglas de dominio, el esquema inicial y los prototipos están escritos. La API expone salud; persistencia, autenticación y pantallas conectadas son los próximos hitos.</p></div>
-              <ol><li class="is-done"><span>01</span>Arquitectura y monorepo</li><li class="is-done"><span>02</span>Dominio y pruebas</li><li class="is-active"><span>03</span>Identidad base</li><li><span>04</span>Autenticación y persistencia</li><li><span>05</span>Reservas, pagos y comunidad</li></ol>
+              <div><p class="eyebrow">Estado verificado</p><h4>Sistema integrado.<br>Producción pendiente.</h4><p>El recorrido completo funciona en local y el APK superó su gate de aceptación. Todavía faltan Supabase Cloud, pagos reales, firma de tienda y despliegue público; no se presenta como release productivo.</p></div>
+              <ol><li class="is-done"><span>01</span>Dominio y Supabase local</li><li class="is-done"><span>02</span>Reservas, pagos y Administración</li><li class="is-done"><span>03</span>Comunidad, equipos y cantina</li><li class="is-done"><span>04</span>APK y aceptación nativa</li><li class="is-active"><span>05</span>Cloud, pagos reales y release firmado</li></ol>
             </div>
-            <footer class="tech-tags" aria-label="Tecnologías de KICK57"><span>TypeScript</span><span>Next.js</span><span>React Native</span><span>Expo</span><span>Fastify</span><span>PostgreSQL</span><span>Prisma</span><span>Jest</span></footer>
+            <footer class="tech-tags" aria-label="Tecnologías de KICK57"><span>TypeScript</span><span>Next.js</span><span>React Native</span><span>Expo</span><span>Supabase</span><span>PostgreSQL</span><span>Auth</span><span>Realtime</span><span>Storage</span><span>Playwright</span><span>pgTAP</span></footer>
           </article>
 
           <article class="future-dossier visual-studio-dossier">
@@ -415,7 +418,7 @@
               <span class="tech-case-index">BUILD_02</span>
               <p class="tech-case-status is-building"><span aria-hidden="true"></span>v0.44.0</p>
             </header>
-            <div class="future-dossier-hero is-studio">
+            <div class="future-dossier-hero is-wide-feature">
               <img src="assets/projects/visual-studio-c100k.webp" alt="Interfaz de edición audiovisual de Visual Studio C100K" width="1200" height="675" loading="lazy" decoding="async">
               <div><p class="tech-kicker">Aplicación de escritorio · Motor audiovisual</p><h3>VISUAL STUDIO<br>C100K</h3><p>Un estudio canvas-first que convierte canción, imagen y dirección artística en escenas audiovisuales sincronizadas. Autopiloto, Copiloto y edición manual operan sobre el mismo documento, desde el análisis musical hasta el video final.</p></div>
             </div>
@@ -428,6 +431,40 @@
               <section><span>04 / Exportación</span><h4>Del preview al archivo</h4><p>Captura exacta, salida horizontal o vertical de 1 a 60 FPS y codificación H.264 o WebM mediante FFmpeg.</p></section>
             </div>
             <footer class="tech-tags" aria-label="Tecnologías de Visual Studio C100K"><span>JavaScript</span><span>React</span><span>Electron</span><span>Three.js</span><span>WebGL</span><span>Canvas</span><span>FFT</span><span>FFmpeg</span><span>Jest</span><span>Webpack</span><span>Zustand</span></footer>
+          </article>
+
+          <article class="future-dossier">
+            <header class="tech-case-header">
+              <span class="tech-case-index">BUILD_03</span>
+              <p class="tech-case-status is-building"><span aria-hidden="true"></span>Vertical slice activo</p>
+            </header>
+            <div class="future-dossier-hero is-wide-feature">
+              <img src="assets/projects/hell-breath.jpg" alt="Cliente HELL BREATH modernizado en Elvine con terreno y actores 3D" width="1280" height="720" loading="lazy" decoding="async" data-error-fallback="hellBreathImageFallback">
+              <p class="media-error-fallback" id="hellBreathImageFallback" hidden>Captura de HELL BREATH no disponible.</p>
+              <div><p class="tech-kicker">Juego online · Portal + cliente D3D11</p><h3>HELL<br>BREATH</h3><p>Dos capas de un mismo mundo: un portal conectado a datos reales —estado, eventos, drops, wiki, rankings y cuenta— y un cliente híbrido D3D11 que moderniza terreno, actores, props y operación sin cambiar las reglas heredadas.</p></div>
+            </div>
+            <dl class="studio-metrics"><div><dt>2 capas</dt><dd>Portal + cliente</dd></div><div><dt>2 biomas</dt><dd>Icebound + Elvine</dd></div><div><dt>31 mapas</dt><dd>Fallback legacy</dd></div><div><dt>206 assets</dt><dd>Pipeline actual</dd></div></dl>
+            <div class="future-architecture">
+              <div class="future-dossier-intro"><p class="eyebrow">Arquitectura de transición</p><h4>Preservar reglas.<br>Renovar experiencia.</h4><p>El servidor y el protocolo heredados siguen siendo la fuente de verdad. Adaptadores, captura semántica y fallbacks fail-closed permiten modernizar cada superficie sin reescribir el juego de una sola vez.</p></div>
+              <ol class="architecture-flow" aria-label="Arquitectura de HELL BREATH">
+                <li><span>Origen</span><strong>Servidor legado<br>Protocolo y gameplay</strong></li>
+                <li aria-hidden="true">→</li>
+                <li><span>Transición</span><strong>Snapshots semánticos<br>Adaptadores + fallbacks</strong></li>
+                <li aria-hidden="true">→</li>
+                <li><span>Experiencia</span><strong>Portal de jugadores<br>Cliente D3D11</strong></li>
+              </ol>
+            </div>
+            <div class="future-module-grid">
+              <section><span>01 / Portal</span><h4>El mundo, navegable</h4><p>Estado, Crusade, actividad, drops observados, wiki, catálogo, build lab, rankings y Unstuck seguro sobre datos sanitizados.</p></section>
+              <section><span>02 / Mundo 3D</span><h4>Biomas progresivos</h4><p>Icebound y Elvine combinan terreno, props y materiales modernos; los demás mapas conservan composición legacy exacta.</p></section>
+              <section><span>03 / Actores</span><h4>Identidad en movimiento</h4><p>Humanos, armas y criaturas 3D integran animación, iluminación y estados sin perder la lógica del cliente original.</p></section>
+              <section><span>04 / Operación</span><h4>Control con evidencia</h4><p>Launcher C100K, Control Room, telemetría y recuperación segura exponen qué está activo y evitan estados engañosos.</p></section>
+            </div>
+            <div class="build-progress">
+              <div><p class="eyebrow">Estado verificado</p><h4>Portal versionado.<br>Cliente en desarrollo.</h4><p>El portal vive en GitHub y el vertical slice D3D11 compila y corre en local. VFX modernos, verdad semántica de ítems, enchanting, más mapas y un release reproducible siguen en evolución.</p></div>
+              <ol><li class="is-done"><span>01</span>Portal, wiki y herramientas de cuenta</li><li class="is-done"><span>02</span>Icebound 3D y fallback legacy</li><li class="is-done"><span>03</span>Elvine y actores globales</li><li class="is-active"><span>04</span>VFX, ítems y enchanting</li><li><span>05</span>Más mapas y release reproducible</li></ol>
+            </div>
+            <footer class="tech-tags" aria-label="Tecnologías de HELL BREATH"><span>C++</span><span>Direct3D 11</span><span>Win32</span><span>TypeScript</span><span>Node.js</span><span>Blender</span><span>PBR</span><span>Telemetry</span><span>Playwright</span></footer>
           </article>
         </div>
 
@@ -456,7 +493,7 @@
       </div>
       <div class="player-track">
         <div class="mini-cover" id="miniCover"></div>
-        <div class="player-meta"><strong id="playerTitle">Luz de madrugada</strong><span>Rodriguez26Lucas</span></div>
+        <div class="player-meta"><strong id="playerTitle">Seleccioná una canción</strong><span>Rodriguez26Lucas</span></div>
       </div>
       <div class="player-main">
         <div class="player-buttons">
@@ -466,7 +503,7 @@
           <button type="button" id="nextButton" aria-label="Canción siguiente" title="Siguiente"><svg class="player-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 9 6-9 6Z"></path><path d="M18 6v12"></path></svg></button>
           <button type="button" id="repeatButton" aria-label="Repetir canción" aria-pressed="false" title="Repetir"><svg class="player-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17 3l3 3-3 3"></path><path d="M4 11V9a3 3 0 0 1 3-3h13"></path><path d="m7 21-3-3 3-3"></path><path d="M20 13v2a3 3 0 0 1-3 3H4"></path></svg></button>
         </div>
-        <div class="timeline"><span id="currentTime">0:00</span><input id="progressRange" type="range" min="0" max="180" value="0" step="1" aria-label="Progreso de la canción"><span id="durationTime">3:00</span></div>
+        <div class="timeline"><span id="currentTime">0:00</span><input id="progressRange" type="range" min="0" max="1" value="0" step="1" aria-label="Progreso de la canción"><span id="durationTime">0:00</span></div>
       </div>
       <div class="player-actions">
         <button type="button" id="equalizerButton" aria-label="Abrir ecualizador" aria-controls="equalizerPanel" aria-expanded="false" title="Ecualizador"><svg class="player-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4v16M12 4v16M19 4v16"></path><path d="M2.5 9h5M9.5 15h5M16.5 8h5"></path></svg></button>
@@ -483,6 +520,6 @@
     </aside>
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
-    <script src="app.js?v=20260813-in-the-mud"></script>
+    <script src="app.js?v=20260831-new-catalog"></script>
   </body>
 </html>

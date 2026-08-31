@@ -1,35 +1,16 @@
 const MEDIA_BASE_URL = "https://pub-08916786b0ea4c109047b2d37424d0ea.r2.dev";
 const MEDIA_CORS_ENABLED = true;
-const MEDIA_VERSION = "20260802-cors";
+const MEDIA_VERSION = "20260831-new-catalog";
 const mediaUrl = (folder, filename) => `${MEDIA_BASE_URL}/${folder}/${filename}?v=${MEDIA_VERSION}`;
 
 const songs = [
-  { id: 1, title: "Let’s Do It", file: "LetsDoIt" },
-  { id: 2, title: "Drop Your Top", file: "DoprYourTop" },
-  { id: 3, title: "Hold Me, Kiss Me", file: "HoldMeKissMe" },
-  { id: 4, title: "Funk U Up", file: "FunkUUp" },
-  { id: 5, title: "Your Enemy", file: "YourEnemy" },
-  { id: 6, title: "I Have to Go", file: "IHaveToGo" },
-  { id: 7, title: "The Best Thing in My Life", file: "TheBestThingInMyLife" },
-  { id: 8, title: "My Life Is a Movie", file: "MyLifeIsAMovie" },
-  { id: 9, title: "Perfect", file: "Perfect" },
-  { id: 10, title: "Perfume and Wine", file: "PerfumeAndWine" },
-  { id: 11, title: "Places I Can’t Go", file: "PlacesICantGo" },
-  { id: 12, title: "Cold Night", file: "ColdNight" },
-  { id: 13, title: "Roses on My Grave", file: "RosesOnMyGrave" },
-  { id: 14, title: "All These Dreams", file: "AllTheseDreams" },
-  { id: 15, title: "Chase the Sun", file: "ChaseTheSun" },
-  { id: 16, title: "You a Loser", file: "YouALoser" },
-  { id: 17, title: "Devil on My Shoulder", file: "DevilOnMyShoulder" },
-  { id: 18, title: "Mi Sol", file: "MiSol" },
-  { id: 19, title: "Kick Me Out", file: "KickMeOut" },
-  { id: 20, title: "Kick Me Out × ONE DAY (Mashup)", file: "KickMeOutxONEDAY" },
-  { id: 21, title: "In the Mud", file: "inthemud" }
+  { id: 1, title: "Still Here (Spanish)", audioFile: "Still Here (Spanish).mp3" },
+  { id: 2, title: "Troppy Poppy", audioFile: "troppypoppy.mp3" }
 ].map((song) => ({
   ...song,
-  cover: `assets/covers/${song.file}-360.webp`,
-  coverLarge: `assets/covers/${song.file}-720.webp`,
-  audio: mediaUrl("songs", `${song.file}.mp3`)
+  cover: song.coverFile ? `assets/covers/${song.coverFile}-360.webp` : null,
+  coverLarge: song.coverFile ? `assets/covers/${song.coverFile}-720.webp` : null,
+  audio: mediaUrl("mimusica", song.audioFile)
 }));
 
 function createAudioElement({ withCors = MEDIA_CORS_ENABLED } = {}) {
@@ -54,6 +35,7 @@ const state = {
 if ("scrollRestoration" in history) history.scrollRestoration = "manual";
 
 const songGrid = document.querySelector("#songGrid");
+const songFilters = document.querySelector(".song-toolbar .filter-group");
 const player = document.querySelector("#player");
 const mainPlayButton = document.querySelector("#mainPlayButton");
 const prevButton = document.querySelector("#prevButton");
@@ -108,6 +90,7 @@ function pruneTvOnlyDocument() {
 pruneTvOnlyDocument();
 
 document.querySelector("#songCount").textContent = songs.length;
+songFilters.hidden = songs.length < 2;
 volumeRange.value = String(state.volume);
 volumeRange.style.backgroundSize = `${state.volume * 100}% 100%`;
 audio.volume = state.volume;
@@ -567,7 +550,7 @@ function playTvSelectedSong() {
   const songId = Number(selectedControl?.dataset?.play);
   if (!songId) {
     if (state.currentSong) playAudio();
-    else selectSong(songs[0].id, true);
+    else if (songs[0]) selectSong(songs[0].id, true);
     return;
   }
   if (state.currentSong?.id === songId) playAudio();
@@ -697,15 +680,21 @@ function renderSongs() {
   songGrid.innerHTML = orderedSongs.map((song, index) => {
     const isActive = state.currentSong?.id === song.id;
     const isPlaying = isActive && state.isPlaying;
-    const encodedCover = encodeURI(song.cover);
-    const encodedLargeCover = encodeURI(song.coverLarge);
-    const coverSourceAttributes = !isTvMode || index < 6
+    const hasCover = Boolean(song.cover && song.coverLarge);
+    const encodedCover = hasCover ? encodeURI(song.cover) : "";
+    const encodedLargeCover = hasCover ? encodeURI(song.coverLarge) : "";
+    const coverSourceAttributes = hasCover && (!isTvMode || index < 6)
       ? `src="${encodedCover}" srcset="${encodedCover} 360w, ${encodedLargeCover} 720w"`
-      : `data-src="${encodedCover}" data-srcset="${encodedCover} 360w, ${encodedLargeCover} 720w"`;
+      : hasCover
+        ? `data-src="${encodedCover}" data-srcset="${encodedCover} 360w, ${encodedLargeCover} 720w"`
+        : "";
+    const coverImage = hasCover
+      ? `<img class="cover-art" ${coverSourceAttributes} sizes="(max-width: 620px) calc((100vw - 42px) / 2), (max-width: 940px) calc((100vw - 68px) / 3), (max-width: 1280px) 18vw, 14vw" alt="Portada de ${song.title}" width="360" height="540" loading="${isTvMode && index < 6 ? "eager" : "lazy"}" decoding="async" fetchpriority="${isTvMode && index < 6 ? "high" : "low"}">`
+      : "";
     return `
       <article class="song-card${isActive ? " is-active" : ""}${isPlaying ? " is-playing" : ""}" data-song-id="${song.id}">
-        <button class="cover-button" type="button" data-play="${song.id}" data-tv-index="${index}" aria-label="${isPlaying ? "Pausar" : "Reproducir"} ${song.title}">
-          <img class="cover-art" ${coverSourceAttributes} sizes="(max-width: 620px) calc((100vw - 42px) / 2), (max-width: 940px) calc((100vw - 68px) / 3), (max-width: 1280px) 18vw, 14vw" alt="Portada de ${song.title}" width="360" height="540" loading="${isTvMode && index < 6 ? "eager" : "lazy"}" decoding="async" fetchpriority="${isTvMode && index < 6 ? "high" : "low"}">
+        <button class="cover-button${hasCover ? "" : " has-image-error"}" type="button" data-play="${song.id}" data-tv-index="${index}" aria-label="${isPlaying ? "Pausar" : "Reproducir"} ${song.title}">
+          ${coverImage}
           <span class="cover-fallback" aria-hidden="true">Portada no disponible</span>
           ${isTvMode ? "" : '<span class="equalizer" aria-hidden="true"><i></i><i></i><i></i><i></i></span>'}
           <span class="play-pill" aria-hidden="true">${isPlaying ? "Ⅱ" : "▶"}</span>
@@ -747,7 +736,8 @@ function refreshSongGridState() {
       const card = tvSongCards[index];
       card?.classList.toggle("is-active", isActive);
       card?.classList.toggle("is-playing", isPlaying);
-      button.setAttribute("aria-label", `${isPlaying ? "Pausar" : "Reproducir"} ${songs[songId - 1]?.title || "canción"}`);
+      const songTitle = songs.find((song) => song.id === songId)?.title || "canción";
+      button.setAttribute("aria-label", `${isPlaying ? "Pausar" : "Reproducir"} ${songTitle}`);
       const playPill = tvPlayPills[index];
       if (playPill) playPill.textContent = isPlaying ? "Ⅱ" : "▶";
     });
@@ -758,6 +748,16 @@ songGrid.addEventListener("error", (event) => {
   if (!(event.target instanceof HTMLImageElement) || !event.target.classList.contains("cover-art")) return;
   event.target.closest(".cover-button")?.classList.add("has-image-error");
   event.target.hidden = true;
+}, true);
+
+document.addEventListener("error", (event) => {
+  if (!(event.target instanceof HTMLImageElement)) return;
+  const fallbackId = event.target.dataset.errorFallback;
+  if (!fallbackId) return;
+  const fallback = document.getElementById(fallbackId);
+  if (!fallback) return;
+  event.target.hidden = true;
+  fallback.hidden = false;
 }, true);
 
 function navigate(route, { historyMode = "replace", moveFocus = false } = {}) {
@@ -887,7 +887,7 @@ function closePlayer() {
 
 async function togglePlayback() {
   if (!state.currentSong) {
-    await selectSong(songs[0].id, true);
+    if (songs[0]) await selectSong(songs[0].id, true);
     return;
   }
   if (state.isPlaying) pauseAudio();
@@ -897,6 +897,7 @@ async function togglePlayback() {
 }
 
 function playAdjacent(direction) {
+  if (!songs.length) return;
   if (!state.currentSong) {
     selectSong(songs[0].id, true);
     return;
@@ -914,7 +915,11 @@ function playAdjacent(direction) {
 function updatePlayer() {
   if (!state.currentSong) return;
   document.querySelector("#playerTitle").textContent = state.currentSong.title;
-  document.querySelector("#miniCover").style.backgroundImage = `url("${encodeURI(state.currentSong.cover)}")`;
+  const miniCover = document.querySelector("#miniCover");
+  miniCover.classList.toggle("has-no-cover", !state.currentSong.cover);
+  miniCover.style.backgroundImage = state.currentSong.cover
+    ? `url("${encodeURI(state.currentSong.cover)}")`
+    : "none";
   mainPlayButton.classList.toggle("is-playing", state.isPlaying);
   mainPlayButton.setAttribute("aria-label", state.isPlaying ? "Pausar" : "Reproducir");
   document.querySelector("#repeatButton").classList.toggle("is-active", state.repeat);

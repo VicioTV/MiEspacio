@@ -1186,7 +1186,7 @@ textarea:focus-visible {
 
 .tech-case-index,
 .tech-case-status {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -1300,7 +1300,7 @@ textarea:focus-visible {
 .tech-kicker {
   margin: 0 0 22px;
   color: var(--tech-green);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -1349,7 +1349,7 @@ textarea:focus-visible {
 .tech-challenge-grid span,
 .future-module-grid > section > span {
   color: var(--tech-blue);
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -1651,15 +1651,15 @@ textarea:focus-visible {
   line-height: 1.62;
 }
 
-.future-dossier-hero.is-studio {
+.future-dossier-hero.is-wide-feature {
   grid-template-columns: 1.25fr 0.75fr;
 }
 
-.future-dossier-hero.is-studio > img {
+.future-dossier-hero.is-wide-feature > img {
   object-position: left center;
 }
 
-.future-dossier-hero.is-studio h3 {
+.future-dossier-hero.is-wide-feature h3 {
   font-family: "Archivo", sans-serif;
   font-size: clamp(44px, 5vw, 78px);
   font-weight: 750;
@@ -1693,7 +1693,7 @@ textarea:focus-visible {
 .future-dossier-intro > p:last-child {
   margin: 26px 0 0;
   color: var(--muted);
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.62;
 }
 
@@ -1724,14 +1724,14 @@ textarea:focus-visible {
 .architecture-flow span {
   margin-bottom: 14px;
   color: var(--dim);
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
 .architecture-flow strong {
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 500;
   line-height: 1.75;
 }
@@ -1762,7 +1762,7 @@ textarea:focus-visible {
 .future-module-grid p {
   margin: 0;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 15px;
   line-height: 1.62;
 }
 
@@ -1780,7 +1780,7 @@ textarea:focus-visible {
   max-width: 50ch;
   margin: 26px 0 0;
   color: var(--muted);
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.62;
 }
 
@@ -1857,7 +1857,7 @@ textarea:focus-visible {
 .studio-metrics dd {
   margin-top: 7px;
   color: var(--dim);
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -1942,7 +1942,7 @@ textarea:focus-visible {
   padding: 8px 10px;
   border: 1px solid #34363b;
   color: #b7b5af;
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -2007,7 +2007,7 @@ textarea:focus-visible {
     grid-column: 2;
   }
 
-  .future-dossier-hero.is-studio {
+  .future-dossier-hero.is-wide-feature {
     grid-template-columns: 1fr 1fr;
   }
 
@@ -2058,7 +2058,7 @@ textarea:focus-visible {
   .tech-case-grid,
   .tech-case-grid.is-reversed,
   .future-dossier-hero,
-  .future-dossier-hero.is-studio,
+  .future-dossier-hero.is-wide-feature,
   .future-architecture,
   .build-progress {
     grid-template-columns: 1fr;
@@ -2197,6 +2197,20 @@ textarea:focus-visible {
   .tech-case-body > h3,
   .future-dossier-hero h3 {
     font-size: clamp(42px, 13vw, 58px);
+  }
+
+  .future-dossier-hero > div > p:last-child,
+  .future-dossier-intro > p:last-child,
+  .architecture-flow strong,
+  .future-module-grid p,
+  .build-progress > div > p:last-child,
+  .future-dossier-hero > .media-error-fallback {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  .future-dossier-hero > .media-error-fallback {
+    min-height: 300px;
   }
 
   .tech-challenge-grid,
@@ -5966,10 +5980,6 @@ body[data-view="canciones"] .song-card.is-active .cover-art {
   transform: none;
 }
 
-body[data-view="canciones"] .song-card[data-song-id="2"] .cover-art {
-  object-fit: contain;
-}
-
 /* 2026 audit pass: accessibility, legibility and responsive stabilization. */
 .skip-link {
   position: fixed;
@@ -6162,6 +6172,28 @@ body[data-view="inicio"] .editorial-deck {
 
 .cover-button.has-image-error .cover-fallback {
   display: grid;
+}
+
+.mini-cover.has-no-cover {
+  border: 1px solid rgba(157, 242, 223, 0.2);
+  background: linear-gradient(135deg, rgba(157, 242, 223, 0.12), transparent 58%), #0d1112;
+}
+
+.future-dossier-hero > .media-error-fallback {
+  display: grid;
+  min-height: 570px;
+  place-items: center;
+  margin: 0;
+  padding: 32px;
+  background: #0d1112;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.future-dossier-hero > .media-error-fallback[hidden] {
+  display: none;
 }
 
 .cover-art,
