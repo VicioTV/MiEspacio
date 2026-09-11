@@ -1,9 +1,10 @@
 const MEDIA_BASE_URL = "https://pub-08916786b0ea4c109047b2d37424d0ea.r2.dev";
 const MEDIA_CORS_ENABLED = true;
-const MEDIA_VERSION = "20260831-catalog-5";
+const MEDIA_VERSION = "20260911-que-bien-se-siente";
 const mediaUrl = (folder, filename) => `${MEDIA_BASE_URL}/${folder}/${filename}?v=${MEDIA_VERSION}`;
 
 const songs = [
+  { id: 6, title: "Qué bien se siente", audioFile: "QueBienSeSiente.mp3" },
   { id: 3, title: "No lo vimos pasar", audioFile: "No lo vimos pasar.mp3", coverFile: "NoLoVimosPasar" },
   { id: 2, title: "Troppy Poppy", audioFile: "troppypoppy.mp3", coverFile: "TroppyPoppy" },
   { id: 1, title: "Still Here (Spanish)", audioFile: "Still Here (Spanish).mp3" },
